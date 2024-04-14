@@ -1,0 +1,17 @@
+License Type A:
+Motorcycle
+Sport car
+Car
+Electric car
+
+License Type B:
+Minivan
+SUV
+Van
+Compact car
+
+License Type C:
+Truck
+Bus
+Tractor
+Pickup truck

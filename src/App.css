@@ -36,3 +36,369 @@
     transform: rotate(360deg);
   }
 }
+
+.container {
+  display: flex;
+  width: 100%;
+}
+.App{
+  background: #0F2027;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #2C5364, #203A43, #0F2027);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #2C5364, #203A43, #0F2027); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.left-panel,
+.middle-panel {
+  border: 3px solid lightgrey;
+  border-radius: 3px;
+  margin: 2px;
+  width: 16%;
+}
+.right-panel {
+  border: 3px solid lightgrey;
+  border-radius: 3px;
+  margin: 2px;
+  width: 48%;
+  background-image: linear-gradient(to right, #2c3e50, #4ca1af);
+}
+.most-right-panel{
+  border: 3px solid lightgrey;
+  border-radius: 6px;
+  margin: 2px;
+  width: 20%;
+  background-image: linear-gradient(to right, #5a3f37, #2c7744);
+}
+
+.left-panel {
+  background-image: linear-gradient(to right, #5a3f37, #2c7744);
+}
+
+.middle-panel {
+  background-image: linear-gradient(to right, #141e30, #243b55);
+}
+
+.VehicleManagement{
+  font-size: large;
+  background-color: #d6dae4;
+  padding: 0px;
+  margin: 0px;
+}
+.DriverManagement{
+  font-size: large;
+  background-color: #d6dae4;
+  padding: 0px;
+  margin: 0px;
+}
+
+.PlanManagement{
+  background-color: #d6dae4;
+  padding: 0px;
+  margin: 0px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+
+.input-field {
+  margin-bottom: 5px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+.add-trip-button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.VehicleUnit{
+  width: 98%;
+  text-align: left;
+  background-color:#d9d9d9;
+  border: 1px solid #000;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.VehicleName{
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.VehicleDetails{
+  font-size: 15px;
+  font-style: italic;
+}
+
+.vl{
+  color: white;
+  font-size: 15px;
+  font-style: italic;
+  text-align: left;
+}
+
+.DriverUnit{
+  width: 98%;
+  text-align: left;
+  background-color:#d9d9d9;
+  border: 1px solid #000;
+  border-radius: 5px;
+  padding: 10px;
+}
+.DriverName{
+  font-size: 15px;
+  font-weight: bold;
+}
+.DriverDetails{
+  font-size: 15px;
+  font-style: italic;
+}
+
+.dl{
+  color: white;
+  font-size: 15px;
+  font-style: italic;
+  text-align: left;
+}
+
+.TripManagement{
+  background-color: #c9c0c0;
+  padding: 0px;
+  margin: 0px;
+}
+.Pm{
+  padding: 10px;
+  margin: 0px;
+  color: white;
+}
+
+.TripUnit{
+  text-align: center;
+  font-size: large;
+  background-color:#d9d9d9;
+  border: 1px solid #000;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.TripTable{
+  border-radius: 2px;
+  border: #000;
+  border-radius: 2px solid;
+}
+
+.TripValueName{
+  color: white;
+  font-weight: bold;
+
+}
+
+
+.Actions{
+  background-color: #d6dae4;
+  padding: 0px;
+  margin: 0px;
+}
+
+.buttons{
+  background-color: #d9d9d9;
+  border: 5px solid #000;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 5px;
+}
+
+.AddTripBlock{
+  background-color: #d9d9d9;
+  border: 5px solid #000;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 5px;
+
+}
+.AddTripText{
+  margin: 2px;
+  font-size: 20px;
+  font-weight: bold;
+  color: rgb(9, 3, 3);
+}
+
+body {
+  background-color: #333;
+}
+.wrapper {
+  width: 300px;
+  height: 200px;
+  margin: 0px auto;
+  background-color: #FFF;
+  padding-top: 80px;
+}
+.pillars {
+  width: 180px;
+  height: 118px;
+  margin: 0 auto;
+  position: relative;
+}
+.pillar {
+  width: 20px;
+  height: 100%;
+  margin: 0px 8px;
+  background-color: #333;
+  float: left;
+  opacity: 0;
+}
+.mask {
+  width: 180px;
+  background-color: #fff;
+  height: 45px;
+  z-index: 999999;
+  clear: left;
+  position: absolute;
+  border-bottom-right-radius: 100%;
+  border-bottom-left-radius: 100%;
+}
+.pillar1 {
+  animation: anim 5s ease-out 0s infinite ;
+}
+.pillar2 {
+  animation: anim2 5s ease-out 0s infinite ;
+}
+.pillar3 {
+  animation: anim3 5s ease-out 0s infinite ;
+}
+.pillar4 {
+  animation: anim4 5s ease-out 0s infinite;
+}
+.pillar5 {
+  animation: anim5 5s ease-out 0s infinite ;
+}
+
+@keyframes anim {
+  0% {
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  40% {
+    opacity: 1;
+  }
+  60% {
+    opacity: 1;
+  }
+  80% {
+    opacity:1;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes anim2{
+    0% {
+    opacity: 0;
+  }
+  20% {
+    opacity: 0;
+  }
+  40% {
+    opacity: 1;
+  }
+  60% {
+    opacity: 1;
+  }
+  80% {
+    opacity:1;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes anim3{
+    0% { opacity: 0; }
+  20% {
+    opacity: 0;
+  }
+  40% {
+    opacity: 0;
+  }
+  60% {
+    opacity: 1;
+  }
+  80% {
+    opacity:1;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes anim4{
+  0% {
+    opacity: 0;
+  }
+  20% {
+    opacity: 0;
+  }
+  40% {
+    opacity: 0;
+  }
+  60% {
+    opacity: 0;
+  }
+  80% {
+    opacity:1;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes anim5{
+  0% {
+    opacity: 0;
+  }
+  20% {
+    opacity: 0;
+  }
+  40% {
+    opacity: 0;
+  }
+  60% {
+    opacity: 0;
+  }
+  80% {
+    opacity:0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.wrapper{
+  max-width: 99%;
+}
+.tripTripUnit{
+  max-width: 100%;
+}
+.piechart{
+  max-width: 100%;
+  background-color: #d9d9d9;
+  border-radius:  5px;
+}
+.highlight {
+  color: yellow;
+}
+.empty-input-field {
+  border: 1px solid red;
+  background-color: #ffeeee; /* Light red background color */
+  color: red; /* Red text color */
+  margin-bottom: 5px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
