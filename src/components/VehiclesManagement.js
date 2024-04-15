@@ -33,8 +33,8 @@ function VehiclesManagement({ VehicleIdPass }) {
   };
 
   const showAllBtnStyle = {
-    backgroundColor: showAllVehicles ? 'lightblue' : 'white',
-    color: showAllVehicles ? 'white' : 'black',
+    backgroundColor: showAllVehicles ? '#8ED7B2' : '#BE966F',
+    color: showAllVehicles ? 'black' : 'black',
     border: '1px solid #ccc',
     borderRadius: '4px',
     maxWidth: '90%',
@@ -70,7 +70,7 @@ function VehiclesManagement({ VehicleIdPass }) {
             vehicle.status === 'Working'
             ? { backgroundColor: 'lightcoral' }
             : vehicle.status === 'Maintenance'
-            ? { backgroundColor: 'grey' }
+            ? { backgroundColor: '#737373' }
             : vehicle.status === 'Inactive'
             ? { backgroundColor: 'lightgreen' }
             : {}
@@ -135,6 +135,7 @@ function VehiclesManagement({ VehicleIdPass }) {
         </button>
         ))}
       </div>
+      <div className="divider"></div>
     </div>
   );
 }

@@ -7,16 +7,11 @@ import './App.css';
 
 function App() {
   const [Vehicleid, setVehicleId] = useState(null);
-  const [Driverid, setDriverId] = useState(null);
   const [Planid, setPlaneId] = useState(null);
   const [TripNextId, setTripNextId] = useState(null);
 
   const IdPassVehicle = (Vehicleid) => {
     setVehicleId(Vehicleid);
-  }
-
-  const IdPassDriver = (Driverid) => {
-    setDriverId(Driverid);
   }
 
   const IdPassPlan = (Planid) => {
@@ -36,13 +31,13 @@ function App() {
           <VehiclesManagement VehicleIdPass={IdPassVehicle} />
         </div>
         <div className="middle-panel">
-          <DriversManagement DriverIdPass={IdPassDriver}/>
+          <DriversManagement/>
         </div>
         <div className="right-panel">
           <PlansManagement PlanIdPass={IdPassPlan} TripNextIdPass={NextIdPassTrip}/>
         </div>
         <div className="most-right-panel">
-          <Actions Vehicleid={Vehicleid} Driverid={Driverid} Planid={Planid} TripNextId={TripNextId}/>
+          <Actions Vehicleid={Vehicleid} Planid={Planid} TripNextId={TripNextId}/>
         </div>
       </div>
 

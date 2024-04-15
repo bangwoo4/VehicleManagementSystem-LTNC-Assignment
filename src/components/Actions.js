@@ -9,7 +9,6 @@ function Actions({ Vehicleid, Planid, TripNextId }) {
   const [confirmClicked, setConfirmClicked] = useState(false);
   const [text, setText] = useState('Maintenance vehicle?');
   const [vehicle, setVehicle] = useState({});
-  const [driver, setDriver] = useState({});
   const [trip, setTrip] = useState({});
   const [listDriver, setListDriver] = useState([]);
   const [newTrip, setNewTrip] = useState({
@@ -210,8 +209,16 @@ function Actions({ Vehicleid, Planid, TripNextId }) {
   };
 
   //DELETE PLAN BUTTON
-  const deletePlan = (IdOfPlan) => {
+  const deletePlan = async (IdOfPlan) => {
     if (IdOfPlan === null) return;
+    
+    const tripSnapshot = await get(child(dbRef, `/plans/${IdOfPlan}`));
+    const tripData = tripSnapshot.val();
+    if (tripData.status === 'In progress') {
+      alert('Can\'delete because plan is in progress');
+      return;
+    }
+    
     const path = ref(database, `/plans/${IdOfPlan}`);
     remove(path)
       .then(() => {
@@ -262,7 +269,6 @@ function Actions({ Vehicleid, Planid, TripNextId }) {
     await update(DriverPath, driverData);
     await update(ref(database, `/plans/${IdOfPlan}`), tripData);
 
-    setDriver({});
     setTrip({});
     setVehicle({});
   };
@@ -297,7 +303,6 @@ function Actions({ Vehicleid, Planid, TripNextId }) {
     await update(DriverPath, driverData);
     await update(ref(database, `/plans/${IdOfPlan}`), tripData);
 
-    setDriver({});
     setTrip({});
     setVehicle({});
   };
@@ -405,20 +410,18 @@ function Actions({ Vehicleid, Planid, TripNextId }) {
   
   return (
     <div className='actionContainer'>
-      <h2 className='Actions'>Stuffs</h2>
-      <div className='buttons'>
-        <Button variant="contained" style={{ backgroundColor: 'green', color: 'white' }} onClick={toggleAddTrip}>Create new plan</Button>
-        <Button variant="contained" style={{ backgroundColor: 'blue', color: 'white' }} onClick={toggleEditTrip}>Edit plan</Button>
-        <Button variant="contained" style={{ backgroundColor: 'red', color: 'white' }} onClick={() => deletePlan(Planid)}>Delete plan</Button>
-        <Button variant="contained" style={{ backgroundColor: 'purple', color: 'white' }} onClick={() => chooseDirver(Planid)}>Choose driver</Button>
-        <Button variant="contained" style={{ backgroundColor: 'brown', color: 'white' }} onClick={() => startTrip(Planid)}>Start trip</Button>
-        <Button variant="contained" style={{ backgroundColor: 'black', color: 'white' }} onClick={() => endTrip(Planid)}>End trip</Button>
-        <Button 
-          variant="contained" 
-          style={{ backgroundColor: 'gray', color: 'white' }} 
-          onClick={() => configVehicleStatus(Vehicleid)}
-        >{MaintenanceVehicle(Vehicleid)}</Button>
+      <h2 className='Actions'>Actions</h2>
+
+      <div className='buttons' style={{ display: 'flex', flexWrap: 'wrap' }}>
+        <Button variant="contained" style={{ flex: '0 0 100%', marginBottom: '10px', backgroundColor: '#01834D', color: 'white' }} onClick={toggleAddTrip}>Create new plan</Button>
+        <Button variant="contained" style={{ flex: '0 0 100%', marginBottom: '10px', backgroundColor: '#0C4183', color: 'white' }} onClick={toggleEditTrip}>Edit plan</Button>
+        <Button variant="contained" style={{ flex: '0 0 100%', marginBottom: '10px', backgroundColor: '#721E1D', color: 'white' }} onClick={() => deletePlan(Planid)}>Delete plan</Button>
+        <Button variant="contained" style={{ flex: '0 0 100%', marginBottom: '10px', backgroundColor: '#6D3E18', color: 'white' }} onClick={() => chooseDirver(Planid)}>Choose driver</Button>
+        <Button variant="contained" style={{ flex: '0 0 100%', marginBottom: '10px', backgroundColor: '#1E7381', color: 'white' }} onClick={() => startTrip(Planid)}>Start trip</Button>
+        <Button variant="contained" style={{ flex: '0 0 100%', marginBottom: '10px', backgroundColor: '#533C3C', color: 'white' }} onClick={() => endTrip(Planid)}>End trip</Button>
+        <Button variant="contained" style={{ flex: '0 0 100%', marginBottom: '10px', backgroundColor: '#505F73', color: 'white' }} onClick={() => configVehicleStatus(Vehicleid)}>{MaintenanceVehicle(Vehicleid)}</Button>
       </div>
+
       
       {showAddTrip && 
       (<div className="AddTripBlock">

@@ -3,7 +3,7 @@ import Button from '@mui/material/Button';
 import { ref, child, get } from "firebase/database";
 import { database } from '../firebase'
 
-function DriversManagement({ DriverIdPass }) {
+function DriversManagement() {
     const [drivers, setData] = useState([]);
     const [selectedDriverId, setSelectedDriverId] = useState(null);
     const [showAllDrivers, setShowAllDrivers] = useState(false);
@@ -30,7 +30,6 @@ function DriversManagement({ DriverIdPass }) {
     //FUNCTION
     const toggleShowInfo = (driverId) => {
       setSelectedDriverId(driverId === selectedDriverId ? null : driverId);
-      DriverIdPass(selectedDriverId !== driverId ? driverId : null)
     };
   
     const handleShowAllDrivers = () => {
@@ -38,8 +37,8 @@ function DriversManagement({ DriverIdPass }) {
     };
   
     const showAllBtnStyle = {
-      backgroundColor: showAllDrivers ? 'lightblue' : 'white',
-      color: showAllDrivers ? 'white' : 'black',
+      backgroundColor: showAllDrivers ? '#8ED7B2' : '#BE966F',
+      color: showAllDrivers ? 'black' : 'black',
       border: '1px solid #ccc',
       borderRadius: '4px',
       maxWidth: '90%',
@@ -56,7 +55,7 @@ function DriversManagement({ DriverIdPass }) {
           <h2 className='DriverManagement'>Driver Management</h2>
           <div>
             <h3 className="dl">Drivers List</h3>
-            <Button
+            <Button className='showAllBtn'
                 onClick={handleShowAllDrivers}
                 style={showAllBtnStyle}
             >
@@ -133,6 +132,7 @@ function DriversManagement({ DriverIdPass }) {
                 </button>
             ))}
             </div>
+            <div className="divider"></div>
         </div>
     );
 }

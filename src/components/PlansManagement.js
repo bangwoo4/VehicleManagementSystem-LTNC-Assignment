@@ -68,7 +68,7 @@ function PlansManagement({ PlanIdPass, TripNextIdPass }) {
             <th width='12%'>Status</th>
         </tr>
         </thead>
-        <tbody>
+        <tbody className="tbd">
         {trips.slice(0, visibleTrips).map((trip) => (
             <tr
             className={`tripTripUnit ${selectedTrip === trip.id ? 'highlight' : ''}`}
@@ -83,6 +83,7 @@ function PlansManagement({ PlanIdPass, TripNextIdPass }) {
                 ? { backgroundColor: 'lightcoral' }
                 : { backgroundColor: 'white'}
             }
+            
             key={trip.id}
             onClick={() => focusOn(trip.id)}
             >
@@ -94,17 +95,19 @@ function PlansManagement({ PlanIdPass, TripNextIdPass }) {
             <td className="tripVehicle">{trip.vehicle}</td>
             <td className="tripStatus">{trip.status}</td>
             </tr>
+            
         ))}
         </tbody>
+        <div className="divider"></div>
       </table>
       {!showAllTrips && visibleTrips < trips.length && (
-          <Button variant="contained" onClick={handleShowMore}>Show More</Button>
+        <Button variant="contained" style={{ backgroundColor: '#54A329', color: 'white' }} onClick={handleShowMore}>Show More</Button>
       )}
       {!showAllTrips && (
-          <Button variant="contained" onClick={handleShowAll}>Show All</Button>
+        <Button variant="contained" style={{ backgroundColor: '#225E8F', color: 'white' }} onClick={handleShowAll}>Show All</Button>
       )}
       {showAllTrips && (
-          <Button variant="contained" onClick={handleCollapse}>Collapse</Button>
+        <Button variant="contained" style={{ backgroundColor: '#BE0E34', color: 'white' }} onClick={handleCollapse}>Collapse</Button>
       )}
     </div>
   );

@@ -1,5 +1,8 @@
 .App {
   text-align: center;
+  height: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 .App-logo {
@@ -45,6 +48,7 @@
   background: #0F2027;  /* fallback for old browsers */
   background: -webkit-linear-gradient(to right, #2C5364, #203A43, #0F2027);  /* Chrome 10-25, Safari 5.1-6 */
   background: linear-gradient(to right, #2C5364, #203A43, #0F2027); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background: #78718E;
 }
 
 .left-panel,
@@ -60,6 +64,7 @@
   margin: 2px;
   width: 48%;
   background-image: linear-gradient(to right, #2c3e50, #4ca1af);
+  background: #4B4269;
 }
 .most-right-panel{
   border: 3px solid lightgrey;
@@ -67,25 +72,28 @@
   margin: 2px;
   width: 20%;
   background-image: linear-gradient(to right, #5a3f37, #2c7744);
+  background: #392F5A;
 }
 
 .left-panel {
   background-image: linear-gradient(to right, #5a3f37, #2c7744);
+  background: #6A6383;
 }
 
 .middle-panel {
   background-image: linear-gradient(to right, #141e30, #243b55);
+  background: #534B70;
 }
 
 .VehicleManagement{
   font-size: large;
-  background-color: #d6dae4;
   padding: 0px;
   margin: 0px;
+  background-color: #D4CA9F;
 }
 .DriverManagement{
   font-size: large;
-  background-color: #d6dae4;
+  background-color: #D4CA9F;
   padding: 0px;
   margin: 0px;
 }
@@ -174,7 +182,7 @@
   margin: 0px;
 }
 .Pm{
-  padding: 10px;
+  padding: 0px;
   margin: 0px;
   color: white;
 }
@@ -195,6 +203,7 @@
 }
 
 .TripValueName{
+  background-color: #342B52;
   color: white;
   font-weight: bold;
 
@@ -202,7 +211,7 @@
 
 
 .Actions{
-  background-color: #d6dae4;
+  background-color: #D4CA9F;
   padding: 0px;
   margin: 0px;
 }
@@ -221,7 +230,6 @@
   border-radius: 5px;
   padding: 10px;
   margin: 5px;
-
 }
 .AddTripText{
   margin: 2px;
@@ -401,4 +409,10 @@ body {
   padding: 5px;
   border: 1px solid #ccc;
   border-radius: 3px;
+}
+
+.divider {
+  border-bottom: 5px solid #ffffff; /* Đường gạch */
+  max-width: 100%;
+  margin-top: 20px; /* Khoảng cách giữa đường gạch và nội dung phía trên */
 }
