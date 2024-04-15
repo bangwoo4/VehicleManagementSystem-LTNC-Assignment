@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Button from '@mui/material/Button';
 import { ref, child, get } from "firebase/database";
 import { database } from '../firebase'
+import { PieChart } from "react-minimal-pie-chart";
 
 function PlansManagement({ PlanIdPass, TripNextIdPass }) {
   const [selectedTrip, setSelectedTrip] = useState(null);
@@ -52,6 +53,44 @@ function PlansManagement({ PlanIdPass, TripNextIdPass }) {
     PlanIdPass(selectedTrip !== tripid ? tripid : null)
   }
 
+  //count the status of the trips
+  let completed = 0;
+  let scheduled = 0;
+  let pending = 0;
+  let inprogress = 0;
+
+  trips.forEach((trip) => {
+    if (trip.status === 'Completed') {
+      completed++;
+    } else if (trip.status === 'Scheduled') {
+      scheduled++;
+    } else if (trip.status === 'Pending') {
+      pending++;
+    } else if (trip.status === 'In progress') {
+      inprogress++;
+    }
+  }
+  );
+
+  let costUnder50 = 0;
+  let costUnder500 = 0;
+  let costUnder1000 = 0;
+  let costLarger1000 = 0;
+
+  trips.forEach((trip) => {
+    let num = trip.estimatedCost.replace('$', '');
+    if (Number(num) <= 50) {
+      costUnder50++;
+    } else if (Number(num) <= 500) {
+      costUnder500++;
+    } else if (Number(num) <= 1000) {
+      costUnder1000++;
+    } else {
+      costLarger1000++;
+    }
+  }
+  );
+
 
   
   return (
@@ -74,13 +113,13 @@ function PlansManagement({ PlanIdPass, TripNextIdPass }) {
             className={`tripTripUnit ${selectedTrip === trip.id ? 'highlight' : ''}`}
             style={
                 trip.status === 'Completed'
-                ? { backgroundColor: 'lightgreen' }
+                ? { backgroundColor: '#0CDB12' }
                 : trip.status === 'Scheduled'
-                ? { backgroundColor: 'lightblue' }
+                ? { backgroundColor: '#2F92F5' }
                 : trip.status === 'Pending'
                 ? { backgroundColor: 'grey' }
                 : trip.status === 'In progress'
-                ? { backgroundColor: 'lightcoral' }
+                ? { backgroundColor: '#F8B944' }
                 : { backgroundColor: 'white'}
             }
             
@@ -109,6 +148,45 @@ function PlansManagement({ PlanIdPass, TripNextIdPass }) {
       {showAllTrips && (
         <Button variant="contained" style={{ backgroundColor: '#BE0E34', color: 'white' }} onClick={handleCollapse}>Collapse</Button>
       )}
+
+        <div className="graph">
+          <PieChart
+            data={[
+              { title: 'Completed', value: completed, color: '#0CDB12' },
+              { title: 'Scheduled', value: scheduled, color: '#2F92F5' },
+              { title: 'Pending', value: pending, color: 'grey' },
+              { title: 'In progress', value: inprogress, color: '#F8B944' }
+            ]}
+            radius={30} //bán kính của biểu đồ
+            lineWidth={20} //độ dày của đường viền
+            paddingAngle={8} // Góc khoảng cách giữa các phần tử trong biểu đồ
+            label={({ dataEntry }) => `${Math.round(dataEntry.percentage)}%`} // Hiển thị phần trăm
+            labelStyle={{
+              fontSize: '3px',
+              fontFamily: 'Arial',
+              fill: 'white' // Màu chữ cho nhãn
+            }}
+          />
+          
+          <PieChart
+            data={[
+              { title: '< $50', value: costUnder50, color: '#FF0000' },
+              { title: '$50 - $500', value: costUnder500, color: '#FFA500' },
+              { title: '$500 - $1000', value: costUnder1000, color: '#FFFF00' },
+              { title: '> $1000', value: costLarger1000, color: '#00FF00' }
+            ]}
+            radius={30}
+            lineWidth={20}
+            paddingAngle={8}
+            label={({ dataEntry }) => `${Math.round(dataEntry.percentage)}%`}
+            labelStyle={{
+              fontSize: '3px',
+              fontFamily: 'Arial',
+              fill: 'white'
+            }}
+          />
+      </div>
+
     </div>
   );
 };
