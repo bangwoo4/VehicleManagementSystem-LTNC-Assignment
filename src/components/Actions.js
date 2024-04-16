@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import Button from '@mui/material/Button';
+import { collection, getDoc, addDoc, doc, updateDoc, deleteDoc, getDocs } from "firebase/firestore"; 
+import { firebase } from '../firebase'
 import { ref, child, get, update, remove, set } from "firebase/database";
 import { database } from '../firebase'
 
@@ -22,8 +24,7 @@ function Actions({ Vehicleid, Planid, TripNextId }) {
     vehicle: '',
     vehicleId: '',
   });
-  const dbRef = ref(database);
-
+  
   //CREATE NEW PLAN BUTTON
   const toggleAddTrip = () => {
     setShowAddTrip(!showAddTrip);
@@ -44,7 +45,7 @@ function Actions({ Vehicleid, Planid, TripNextId }) {
     }
   };
   
-  const handleAddTrip = () => {
+  const handleAddTrip = async () => {
     setConfirmClicked(true);
     for (const key in newTrip) {
       if (key === 'driver' || key === 'driverId' || key === 'vehicle' || key === 'vehicleId') continue;
@@ -55,30 +56,28 @@ function Actions({ Vehicleid, Planid, TripNextId }) {
     }
 
     newTrip.vehicle = vehicle.name;
-    newTrip.vehicleId = vehicle.id;
+    newTrip.vehicleId = Vehicleid;
     //ADD TO DATA BASE
-    const path = ref(database, `/plans/${parseInt(TripNextId) + 1}`)
-    set(path, newTrip)
-      .then(() => {
-          console.log('Data added successfully!');
-          setNewTrip({
-              route: '',
-              estimatedTime: '',
-              estimatedCost: '',
-              departureTime: '',
-              status: 'Pending',
-              driver: '',
-              driverId: '',
-              vehicle: '',
-              vehicleId: ''
-          });
-          setVehicle({});
-          setConfirmClicked(false);
-      })
-      .catch((error) => {
-          console.error('Error adding data:', error);
-          setConfirmClicked(false);
+    try {
+      await addDoc(collection(firebase, 'plans'), newTrip );
+      console.log('Trip added successfully!');
+      setNewTrip({
+        route: '',
+        estimatedTime: '',
+        estimatedCost: '',
+        departureTime: '',
+        status: 'Pending',
+        driver: '',
+        driverId: '',
+        vehicle: '',
+        vehicleId: ''
       });
+      setVehicle({});
+      setConfirmClicked(false);
+    } catch (error) {
+        console.error('Error adding trip:', error);
+        setConfirmClicked(false);
+    }
   };
 
   const renderEstimatedTimeOptions = () => {
@@ -93,23 +92,18 @@ function Actions({ Vehicleid, Planid, TripNextId }) {
     return hours;
   };
 
-  const ReturnVehicleValue = (Vehicleid) => {
+  const ReturnVehicleValue = () => {
     if (Vehicleid === null || vehicle === null) return'';
-    get(child(dbRef, `/vehicles/${Vehicleid}`)).then((snapshot) => {
-      if (snapshot.exists()) {
-        let keyname = snapshot.key;
-        let data = snapshot.val();
-        data.id = keyname;
-        setVehicle(data);
-      } else {
-        console.log("No data available");
-      }
-    }).catch((error) => {
+    getDoc(doc(firebase, "vehicles", Vehicleid))
+      .then((snapshot) => {
+        setVehicle(snapshot.data());
+    })
+    .catch((error) => {
       console.error(error);
     });
     return vehicle.name;
   };
-
+  
   //EDIT PLAN BUTTON
   const toggleEditTrip = () => {
     setConfirmClicked(false);
@@ -118,12 +112,9 @@ function Actions({ Vehicleid, Planid, TripNextId }) {
       return;
     }
     setshowEditTrip(!showEditTrip);
-    get(child(dbRef, `/plans/${Planid}`)).then((snapshot) => {
-      if (snapshot.exists()) {
-        setTrip(snapshot.val());
-      } else {
-        console.log("No data available");
-      }
+    getDoc(doc(firebase, "plans", Planid))
+      .then((snapshot) => {
+        setTrip(snapshot.data());
     }).catch((error) => {
       console.error(error);
     });
@@ -137,8 +128,8 @@ function Actions({ Vehicleid, Planid, TripNextId }) {
     }));
   };
   
-  const UpdateInformation = (IdOfPlan) => {
-    if (IdOfPlan === null) return;
+  const UpdateInformation = async () => {
+    if (Planid === null) return;
     setConfirmClicked(true);
     for (const key in trip) {
       if (key === 'driver' || key === 'driverId') continue;
@@ -150,46 +141,42 @@ function Actions({ Vehicleid, Planid, TripNextId }) {
     
     if (Vehicleid !== null) {
       trip.vehicle = vehicle.name;
-      trip.vehicleId = vehicle.id;
+      trip.vehicleId = Vehicleid;
     }
     //ADD TO DATA BASE
-    const path = ref(database, `/plans/${IdOfPlan}`)
-    update(path, trip)
-      .then(() => {
-          console.log('Database updated successfully');
-          setVehicle({});
-          setConfirmClicked(false);
-          setTrip({});
-      })
-      .catch((error) => {
-          console.error('Error updating database:', error);
-          setConfirmClicked(false);
-      });
+    try {
+      const docRef = doc(firebase, 'plans', Planid);
+      await updateDoc(docRef, trip);
+      console.log('Document updated successfully!');
+      setVehicle({});
+      setConfirmClicked(false);
+      setTrip({});
+    } catch (error) {
+      console.error('Error updating document:', error);
+      setConfirmClicked(false);
+    }
   };
 
   //MAINTENANCE BUTTON
-  const MaintenanceVehicle = (Vehicleid) => {
+  const MaintenanceVehicle = () => {
     if (Vehicleid === null) return text;
-    get(child(dbRef, `/vehicles/${Vehicleid}`)).then((snapshot) => {
-      if (snapshot.exists()) {
-        setVehicle(snapshot.val());
-        if (snapshot.val().status === 'Maintenance') {
+    getDoc(doc(firebase, "vehicles", Vehicleid))
+      .then((snapshot) => {
+        setVehicle(snapshot.data());
+        if (snapshot.data().status === 'Maintenance') {
           setText("Done maintenance?");
-        }else if (snapshot.val().status === 'Inactive') {
+        }else if (snapshot.data().status === 'Inactive') {
           setText('Maintenance vehicle?');
         }
-      } else {
-        console.log("No data available");
-      }
     }).catch((error) => {
       console.error(error);
     });
     return text;
   };
 
-  const configVehicleStatus = (Vehicleid) => {
+  const configVehicleStatus = () => {
     if (Vehicleid === null) return;
-    const path = ref(database, `/vehicles/${Vehicleid}`)
+    const docRef = doc(firebase, 'vehicles', Vehicleid);
     if (vehicle.status === 'Working') {
       alert("Vehicle still working!");
     }else if (vehicle.status === 'Maintenance') {
@@ -197,30 +184,30 @@ function Actions({ Vehicleid, Planid, TripNextId }) {
     }else if (vehicle.status === 'Inactive') {
       vehicle.status = 'Maintenance';
     }
-    update(path, vehicle)
+    
+    updateDoc(docRef, vehicle)
       .then(() => {
         console.log('Database updated successfully');
+        setVehicle({});
       })
       .catch((error) => {
         console.error('Error updating database:', error);
+        setVehicle({});
       });
-    
-    setVehicle({});
   };
 
   //DELETE PLAN BUTTON
-  const deletePlan = async (IdOfPlan) => {
-    if (IdOfPlan === null) return;
+  const deletePlan = async () => {
+    if (Planid === null) return;
     
-    const tripSnapshot = await get(child(dbRef, `/plans/${IdOfPlan}`));
-    const tripData = tripSnapshot.val();
+    const tripSnapshot = await getDoc(doc(firebase, "plans", Planid));
+    const tripData = tripSnapshot.data();
     if (tripData.status === 'In progress') {
       alert('Can\'delete because plan is in progress');
       return;
     }
-    
-    const path = ref(database, `/plans/${IdOfPlan}`);
-    remove(path)
+    const docRef = doc(firebase, 'plans', Planid);
+    deleteDoc(docRef)
       .then(() => {
         console.log('Data deleted successfully');
       })
@@ -239,19 +226,19 @@ function Actions({ Vehicleid, Planid, TripNextId }) {
     return false; // No null values found
   };
 
-  const startTrip = async (IdOfPlan) => {
-    if (IdOfPlan === null) return;
+  const startTrip = async () => {
+    if (Planid === null) return;
     
-    const tripSnapshot = await get(child(dbRef, `/plans/${IdOfPlan}`));
-    const tripData = tripSnapshot.val();
+    const tripSnapshot = await getDoc(doc(firebase, "plans", Planid));
+    const tripData = tripSnapshot.data();
     
     if (!tripData || hasNullValue(tripData)) return;
     
-    const vehicleSnapshot = await get(child(dbRef, `/vehicles/${tripData.vehicleId}`));
-    const vehicleData = vehicleSnapshot.val();
+    const vehicleSnapshot = await getDoc(doc(firebase, "vehicles", tripData.vehicleId));
+    const vehicleData = vehicleSnapshot.data();
     
-    const driverSnapshot = await get(child(dbRef, `/drivers/${tripData.driverId}`));
-    const driverData = driverSnapshot.val();
+    const driverSnapshot = await getDoc(doc(firebase, "drivers", tripData.driverId));
+    const driverData = driverSnapshot.data();
     
     if (tripData.status === 'Scheduled' && driverData.status === "Ready" && vehicleData.status === "Inactive") {
         tripData.status = 'In progress';
@@ -260,32 +247,27 @@ function Actions({ Vehicleid, Planid, TripNextId }) {
         return;
     }
 
-    const VehiclePath = ref(database, `/vehicles/${tripData.vehicleId}`);
-    const DriverPath = ref(database, `/drivers/${tripData.driverId}`);
-    vehicleData.status = "Working";
-    driverData.status = "Not ready";
-
-    await update(VehiclePath, vehicleData);
-    await update(DriverPath, driverData);
-    await update(ref(database, `/plans/${IdOfPlan}`), tripData);
-
+    await updateDoc(doc(firebase, 'vehicles', tripData.vehicleId), vehicleData);
+    await updateDoc(doc(firebase, 'drivers', tripData.driverId), driverData);
+    await updateDoc(doc(firebase, 'plans', Planid), tripData);
+    
     setTrip({});
     setVehicle({});
   };
 
-  const endTrip = async (IdOfPlan) => {
-    if (IdOfPlan === null) return;
+  const endTrip = async () => {
+    if (Planid === null) return;
 
-    const tripSnapshot = await get(child(dbRef, `/plans/${IdOfPlan}`));
-    const tripData = tripSnapshot.val();
+    const tripSnapshot = await getDoc(doc(firebase, "plans", Planid));
+    const tripData = tripSnapshot.data();
 
     if (!tripData) return;
 
-    const vehicleSnapshot = await get(child(dbRef, `/vehicles/${tripData.vehicleId}`));
-    const vehicleData = vehicleSnapshot.val();
+    const vehicleSnapshot = await getDoc(doc(firebase, "vehicles", tripData.vehicleId));
+    const vehicleData = vehicleSnapshot.data();
 
-    const driverSnapshot = await get(child(dbRef, `/drivers/${tripData.driverId}`));
-    const driverData = driverSnapshot.val();
+    const driverSnapshot = await getDoc(doc(firebase, "drivers", tripData.driverId));
+    const driverData = driverSnapshot.data();
 
     if (tripData.status === 'In progress') {
         tripData.status = 'Completed';
@@ -294,46 +276,48 @@ function Actions({ Vehicleid, Planid, TripNextId }) {
         return;
     }
 
-    const VehiclePath = ref(database, `/vehicles/${tripData.vehicleId}`);
-    const DriverPath = ref(database, `/drivers/${tripData.driverId}`);
     vehicleData.status = "Inactive";
     driverData.status = "Ready";
 
-    await update(VehiclePath, vehicleData);
-    await update(DriverPath, driverData);
-    await update(ref(database, `/plans/${IdOfPlan}`), tripData);
+    await updateDoc(doc(firebase, 'vehicles', tripData.vehicleId), vehicleData);
+    await updateDoc(doc(firebase, 'drivers', tripData.driverId), driverData);
+    await updateDoc(doc(firebase, 'plans', Planid), tripData);
 
     setTrip({});
     setVehicle({});
   };
 
   //CHOOSE DRIVER BUTTON
-  const chooseDirver = async (IdOfPlan) => {
-    if (IdOfPlan === null) return;
+  const chooseDirver = async () => {
+    if (Planid === null) return;
 
-    const tripSnapshot = await get(child(dbRef, `/plans/${IdOfPlan}`));
-    const tripData = tripSnapshot.val();
+    const tripSnapshot = await getDoc(doc(firebase, "plans", Planid));
+    const tripData = tripSnapshot.data();
 
     if (!tripData) return;
 
-    const driverSnapshot = await get(child(dbRef, `/drivers`));
-    const drivers = driverSnapshot.val();
-
+    const querySnapshot = await getDocs(collection(firebase, 'drivers'));
+    const todoData = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+    }));
+    
     const temp = [];
-    for (let key in drivers) {
-        let data = drivers[key];
-        data.id = key;
+    if (todoData && todoData.length > 0) {
+      for (let i = 0; i < todoData.length; ++i) {
+        let data = todoData[i];
         if (data.status === 'Ready') {
-            temp.push(data);
+          temp.push(data);
         }
+      }
     }
     setListDriver(temp);
-
+    
     let flag = false, index = 0;
-    if (tripData.vehicle === 'Motorcycle' ||
+    if ((tripData.vehicle === 'Motorcycle' ||
         tripData.vehicle === 'Sports Car' ||
         tripData.vehicle === 'Car' ||
-        tripData.vehicle === 'Electric Car') {
+        tripData.vehicle === 'Electric Car') && listDriver && listDriver.length > 0 ) {
           for (index; index < listDriver.length; ++index) {
             if (listDriver[index].licenseType === 'A' && listDriver[index].drivingHistory === 'Clean') {
               flag = true;
@@ -356,10 +340,10 @@ function Actions({ Vehicleid, Planid, TripNextId }) {
             }
           }
     }else 
-    if (tripData.vehicle === 'Minivan' ||
+    if ((tripData.vehicle === 'Minivan' ||
         tripData.vehicle === 'SUV' ||
         tripData.vehicle === 'Van' ||
-        tripData.vehicle === 'Compact Car') {
+        tripData.vehicle === 'Compact Car') && listDriver && listDriver.length > 0 ) {
           for (index; index < listDriver.length; ++index) {
             if (listDriver[index].licenseType === 'B' && listDriver[index].drivingHistory === 'Clean') {
               flag = true;
@@ -376,10 +360,10 @@ function Actions({ Vehicleid, Planid, TripNextId }) {
             }
           }
     }else 
-    if (tripData.vehicle === 'Truck' ||
+    if ((tripData.vehicle === 'Truck' ||
         tripData.vehicle === 'Bus' ||
         tripData.vehicle === 'Tractor' ||
-        tripData.vehicle === 'Pickup Truck') {
+        tripData.vehicle === 'Pickup Truck') && listDriver && listDriver.length > 0 ) {
           for (index; index < listDriver.length; ++index) {
             if (listDriver[index].licenseType === 'C' && listDriver[index].drivingHistory === 'Clean') {
               flag = true;
@@ -389,8 +373,8 @@ function Actions({ Vehicleid, Planid, TripNextId }) {
               break;
             }
           }
-    }
-
+    } 
+    
     if (!flag) {
         alert("There are no suitable drivers");
         return;
@@ -399,8 +383,8 @@ function Actions({ Vehicleid, Planid, TripNextId }) {
     tripData.driver = listDriver[index].name;
     tripData.driverId = listDriver[index].id;
     tripData.status = 'Scheduled';
-
-    await update(ref(database, `/plans/${IdOfPlan}`), tripData);
+    
+    await updateDoc(doc(firebase, 'plans', Planid), tripData);
 
     setTrip({});
     setListDriver([]);
@@ -415,11 +399,11 @@ function Actions({ Vehicleid, Planid, TripNextId }) {
       <div className='buttons' style={{ display: 'flex', flexWrap: 'wrap' }}>
         <Button variant="contained" style={{ flex: '0 0 100%', marginBottom: '10px', backgroundColor: '#01834D', color: 'white' }} onClick={toggleAddTrip}>Create new plan</Button>
         <Button variant="contained" style={{ flex: '0 0 100%', marginBottom: '10px', backgroundColor: '#0C4183', color: 'white' }} onClick={toggleEditTrip}>Edit plan</Button>
-        <Button variant="contained" style={{ flex: '0 0 100%', marginBottom: '10px', backgroundColor: '#721E1D', color: 'white' }} onClick={() => deletePlan(Planid)}>Delete plan</Button>
-        <Button variant="contained" style={{ flex: '0 0 100%', marginBottom: '10px', backgroundColor: '#6D3E18', color: 'white' }} onClick={() => chooseDirver(Planid)}>Choose driver</Button>
-        <Button variant="contained" style={{ flex: '0 0 100%', marginBottom: '10px', backgroundColor: '#1E7381', color: 'white' }} onClick={() => startTrip(Planid)}>Start trip</Button>
-        <Button variant="contained" style={{ flex: '0 0 100%', marginBottom: '10px', backgroundColor: '#533C3C', color: 'white' }} onClick={() => endTrip(Planid)}>End trip</Button>
-        <Button variant="contained" style={{ flex: '0 0 100%', marginBottom: '10px', backgroundColor: '#505F73', color: 'white' }} onClick={() => configVehicleStatus(Vehicleid)}>{MaintenanceVehicle(Vehicleid)}</Button>
+        <Button variant="contained" style={{ flex: '0 0 100%', marginBottom: '10px', backgroundColor: '#721E1D', color: 'white' }} onClick={() => deletePlan()}>Delete plan</Button>
+        <Button variant="contained" style={{ flex: '0 0 100%', marginBottom: '10px', backgroundColor: '#6D3E18', color: 'white' }} onClick={() => chooseDirver()}>Choose driver</Button>
+        <Button variant="contained" style={{ flex: '0 0 100%', marginBottom: '10px', backgroundColor: '#1E7381', color: 'white' }} onClick={() => startTrip()}>Start trip</Button>
+        <Button variant="contained" style={{ flex: '0 0 100%', marginBottom: '10px', backgroundColor: '#533C3C', color: 'white' }} onClick={() => endTrip()}>End trip</Button>
+        <Button variant="contained" style={{ flex: '0 0 100%', marginBottom: '10px', backgroundColor: '#505F73', color: 'white' }} onClick={() => configVehicleStatus()}>{MaintenanceVehicle()}</Button>
       </div>
 
       
@@ -463,9 +447,9 @@ function Actions({ Vehicleid, Planid, TripNextId }) {
           <input
             type="text"
             name="vehicle"
-            value={ReturnVehicleValue(Vehicleid)}
+            value={Vehicleid === null ? '' : ReturnVehicleValue()}
             placeholder="Select vehicle in vehicle list"
-            className={confirmClicked  && Vehicleid === null   ? 'empty-input-field' : 'input-field'}
+            className={confirmClicked  && Vehicleid === null ? 'empty-input-field' : 'input-field'}
           />
         </div>
         <button 
@@ -512,13 +496,13 @@ function Actions({ Vehicleid, Planid, TripNextId }) {
           <input
             type="text"
             name="vehicle"
-            value={Vehicleid === null ? trip.vehicle : ReturnVehicleValue(Vehicleid)}
+            value={Vehicleid === null ? trip.vehicle : ReturnVehicleValue()}
             placeholder="Vehicle"
             className={'input-field'}
           />
         </div>
         <button 
-          className="add-trip-button" onClick={() => UpdateInformation(Planid)}>Update Information</button>
+          className="add-trip-button" onClick={() => UpdateInformation()}>Update Information</button>
       </div>)}
     </div>
   );

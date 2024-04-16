@@ -1,31 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Button from '@mui/material/Button';
-import { ref, child, get } from "firebase/database";
-import { database } from '../firebase'
+import { collection, getDocs } from "firebase/firestore"; 
+import { firebase } from '../firebase'
 
 function VehiclesManagement({ VehicleIdPass }) {
   const [vehicles, setData] = useState([]);
   const [selectedVehicle, setSelectedVehicle] = useState(null);
   const [showAllVehicles, setShowAllVehicles] = useState(false);
-  const dbRef = ref(database);
 
   //GET DATA
-  get(child(dbRef, `/vehicles`)).then((snapshot) => {
-    if (snapshot.exists()) {
-      let temp = [];
-      snapshot.forEach(childsnapshot => {
-        let keyname = childsnapshot.key;
-        let data = childsnapshot.val();
-        data.id = keyname;
-        temp.push(data);
-      });
-      setData(temp);
-    } else {
-      console.log("No data available");
-    }
-  }).catch((error) => {
-    console.error(error);
-  });
+  useEffect(() => {
+    const fetchData = async () => {
+        try {
+            const querySnapshot = await getDocs(collection(firebase, 'vehicles'));
+            const todoData = querySnapshot.docs.map((doc) => ({
+                id: doc.id,
+                ...doc.data(),
+            }));
+            setData(todoData);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+    fetchData();
+    }, []);
 
   //FUNCTION    
   const handleShowAllVehicles = () => {
@@ -49,7 +47,7 @@ function VehiclesManagement({ VehicleIdPass }) {
     VehicleIdPass(selectedVehicle !== vehicleId ? vehicleId : null)
   };
 
-
+  
   
   return (
     <div>

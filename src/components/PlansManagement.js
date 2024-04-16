@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Button from '@mui/material/Button';
-import { ref, child, get } from "firebase/database";
-import { database } from '../firebase'
+import { collection, getDocs } from "firebase/firestore"; 
+import { firebase } from '../firebase'
 import { PieChart } from "react-minimal-pie-chart";
 
 function PlansManagement({ PlanIdPass, TripNextIdPass }) {
@@ -10,27 +10,23 @@ function PlansManagement({ PlanIdPass, TripNextIdPass }) {
   const [showAllTrips, setShowAllTrips] = useState(false);
   const [isFocus, setIsFocus] = useState(false);
   const [trips, setData] = useState([]);
-  const dbRef = ref(database);
 
   //GET DATA
-  get(child(dbRef, `/plans`)).then((snapshot) => {
-      if (snapshot.exists()) {
-      let temp = [];
-      snapshot.forEach(childsnapshot => {
-          let keyname = childsnapshot.key;
-          let data = childsnapshot.val();
-          data.id = keyname;
-          temp.push(data);
-      });
-      TripNextIdPass(temp[temp.length - 1].id);
-      setData(temp);
-      } else {
-      TripNextIdPass(0);
-      console.log("No data available");
-      }
-  }).catch((error) => {
-      console.error(error);
-  });
+  useEffect(() => {
+    const fetchData = async () => {
+        try {
+            const querySnapshot = await getDocs(collection(firebase, 'plans'));
+            const todoData = querySnapshot.docs.map((doc) => ({
+                id: doc.id,
+                ...doc.data(),
+            }));
+            setData(todoData);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+    fetchData();
+    }, []);
 
   //FUNCTION
   const handleShowMore = () => {
@@ -89,7 +85,7 @@ function PlansManagement({ PlanIdPass, TripNextIdPass }) {
       costLarger1000++;
     }
   }
-  );
+);
 
 
   

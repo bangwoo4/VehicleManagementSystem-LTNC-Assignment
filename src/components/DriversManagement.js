@@ -1,32 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Button from '@mui/material/Button';
-import { ref, child, get } from "firebase/database";
-import { database } from '../firebase'
+import { collection, getDocs } from "firebase/firestore"; 
+import { firebase } from '../firebase'
 
 function DriversManagement() {
     const [drivers, setData] = useState([]);
     const [selectedDriverId, setSelectedDriverId] = useState(null);
     const [showAllDrivers, setShowAllDrivers] = useState(false);
-    const dbRef = ref(database);
 
     //GET DATA
-    get(child(dbRef, `/drivers`)).then((snapshot) => {
-        if (snapshot.exists()) {
-        let temp = [];
-        snapshot.forEach(childsnapshot => {
-            let keyname = childsnapshot.key;
-            let data = childsnapshot.val();
-            data.id = keyname;
-            temp.push(data);
-        });
-        setData(temp);
-        } else {
-        console.log("No data available");
-        }
-    }).catch((error) => {
-        console.error(error);
-    });
-
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const querySnapshot = await getDocs(collection(firebase, 'drivers'));
+                const todoData = querySnapshot.docs.map((doc) => ({
+                    id: doc.id,
+                    ...doc.data(),
+                }));
+                setData(todoData);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+        fetchData();
+        }, []);
+    
     //FUNCTION
     const toggleShowInfo = (driverId) => {
       setSelectedDriverId(driverId === selectedDriverId ? null : driverId);
