@@ -1,0 +1,132 @@
+/* Login.css */
+
+.mainContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-image: linear-gradient(to right, #8e9eab, #eef2f3);
+  font-family: 'Roboto', sans-serif;
+}
+
+.loginBox {
+  background-color: #ffffff;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  width: 100%;
+}
+
+.titleContainer {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.title {
+  font-size: 32px;
+  font-weight: 700;
+  color: #333;
+  animation: fade-in 1s ease-in-out;
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.inputContainer {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.inputBox {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+  color: #555;
+  transition: border-color 0.3s ease;
+  animation: slide-in 1s ease-in-out;
+}
+
+.inputBox:hover,
+.inputBox:focus {
+  border-color: #4caf50;
+  outline: none;
+}
+
+@keyframes slide-in {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.errorLabel {
+  display: block;
+  margin-top: 5px;
+  font-size: 14px;
+  color: #f44336;
+  animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  10%, 30%, 50%, 70%, 90% {
+    transform: translateX(-5px);
+  }
+  20%, 40%, 60%, 80% {
+    transform: translateX(5px);
+  }
+}
+
+.inputButton {
+  width: 100%;
+  padding: 12px 24px;
+  background-color: #4caf50;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  animation: scale-in 1s ease-in-out;
+}
+
+.inputButton:hover {
+  background-color: #45a049;
+}
+
+.inputButton:active {
+  background-color: #3e8e41;
+}
+
+@keyframes scale-in {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@media (max-width: 480px) {
+  .loginBox {
+    padding: 20px;
+  }
+}
+
