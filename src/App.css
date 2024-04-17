@@ -431,11 +431,6 @@ body {
   align-items: flex-start;
 }
 
-/* Login */
-
-
-
-
 .DriverUnit {
   transition: all 0.3s ease;
   overflow: hidden;
@@ -480,6 +475,35 @@ body {
   max-height: 400px; /* Điều chỉnh chiều cao tối đa cho phần thông tin phương tiện */
 }
 
+/*Notify box*/
+.notification-container {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+}
 
+.notification {
+  position: absolute;
+  background-color: #ffffff;
+  border: 1px solid #cccccc;
+  padding: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  z-index: 9999;
+  animation: slideIn 0.5s ease forwards;
+  width: 280px;
+  height: 50px;
+  @keyframes slideIn {
+    0% {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
 
-
+.notification p {
+  margin: 0; /* Remove default margin for <p> */
+}

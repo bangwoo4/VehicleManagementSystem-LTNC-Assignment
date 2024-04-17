@@ -4,7 +4,7 @@ import { collection, getDocs } from "firebase/firestore";
 import { firebase } from '../firebase'
 import { PieChart } from "react-minimal-pie-chart";
 
-function PlansManagement({ PlanIdPass, TripNextIdPass }) {
+function PlansManagement({ PlanIdPass }) {
   const [selectedTrip, setSelectedTrip] = useState(null);
   const [visibleTrips, setVisibleTrips] = useState(5);
   const [showAllTrips, setShowAllTrips] = useState(false);

@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Button from '@mui/material/Button';
 import { collection, getDoc, addDoc, doc, updateDoc, deleteDoc, getDocs } from "firebase/firestore"; 
 import { firebase } from '../firebase'
-import { ref, child, get, update, remove, set } from "firebase/database";
-import { database } from '../firebase'
 
-function Actions({ Vehicleid, Planid, TripNextId }) {
+function Actions({ Vehicleid, Planid }) {
   const [showAddTrip, setShowAddTrip] = useState(false);
   const [showEditTrip, setshowEditTrip] = useState(false);
   const [confirmClicked, setConfirmClicked] = useState(false);
+  const [showNotification, setShowNotification] = useState(false);//chuen sang false de no hien len cho de css
   const [text, setText] = useState('Maintenance vehicle?');
+  const [message, setMessage] = useState('');
   const [vehicle, setVehicle] = useState({});
   const [trip, setTrip] = useState({});
   const [listDriver, setListDriver] = useState([]);
@@ -25,6 +25,17 @@ function Actions({ Vehicleid, Planid, TripNextId }) {
     vehicleId: '',
   });
   
+  const showPopup = (notify) => {
+    setMessage(notify);
+    setShowNotification(true);
+
+    // Hide the notification after a certain time (e.g., 3 seconds)
+    setTimeout(() => {
+      setShowNotification(false);
+      setMessage('');
+    }, 2000); // 3000 milliseconds = 3 seconds
+  };
+
   //CREATE NEW PLAN BUTTON
   const toggleAddTrip = () => {
     setShowAddTrip(!showAddTrip);
@@ -60,7 +71,7 @@ function Actions({ Vehicleid, Planid, TripNextId }) {
     //ADD TO DATA BASE
     try {
       await addDoc(collection(firebase, 'plans'), newTrip );
-      console.log('Trip added successfully!');
+      showPopup('Trip added successfully!');
       setNewTrip({
         route: '',
         estimatedTime: '',
@@ -147,7 +158,7 @@ function Actions({ Vehicleid, Planid, TripNextId }) {
     try {
       const docRef = doc(firebase, 'plans', Planid);
       await updateDoc(docRef, trip);
-      console.log('Document updated successfully!');
+      showPopup('Plan updated successfully!');
       setVehicle({});
       setConfirmClicked(false);
       setTrip({});
@@ -187,7 +198,7 @@ function Actions({ Vehicleid, Planid, TripNextId }) {
     
     updateDoc(docRef, vehicle)
       .then(() => {
-        console.log('Database updated successfully');
+        showPopup('a super super long text');
         setVehicle({});
       })
       .catch((error) => {
@@ -209,7 +220,7 @@ function Actions({ Vehicleid, Planid, TripNextId }) {
     const docRef = doc(firebase, 'plans', Planid);
     deleteDoc(docRef)
       .then(() => {
-        console.log('Data deleted successfully');
+        showPopup('Deleted plan successfully!');
       })
       .catch((error) => {
         console.error('Error deleting data:', error);
@@ -247,10 +258,14 @@ function Actions({ Vehicleid, Planid, TripNextId }) {
         return;
     }
 
+    vehicleData.status = "Working";
+    driverData.status = "Not ready";
+    
     await updateDoc(doc(firebase, 'vehicles', tripData.vehicleId), vehicleData);
     await updateDoc(doc(firebase, 'drivers', tripData.driverId), driverData);
     await updateDoc(doc(firebase, 'plans', Planid), tripData);
-    
+    showPopup('Trip started!');
+
     setTrip({});
     setVehicle({});
   };
@@ -282,6 +297,7 @@ function Actions({ Vehicleid, Planid, TripNextId }) {
     await updateDoc(doc(firebase, 'vehicles', tripData.vehicleId), vehicleData);
     await updateDoc(doc(firebase, 'drivers', tripData.driverId), driverData);
     await updateDoc(doc(firebase, 'plans', Planid), tripData);
+    showPopup('Trip end!');
 
     setTrip({});
     setVehicle({});
@@ -311,6 +327,12 @@ function Actions({ Vehicleid, Planid, TripNextId }) {
         }
       }
     }
+    temp.sort((a, b) => {
+      if (a.licenseType < b.licenseType) return -1; // 'A' trước 'B' và 'C'
+      if (a.licenseType > b.licenseType) return 1; // 'B' và 'C' sau 'A'
+      return 0;
+    });
+
     setListDriver(temp);
     
     let flag = false, index = 0;
@@ -379,12 +401,17 @@ function Actions({ Vehicleid, Planid, TripNextId }) {
         alert("There are no suitable drivers");
         return;
     }
-
+    
     tripData.driver = listDriver[index].name;
     tripData.driverId = listDriver[index].id;
     tripData.status = 'Scheduled';
     
-    await updateDoc(doc(firebase, 'plans', Planid), tripData);
+    try {
+      await updateDoc(doc(firebase, 'plans', Planid), tripData);
+      showPopup('Choose driver successfully!');
+    } catch (error) {
+      console.error('Error updating trip data:', error);
+    }
 
     setTrip({});
     setListDriver([]);
@@ -504,6 +531,13 @@ function Actions({ Vehicleid, Planid, TripNextId }) {
         <button 
           className="add-trip-button" onClick={() => UpdateInformation()}>Update Information</button>
       </div>)}
+      <div className="notification-container">        
+        {showNotification && (
+          <div className="notification">
+            <p>{message}</p>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

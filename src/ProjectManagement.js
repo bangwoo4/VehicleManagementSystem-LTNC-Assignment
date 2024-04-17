@@ -7,7 +7,6 @@ import Actions from './components/Actions';
 function Project() {
   const [Vehicleid, setVehicleId] = useState(null);
   const [Planid, setPlaneId] = useState(null);
-  const [TripNextId, setTripNextId] = useState(null);
 
   const IdPassVehicle = (Vehicleid) => {
     setVehicleId(Vehicleid);
@@ -15,10 +14,6 @@ function Project() {
 
   const IdPassPlan = (Planid) => {
     setPlaneId(Planid);
-  }
-  
-  const NextIdPassTrip = (TripNextId) => {
-    setTripNextId(TripNextId);
   }
   
   return (
@@ -33,10 +28,10 @@ function Project() {
           <DriversManagement/>
         </div>
         <div className="right-panel">
-          <PlansManagement PlanIdPass={IdPassPlan} TripNextIdPass={NextIdPassTrip}/>
+          <PlansManagement PlanIdPass={IdPassPlan}/>
         </div>
         <div className="most-right-panel">
-          <Actions Vehicleid={Vehicleid} Planid={Planid} TripNextId={TripNextId}/>
+          <Actions Vehicleid={Vehicleid} Planid={Planid}/>
         </div>
       </div>
     </div>
