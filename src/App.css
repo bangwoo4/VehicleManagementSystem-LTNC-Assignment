@@ -398,9 +398,17 @@ body {
   background-color: #d9d9d9;
   border-radius:  5px;
 }
+
 .highlight {
-  color: yellow;
-}
+  background-color: #ffd700; 
+  font-style: italic;
+  color: #ffffff; 
+  font-weight: bold; 
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); 
+  transition: background-color 0.3s ease; 
+  }
+
+
 .empty-input-field {
   border: 1px solid red;
   background-color: #ffeeee; /* Light red background color */
@@ -424,3 +432,54 @@ body {
 }
 
 /* Login */
+
+
+
+
+.DriverUnit {
+  transition: all 0.3s ease;
+  overflow: hidden;
+  max-height: 50px; /* Chiều cao ban đầu của khối chứa thông tin tài xế */
+}
+
+.DriverUnit.expanded {
+  max-height: 500px; /* Chiều cao tối đa của khối chứa thông tin tài xế khi được mở rộng */
+}
+
+.DriverDetails {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  max-height: 0;
+  overflow: hidden;
+}
+
+.DriverUnit.expanded .DriverDetails {
+  opacity: 1;
+  max-height: 400px; /* Điều chỉnh chiều cao tối đa cho phần thông tin tài xế */
+}
+
+.VehicleUnit {
+  transition: all 0.3s ease;
+  overflow: hidden;
+  max-height: 50px; /* Chiều cao ban đầu của khối chứa thông tin phương tiện */
+}
+
+.VehicleUnit.expanded {
+  max-height: 500px; /* Chiều cao tối đa của khối chứa thông tin phương tiện khi được mở rộng */
+}
+
+.VehicleDetails {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  max-height: 0;
+  overflow: hidden;
+}
+
+.VehicleUnit.expanded .VehicleDetails {
+  opacity: 1;
+  max-height: 400px; /* Điều chỉnh chiều cao tối đa cho phần thông tin phương tiện */
+}
+
+
+
+
