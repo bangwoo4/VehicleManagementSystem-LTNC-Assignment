@@ -23,7 +23,7 @@ function DriversManagement() {
             }
         };
         fetchData();
-        }, []);
+        });
     
         const toggleShowInfo = (driverId) => {
             setSelectedDriverId(driverId === selectedDriverId ? null : driverId);

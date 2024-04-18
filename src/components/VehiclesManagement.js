@@ -7,6 +7,7 @@ function VehiclesManagement({ VehicleIdPass }) {
   const [vehicles, setData] = useState([]);
   const [selectedVehicle, setSelectedVehicle] = useState(null);
   const [showAllVehicles, setShowAllVehicles] = useState(false);
+  const [dataTrigger, setDataTrigger] = useState(0);
 
   //GET DATA
   useEffect(() => {
@@ -22,8 +23,8 @@ function VehiclesManagement({ VehicleIdPass }) {
             console.error('Error fetching data:', error);
         }
     };
-    fetchData();
-    }, []);
+      fetchData();
+    });
 
   //FUNCTION    
   const handleShowAllVehicles = () => {

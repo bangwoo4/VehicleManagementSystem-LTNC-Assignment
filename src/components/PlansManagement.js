@@ -26,7 +26,7 @@ function PlansManagement({ PlanIdPass }) {
         }
     };
     fetchData();
-    }, []);
+    });
 
   //FUNCTION
   const handleShowMore = () => {

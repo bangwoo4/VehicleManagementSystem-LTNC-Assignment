@@ -1,14 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Button from '@mui/material/Button';
 import { collection, getDoc, addDoc, doc, updateDoc, deleteDoc, getDocs } from "firebase/firestore"; 
 import { firebase } from '../firebase'
-import { styled } from '@mui/system';
 
 function Actions({ Vehicleid, Planid }) {
   const [showAddTrip, setShowAddTrip] = useState(false);
   const [showEditTrip, setshowEditTrip] = useState(false);
   const [confirmClicked, setConfirmClicked] = useState(false);
-  const [showNotification, setShowNotification] = useState(false);//chuen sang false de no hien len cho de css
+  const [showNotification, setShowNotification] = useState(false);
   const [text, setText] = useState('Maintenance vehicle?');
   const [message, setMessage] = useState('');
   const [vehicle, setVehicle] = useState({});
@@ -62,7 +61,7 @@ function Actions({ Vehicleid, Planid }) {
     for (const key in newTrip) {
       if (key === 'driver' || key === 'driverId' || key === 'vehicle' || key === 'vehicleId') continue;
       if (Vehicleid === null || (newTrip.hasOwnProperty(key) && (newTrip[key] === null || newTrip[key].trim() === ''))) {
-        alert('Please fill in all required information');
+        showPopup('Please fill in all required information');
         return;
       }
     }
@@ -146,7 +145,7 @@ function Actions({ Vehicleid, Planid }) {
     for (const key in trip) {
       if (key === 'driver' || key === 'driverId') continue;
       if (trip.hasOwnProperty(key) && (trip[key] === null || trip[key].trim() === '')) {
-        alert('Please fill in all required information');
+        showPopup('Please fill in all required information');
         return;
       }
     }
@@ -190,7 +189,7 @@ function Actions({ Vehicleid, Planid }) {
     if (Vehicleid === null) return;
     const docRef = doc(firebase, 'vehicles', Vehicleid);
     if (vehicle.status === 'Working') {
-      alert("Vehicle still working!");
+      showPopup("Vehicle still working!");
     }else if (vehicle.status === 'Maintenance') {
       vehicle.status = 'Inactive';
     }else if (vehicle.status === 'Inactive') {
@@ -199,7 +198,7 @@ function Actions({ Vehicleid, Planid }) {
     
     updateDoc(docRef, vehicle)
       .then(() => {
-        showPopup('a super super long text');
+        showPopup('Updated vehicle\'s status successfully!');
         setVehicle({});
       })
       .catch((error) => {
@@ -215,7 +214,7 @@ function Actions({ Vehicleid, Planid }) {
     const tripSnapshot = await getDoc(doc(firebase, "plans", Planid));
     const tripData = tripSnapshot.data();
     if (tripData.status === 'In progress') {
-      alert('Can\'delete because plan is in progress');
+      showPopup('Can\'t delete because plan is in progress');
       return;
     }
     const docRef = doc(firebase, 'plans', Planid);
@@ -255,7 +254,7 @@ function Actions({ Vehicleid, Planid }) {
     if (tripData.status === 'Scheduled' && driverData.status === "Ready" && vehicleData.status === "Inactive") {
         tripData.status = 'In progress';
     } else {
-        alert("Don't have enough information or Driver/Vehicle in process");
+        showPopup("Don't have enough information or Driver/Vehicle in process");
         return;
     }
 
@@ -399,8 +398,8 @@ function Actions({ Vehicleid, Planid }) {
     } 
     
     if (!flag) {
-        alert("There are no suitable drivers");
-        return;
+      showPopup("There are no suitable drivers!");
+      return;
     }
     
     tripData.driver = listDriver[index].name;
