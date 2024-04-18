@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Button from '@mui/material/Button';
 import { collection, getDoc, addDoc, doc, updateDoc, deleteDoc, getDocs } from "firebase/firestore"; 
 import { firebase } from '../firebase'
+import { styled } from '@mui/system';
 
 function Actions({ Vehicleid, Planid }) {
   const [showAddTrip, setShowAddTrip] = useState(false);
@@ -534,7 +535,7 @@ function Actions({ Vehicleid, Planid }) {
       <div className="notification-container">        
         {showNotification && (
           <div className="notification">
-            <p>{message}</p>
+            <p>{"🔔 " + message}</p>
           </div>
         )}
       </div>

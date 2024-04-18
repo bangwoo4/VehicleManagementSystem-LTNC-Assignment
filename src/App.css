@@ -475,23 +475,29 @@ body {
   max-height: 400px; /* Điều chỉnh chiều cao tối đa cho phần thông tin phương tiện */
 }
 
-/*Notify box*/
+
+
+/* css cho notification */
 .notification-container {
   position: fixed;
-  top: 10px;
-  left: 10px;
+  top: 20px;
+  left: 50px;
 }
 
 .notification {
-  position: absolute;
-  background-color: #ffffff;
-  border: 1px solid #cccccc;
-  padding: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  background-color: #FAFFFD; /* Màu nền */
+  border: 2px solid #61776E; /* Đường viền */
+  color: #000000; /* Màu chữ */
+  padding: 15px 25px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
   z-index: 9999;
   animation: slideIn 0.5s ease forwards;
-  width: 280px;
-  height: 50px;
+  max-width: 600px;
+  border-radius: 25px; 
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center; 
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; 
   @keyframes slideIn {
     0% {
       opacity: 0;
@@ -504,6 +510,17 @@ body {
   }
 }
 
-.notification p {
-  margin: 0; /* Remove default margin for <p> */
+.notification:hover {
+  transform: scale(1.05); /* Phóng to nhẹ khi di chuột vào */
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6); /* Đổ bóng lớn hơn khi di chuột vào */
+}
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
