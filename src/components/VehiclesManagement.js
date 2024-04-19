@@ -3,27 +3,30 @@ import Button from '@mui/material/Button';
 import { collection, getDocs } from "firebase/firestore";
 import { firebase } from '../firebase';
 
-function VehiclesManagement({ VehicleIdPass }) {
+function VehiclesManagement({ VehicleIdPass, fetchVehicles, setFetchVehicles }) {
   const [vehicles, setData] = useState([]);
   const [selectedVehicle, setSelectedVehicle] = useState(null);
   const [showAllVehicles, setShowAllVehicles] = useState(false);
 
   //GET DATA
   useEffect(() => {
-    const fetchData = async () => {
-        try {
-          const querySnapshot = await getDocs(collection(firebase, 'vehicles'));
-          const todoData = querySnapshot.docs.map((doc) => ({
-              id: doc.id,
-              ...doc.data(),
-          }));
-          setData(todoData);
-        } catch (error) {
-          console.error('Error fetching data:', error);
-        }
-    };
+    if (fetchVehicles) {
+      const fetchData = async () => {
+          try {
+            const querySnapshot = await getDocs(collection(firebase, 'vehicles'));
+            const todoData = querySnapshot.docs.map((doc) => ({
+                id: doc.id,
+                ...doc.data(),
+            }));
+            setData(todoData);
+          } catch (error) {
+            console.error('Error fetching data:', error);
+          }
+      };
       fetchData();
-    }, []);
+      setFetchVehicles(false);
+    }
+  }, [fetchVehicles, setFetchVehicles]);
 
   //FUNCTION    
   const handleShowAllVehicles = () => {

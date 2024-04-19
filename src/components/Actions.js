@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Button from '@mui/material/Button';
 import { collection, getDoc, addDoc, doc, updateDoc, deleteDoc, getDocs } from "firebase/firestore"; 
 import { firebase } from '../firebase'
 
-function Actions({ Vehicleid, Planid }) {
+function Actions({ Vehicleid, Planid, setPlaneId, setFetchVehicles, setFetchDrivers, setFetchPlans }) {
   const [showAddTrip, setShowAddTrip] = useState(false);
   const [showEditTrip, setshowEditTrip] = useState(false);
   const [confirmClicked, setConfirmClicked] = useState(false);
@@ -83,6 +83,7 @@ function Actions({ Vehicleid, Planid }) {
         vehicle: '',
         vehicleId: ''
       });
+      setFetchPlans(true)
       setVehicle({});
       setConfirmClicked(false);
     } catch (error) {
@@ -103,17 +104,20 @@ function Actions({ Vehicleid, Planid }) {
     return hours;
   };
 
-  const ReturnVehicleValue = () => {
-    if (Vehicleid === null || vehicle === null) return'';
-    getDoc(doc(firebase, "vehicles", Vehicleid))
-      .then((snapshot) => {
-        setVehicle(snapshot.data());
-    })
-    .catch((error) => {
-      console.error(error);
-    });
-    return vehicle.name;
-  };
+  useEffect(() => {
+    if (Vehicleid === null || vehicle === null || !showAddTrip) return;
+    const ReturnVehicleValue = () => {
+      getDoc(doc(firebase, "vehicles", Vehicleid))
+        .then((snapshot) => {
+          setVehicle(snapshot.data());
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+      return vehicle.name;
+    };
+    ReturnVehicleValue();
+  }, [Vehicleid, showAddTrip, showEditTrip]);
   
   //EDIT PLAN BUTTON
   const toggleEditTrip = () => {
@@ -123,6 +127,7 @@ function Actions({ Vehicleid, Planid }) {
       return;
     }
     setshowEditTrip(!showEditTrip);
+    if (showEditTrip) return;
     getDoc(doc(firebase, "plans", Planid))
       .then((snapshot) => {
         setTrip(snapshot.data());
@@ -154,11 +159,13 @@ function Actions({ Vehicleid, Planid }) {
       trip.vehicle = vehicle.name;
       trip.vehicleId = Vehicleid;
     }
+
     //ADD TO DATA BASE
     try {
       const docRef = doc(firebase, 'plans', Planid);
       await updateDoc(docRef, trip);
       showPopup('Plan updated successfully!');
+      setFetchPlans(true);
       setVehicle({});
       setConfirmClicked(false);
       setTrip({});
@@ -169,21 +176,23 @@ function Actions({ Vehicleid, Planid }) {
   };
 
   //MAINTENANCE BUTTON
-  const MaintenanceVehicle = () => {
-    if (Vehicleid === null) return text;
-    getDoc(doc(firebase, "vehicles", Vehicleid))
-      .then((snapshot) => {
-        setVehicle(snapshot.data());
-        if (snapshot.data().status === 'Maintenance') {
-          setText("Done maintenance?");
-        }else if (snapshot.data().status === 'Inactive') {
-          setText('Maintenance vehicle?');
-        }
-    }).catch((error) => {
-      console.error(error);
-    });
-    return text;
-  };
+  useEffect(() => {
+    if (Vehicleid === null) return;
+    const MaintenanceVehicle = () => {
+      getDoc(doc(firebase, "vehicles", Vehicleid))
+        .then((snapshot) => {
+          setVehicle(snapshot.data());
+          if (snapshot.data().status === 'Maintenance') {
+            setText("Done maintenance?");
+          }else if (snapshot.data().status === 'Inactive') {
+            setText('Maintenance vehicle?');
+          }
+      }).catch((error) => {
+        console.error(error);
+      });
+    };
+    MaintenanceVehicle();
+  }, [Vehicleid]);
 
   const configVehicleStatus = () => {
     if (Vehicleid === null) return;
@@ -199,6 +208,7 @@ function Actions({ Vehicleid, Planid }) {
     updateDoc(docRef, vehicle)
       .then(() => {
         showPopup('Updated vehicle\'s status successfully!');
+        setFetchVehicles(true);
         setVehicle({});
       })
       .catch((error) => {
@@ -214,13 +224,15 @@ function Actions({ Vehicleid, Planid }) {
     const tripSnapshot = await getDoc(doc(firebase, "plans", Planid));
     const tripData = tripSnapshot.data();
     if (tripData.status === 'In progress') {
-      showPopup('Can\'t delete because plan is in progress');
+      showPopup("Can't delete because plan is in progress");
       return;
     }
     const docRef = doc(firebase, 'plans', Planid);
     deleteDoc(docRef)
       .then(() => {
         showPopup('Deleted plan successfully!');
+        setFetchPlans(true);
+        setPlaneId(null);
       })
       .catch((error) => {
         console.error('Error deleting data:', error);
@@ -245,7 +257,7 @@ function Actions({ Vehicleid, Planid }) {
     
     if (!tripData) return;
     if (hasNullValue(tripData)) {
-      showPopup("Don\'t have enough information!");
+      showPopup("Don't have enough information!");
       return;
     }
     const vehicleSnapshot = await getDoc(doc(firebase, "vehicles", tripData.vehicleId));
@@ -277,6 +289,9 @@ function Actions({ Vehicleid, Planid }) {
     await updateDoc(doc(firebase, 'drivers', tripData.driverId), driverData);
     await updateDoc(doc(firebase, 'plans', Planid), tripData);
     showPopup('Trip started!');
+    setFetchDrivers(true);
+    setFetchVehicles(true);
+    setFetchPlans(true);
 
     setTrip({});
     setVehicle({});
@@ -303,7 +318,6 @@ function Actions({ Vehicleid, Planid }) {
       return;
     }
     
-
     vehicleData.status = "Inactive";
     driverData.status = "Ready";
 
@@ -311,6 +325,9 @@ function Actions({ Vehicleid, Planid }) {
     await updateDoc(doc(firebase, 'drivers', tripData.driverId), driverData);
     await updateDoc(doc(firebase, 'plans', Planid), tripData);
     showPopup('Trip end!');
+    setFetchDrivers(true);
+    setFetchVehicles(true);
+    setFetchPlans(true);
 
     setTrip({});
     setVehicle({});
@@ -422,13 +439,14 @@ function Actions({ Vehicleid, Planid }) {
     try {
       await updateDoc(doc(firebase, 'plans', Planid), tripData);
       showPopup('Choose driver successfully!');
+      setFetchPlans(true);
     } catch (error) {
       console.error('Error updating trip data:', error);
     }
 
     setTrip({});
     setListDriver([]);
-  ;}
+  }
   
 
   
@@ -443,7 +461,7 @@ function Actions({ Vehicleid, Planid }) {
         <Button variant="contained" style={{ flex: '0 0 100%', marginBottom: '10px', backgroundColor: '#6D3E18', color: 'white' }} onClick={() => chooseDirver()}>Choose driver</Button>
         <Button variant="contained" style={{ flex: '0 0 100%', marginBottom: '10px', backgroundColor: '#1E7381', color: 'white' }} onClick={() => startTrip()}>Start trip</Button>
         <Button variant="contained" style={{ flex: '0 0 100%', marginBottom: '10px', backgroundColor: '#533C3C', color: 'white' }} onClick={() => endTrip()}>End trip</Button>
-        <Button variant="contained" style={{ flex: '0 0 100%', marginBottom: '10px', backgroundColor: '#505F73', color: 'white' }} onClick={() => configVehicleStatus()}>{MaintenanceVehicle()}</Button>
+        <Button variant="contained" style={{ flex: '0 0 100%', marginBottom: '10px', backgroundColor: '#505F73', color: 'white' }} onClick={() => configVehicleStatus()}>{text}</Button>
       </div>
 
       
@@ -487,7 +505,7 @@ function Actions({ Vehicleid, Planid }) {
           <input
             type="text"
             name="vehicle"
-            value={ReturnVehicleValue()}
+            value={Vehicleid === null ? '' : vehicle.name}
             placeholder="Select vehicle in vehicle list"
             className={confirmClicked  && Vehicleid === null ? 'empty-input-field' : 'input-field'}
           />
@@ -536,7 +554,7 @@ function Actions({ Vehicleid, Planid }) {
           <input
             type="text"
             name="vehicle"
-            value={Vehicleid === null ? trip.vehicle : ReturnVehicleValue()}
+            value={Vehicleid === null ? trip.vehicle : vehicle.name}
             placeholder="Vehicle"
             className={'input-field'}
           />

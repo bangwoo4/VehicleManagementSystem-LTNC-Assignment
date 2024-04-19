@@ -4,7 +4,7 @@ import { collection, getDocs } from "firebase/firestore";
 import { firebase } from '../firebase'
 import { PieChart } from "react-minimal-pie-chart";
 
-function PlansManagement({ PlanIdPass }) {
+function PlansManagement({ PlanIdPass, fetchPlans, setFetchPlans }) {
   const [selectedTrip, setSelectedTrip] = useState(null);
   const [visibleTrips, setVisibleTrips] = useState(5);
   const [showAllTrips, setShowAllTrips] = useState(false);
@@ -13,7 +13,8 @@ function PlansManagement({ PlanIdPass }) {
 
   //GET DATA
   useEffect(() => {
-    const fetchData = async () => {
+    if (fetchPlans) {
+      const fetchData = async () => {
         try {
           const querySnapshot = await getDocs(collection(firebase, 'plans'));
           const todoData = querySnapshot.docs.map((doc) => ({
@@ -24,9 +25,11 @@ function PlansManagement({ PlanIdPass }) {
         } catch (error) {
           console.error('Error fetching data:', error);
         }
-    };
-    fetchData();
-    }, []);
+      };
+      fetchData();
+      setFetchPlans(false);
+    }
+  }, [fetchPlans, setFetchPlans]);
 
   //FUNCTION
   const handleShowMore = () => {
