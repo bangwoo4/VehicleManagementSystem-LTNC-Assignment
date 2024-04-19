@@ -34,7 +34,7 @@ function VehiclesManagement({ VehicleIdPass, fetchVehicles, setFetchVehicles }) 
   };
 
   const showAllBtnStyle = {
-    backgroundColor: showAllVehicles ? '#8ED7B2' : '#BE966F',
+    backgroundColor: showAllVehicles ? '#BE966F': '#8ED7B2',
     color: showAllVehicles ? 'black' : 'black',
     border: '1px solid #ccc',
     borderRadius: '4px',
@@ -69,9 +69,9 @@ function VehiclesManagement({ VehicleIdPass, fetchVehicles, setFetchVehicles }) 
               vehicle.status === 'Working'
                 ? { backgroundColor: 'lightcoral' }
                 : vehicle.status === 'Maintenance'
-                ? { backgroundColor: '#737373' }
+                ? { backgroundColor: '#B8B8B8' }
                 : vehicle.status === 'Inactive'
-                ? { backgroundColor: 'lightgreen' }
+                ? { backgroundColor: '#70E2FF' }
                 : {}
             }
             onClick={() => toggleShowInfo(vehicle.id)}

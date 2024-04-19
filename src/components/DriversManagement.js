@@ -38,7 +38,7 @@ function DriversManagement({ fetchDrivers, setFetchDrivers }) {
 
 
   const showAllBtnStyle = {
-    backgroundColor: showAllDrivers ? '#8ED7B2' : '#BE966F',
+    backgroundColor: showAllDrivers ? '#BE966F': '#8ED7B2',
     color: showAllDrivers ? 'black' : 'black',
     border: '1px solid #ccc',
     borderRadius: '4px',
@@ -67,7 +67,7 @@ function DriversManagement({ fetchDrivers, setFetchDrivers }) {
             key={driver.id}
             style={
               driver.status === 'Ready'
-                ? { backgroundColor: 'lightgreen' }
+                ? { backgroundColor: '#70E2FF' }
                 : driver.status === 'Not ready'
                 ? { backgroundColor: 'lightcoral' }
                 : {}

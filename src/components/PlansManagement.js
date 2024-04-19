@@ -112,13 +112,13 @@ function PlansManagement({ PlanIdPass, fetchPlans, setFetchPlans }) {
             className={`tripTripUnit ${selectedTrip === trip.id ? 'highlight' : ''}`}
             style={
                 trip.status === 'Completed'
-                ? { backgroundColor: '#0CDB12' }
+                ? { backgroundColor: '#42D691' }
                 : trip.status === 'Scheduled'
-                ? { backgroundColor: '#2F92F5' }
+                ? { backgroundColor: '#42AFD6' }
                 : trip.status === 'Pending'
                 ? { backgroundColor: 'grey' }
                 : trip.status === 'In progress'
-                ? { backgroundColor: '#F8B944' }
+                ? { backgroundColor: '#D6C742' }
                 : { backgroundColor: 'white'}
             }
             
@@ -148,43 +148,87 @@ function PlansManagement({ PlanIdPass, fetchPlans, setFetchPlans }) {
         <Button variant="contained" style={{ backgroundColor: '#BE0E34', color: 'white' }} onClick={handleCollapse}>Collapse</Button>
       )}
 
-        <div className="graph">
-          <PieChart
-            data={[
-              { title: 'Completed', value: completed, color: '#0CDB12' },
-              { title: 'Scheduled', value: scheduled, color: '#2F92F5' },
-              { title: 'Pending', value: pending, color: 'grey' },
-              { title: 'In progress', value: inprogress, color: '#F8B944' }
-            ]}
-            radius={30} //bán kính của biểu đồ
-            lineWidth={20} //độ dày của đường viền
-            paddingAngle={8} // Góc khoảng cách giữa các phần tử trong biểu đồ
-            label={({ dataEntry }) => `${Math.round(dataEntry.percentage)}%`} // Hiển thị phần trăm
-            labelStyle={{
-              fontSize: '3px',
-              fontFamily: 'Arial',
-              fill: 'white' // Màu chữ cho nhãn
-            }}
-          />
-          
-          <PieChart
-            data={[
-              { title: '< $50', value: costUnder50, color: '#FF0000' },
-              { title: '$50 - $500', value: costUnder500, color: '#FFA500' },
-              { title: '$500 - $1000', value: costUnder1000, color: '#FFFF00' },
-              { title: '> $1000', value: costLarger1000, color: '#00FF00' }
-            ]}
-            radius={30}
-            lineWidth={20}
-            paddingAngle={8}
-            label={({ dataEntry }) => `${Math.round(dataEntry.percentage)}%`}
-            labelStyle={{
-              fontSize: '3px',
-              fontFamily: 'Arial',
-              fill: 'white'
-            }}
-          />
+<div className="graph">
+  <div style={{ marginBottom: '2rem' }}>
+    <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Trip Status</h2>
+    <PieChart
+      data={[
+        { title: 'Completed', value: completed, color: '#42D691' },
+        { title: 'Scheduled', value: scheduled, color: '#42AFD6' },
+        { title: 'Pending', value: pending, color: 'grey' },
+        { title: 'In progress', value: inprogress, color: '#D6C742' }
+      ]}
+      radius={40}
+      lineWidth={20}
+      paddingAngle={8}
+      label={({ dataEntry }) => `${Math.round(dataEntry.percentage)}%`}
+      labelStyle={{
+        fontSize: '5px',
+        fontFamily: 'Arial',
+        fill: 'white'
+      }}
+    />
+    <div style={{ display: 'flex', flexDirection: 'column' }}>
+      <div style={{ display: 'flex', alignItems: 'center', color: 'white', fontStyle: 'italic', fontSize: 'small'    }}>
+        <div style={{ width: '10px', height: '10px', backgroundColor: '#42D691', marginRight: '5px' }}></div>
+        <span>Completed</span>
       </div>
+      <div style={{ display: 'flex', alignItems: 'center', color: 'white', fontStyle: 'italic', fontSize: 'small'      }}>
+        <div style={{ width: '10px', height: '10px', backgroundColor: '#42AFD6', marginRight: '5px' }}></div>
+        <span>Scheduled</span>
+      </div>
+      <div style={{ display: 'flex', alignItems: 'center', color: 'white', fontStyle: 'italic', fontSize: 'small'      }}>
+        <div style={{ width: '10px', height: '10px', backgroundColor: 'grey', marginRight: '5px' }}></div>
+        <span>Pending</span>
+      </div>
+      <div style={{ display: 'flex', alignItems: 'center', color: 'white', fontStyle: 'italic', fontSize: 'small'      }}>
+        <div style={{ width: '10px', height: '10px', backgroundColor: '#D6C742', marginRight: '5px' }}></div>
+        <span>In progress</span>
+      </div>
+    </div>
+  </div>
+  <div>
+    <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Trip Cost</h2>
+    <PieChart
+      data={[
+        { title: '< $50', value: costUnder50, color: '#C2519E' },
+        { title: '$50 - $500', value: costUnder500, color: '#9A8FDB' },
+        { title: '$500 - $1000', value: costUnder1000, color: '#F1F6B7' },
+        { title: '> $1000', value: costLarger1000, color: '#C23E42' }
+      ]}
+      radius={40}
+      lineWidth={20}
+      paddingAngle={8}
+      label={({ dataEntry }) => `${Math.round(dataEntry.percentage)}%`}
+      labelStyle={{
+        fontSize: '5px',
+        fontFamily: 'Arial',
+        fill: 'white'
+      }}
+    />
+    <div style={{ display: 'flex', flexDirection: 'column' }}>
+      <div style={{ display: 'flex', alignItems: 'center', color: 'white', fontStyle: 'italic', fontSize: 'small'   }}>
+        <div style={{ width: '10px', height: '10px', backgroundColor: '#C2519E', marginRight: '5px' }}></div>
+        <span>&lt; $50</span>
+      </div>
+      <div style={{ display: 'flex', alignItems: 'center', color: 'white', fontStyle: 'italic', fontSize: 'small'      }}>
+        <div style={{ width: '10px', height: '10px', backgroundColor: '#9A8FDB', marginRight: '5px' }}></div>
+        <span>$50 - $500</span>
+      </div>
+      <div style={{ display: 'flex', alignItems: 'center', color: 'white', fontStyle: 'italic', fontSize: 'small'      }}>
+        <div style={{ width: '10px', height: '10px', backgroundColor: '#F1F6B7', marginRight: '5px' }}></div>
+        <span>$500 - $1000</span>
+      </div>
+      <div style={{ display: 'flex', alignItems: 'center', color: 'white', fontStyle: 'italic', fontSize: 'small'      }}>
+        <div style={{ width: '10px', height: '10px', backgroundColor: '#C23E42', marginRight: '5px' }}></div>
+        <span>&gt; $1000</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+        
 
     </div>
   );

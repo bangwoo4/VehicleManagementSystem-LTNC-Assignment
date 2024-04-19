@@ -391,6 +391,7 @@ body {
   max-width: 99%;
 }
 .tripTripUnit{
+  color: black;
   max-width: 100%;
 }
 .piechart{
@@ -523,4 +524,56 @@ body {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+
+
+
+
+
+
+
+
+/*graph*/
+.graph {
+  display: flex;
+  justify-content: space-between;
+  margin: 1rem 0;
+}
+
+.graph > div {
+  flex: 1;
+  transform: scale(0.9);
+  padding: 1rem;
+  background-color: #2D2950;
+  border-radius: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease; /* Thêm hiệu ứng transition */
+  
+}
+
+.graph > div:hover {
+  transform: scale(1.02); /* Hiệu ứng phóng to khi hover */
+  background-color: #181750;
+  
+}
+
+.graph h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #ffffff;
+}
+
+.graph .pie-chart {
+  text-align: center;
+}
+
+.graph .pie-chart .label {
+  font-size: 0.8rem;
+  color: #666;
+  transition: color 0.3s ease; /* Thêm hiệu ứng transition */
+}
+
+.graph .pie-chart:hover .label {
+  color: #ff0000; /* Hiệu ứng thay đổi màu chữ khi hover */
 }
