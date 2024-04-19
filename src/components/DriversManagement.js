@@ -12,18 +12,18 @@ function DriversManagement() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const querySnapshot = await getDocs(collection(firebase, 'drivers'));
-                const todoData = querySnapshot.docs.map((doc) => ({
-                    id: doc.id,
-                    ...doc.data(),
-                }));
-                setData(todoData);
+              const querySnapshot = await getDocs(collection(firebase, 'drivers'));
+              const todoData = querySnapshot.docs.map((doc) => ({
+                  id: doc.id,
+                  ...doc.data(),
+              }));
+              setData(todoData);
             } catch (error) {
-                console.error('Error fetching data:', error);
+              console.error('Error fetching data:', error);
             }
         };
         fetchData();
-        });
+        }, []);
     
         const toggleShowInfo = (driverId) => {
             setSelectedDriverId(driverId === selectedDriverId ? null : driverId);

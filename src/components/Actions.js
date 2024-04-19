@@ -228,7 +228,7 @@ function Actions({ Vehicleid, Planid }) {
   };
 
   //START -- END TRIP BUTTON
-  const hasNullValue = () => {
+  const hasNullValue = (trip) => {
     for (let key in trip) {
       if (trip.hasOwnProperty(key) && trip[key] === "") {
         return true; // Found a null value
@@ -243,8 +243,11 @@ function Actions({ Vehicleid, Planid }) {
     const tripSnapshot = await getDoc(doc(firebase, "plans", Planid));
     const tripData = tripSnapshot.data();
     
-    if (!tripData || hasNullValue(tripData)) return;
-    
+    if (!tripData) return;
+    if (hasNullValue(tripData)) {
+      showPopup("Don\'t have enough information!");
+      return;
+    }
     const vehicleSnapshot = await getDoc(doc(firebase, "vehicles", tripData.vehicleId));
     const vehicleData = vehicleSnapshot.data();
     
@@ -252,10 +255,19 @@ function Actions({ Vehicleid, Planid }) {
     const driverData = driverSnapshot.data();
     
     if (tripData.status === 'Scheduled' && driverData.status === "Ready" && vehicleData.status === "Inactive") {
-        tripData.status = 'In progress';
+      tripData.status = 'In progress';
+    } else if (driverData.status === "Not ready" && vehicleData.status === "Working") { 
+      showPopup("Driver and vehicle are in progress!");
+      return;
+    } else if (driverData.status === "Not ready") { 
+      showPopup("Driver is in progress!");
+      return;
+    } else if (vehicleData.status === "Working") { 
+      showPopup("vehicle is in progress!");
+      return;
     } else {
-        showPopup("Don't have enough information or Driver/Vehicle in process");
-        return;
+      showPopup("Error!");
+      return;
     }
 
     vehicleData.status = "Working";
@@ -285,11 +297,12 @@ function Actions({ Vehicleid, Planid }) {
     const driverData = driverSnapshot.data();
 
     if (tripData.status === 'In progress') {
-        tripData.status = 'Completed';
+      tripData.status = 'Completed';
     } else {
-        setTrip({});
-        return;
+      setTrip({});
+      return;
     }
+    
 
     vehicleData.status = "Inactive";
     driverData.status = "Ready";
@@ -474,7 +487,7 @@ function Actions({ Vehicleid, Planid }) {
           <input
             type="text"
             name="vehicle"
-            value={Vehicleid === null ? '' : ReturnVehicleValue()}
+            value={ReturnVehicleValue()}
             placeholder="Select vehicle in vehicle list"
             className={confirmClicked  && Vehicleid === null ? 'empty-input-field' : 'input-field'}
           />

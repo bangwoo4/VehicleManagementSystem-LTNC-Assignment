@@ -7,24 +7,23 @@ function VehiclesManagement({ VehicleIdPass }) {
   const [vehicles, setData] = useState([]);
   const [selectedVehicle, setSelectedVehicle] = useState(null);
   const [showAllVehicles, setShowAllVehicles] = useState(false);
-  const [dataTrigger, setDataTrigger] = useState(0);
 
   //GET DATA
   useEffect(() => {
     const fetchData = async () => {
         try {
-            const querySnapshot = await getDocs(collection(firebase, 'vehicles'));
-            const todoData = querySnapshot.docs.map((doc) => ({
-                id: doc.id,
-                ...doc.data(),
-            }));
-            setData(todoData);
+          const querySnapshot = await getDocs(collection(firebase, 'vehicles'));
+          const todoData = querySnapshot.docs.map((doc) => ({
+              id: doc.id,
+              ...doc.data(),
+          }));
+          setData(todoData);
         } catch (error) {
-            console.error('Error fetching data:', error);
+          console.error('Error fetching data:', error);
         }
     };
       fetchData();
-    });
+    }, []);
 
   //FUNCTION    
   const handleShowAllVehicles = () => {
