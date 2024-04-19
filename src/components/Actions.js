@@ -3,7 +3,7 @@ import Button from '@mui/material/Button';
 import { collection, getDoc, addDoc, doc, updateDoc, deleteDoc, getDocs } from "firebase/firestore"; 
 import { firebase } from '../firebase'
 
-function Actions({ Vehicleid, Planid, setPlaneId, setFetchVehicles, setFetchDrivers, setFetchPlans }) {
+function Actions({ Vehicleid, Planid, setPlaneId, tripLength, setFetchVehicles, setFetchDrivers, setFetchPlans }) {
   const [showAddTrip, setShowAddTrip] = useState(false);
   const [showEditTrip, setshowEditTrip] = useState(false);
   const [confirmClicked, setConfirmClicked] = useState(false);
@@ -12,7 +12,6 @@ function Actions({ Vehicleid, Planid, setPlaneId, setFetchVehicles, setFetchDriv
   const [message, setMessage] = useState('');
   const [vehicle, setVehicle] = useState({});
   const [trip, setTrip] = useState({});
-  const [listDriver, setListDriver] = useState([]);
   const [newTrip, setNewTrip] = useState({
     route: '',
     estimatedTime: '',
@@ -24,7 +23,7 @@ function Actions({ Vehicleid, Planid, setPlaneId, setFetchVehicles, setFetchDriv
     vehicle: '',
     vehicleId: '',
   });
-  
+
   const showPopup = (notify) => {
     setMessage(notify);
     setShowNotification(true);
@@ -66,6 +65,7 @@ function Actions({ Vehicleid, Planid, setPlaneId, setFetchVehicles, setFetchDriv
       }
     }
 
+    newTrip.STT = tripLength + 1;
     newTrip.vehicle = vehicle.name;
     newTrip.vehicleId = Vehicleid;
     //ADD TO DATA BASE
@@ -114,7 +114,6 @@ function Actions({ Vehicleid, Planid, setPlaneId, setFetchVehicles, setFetchDriv
         .catch((error) => {
           console.error(error);
         });
-      return vehicle.name;
     };
     ReturnVehicleValue();
   }, [Vehicleid, showAddTrip, showEditTrip]);
@@ -160,7 +159,7 @@ function Actions({ Vehicleid, Planid, setPlaneId, setFetchVehicles, setFetchDriv
       trip.vehicleId = Vehicleid;
     }
 
-    //ADD TO DATA BASE
+    //UPDATED TO DATA BASE
     try {
       const docRef = doc(firebase, 'plans', Planid);
       await updateDoc(docRef, trip);
@@ -348,22 +347,20 @@ function Actions({ Vehicleid, Planid, setPlaneId, setFetchVehicles, setFetchDriv
         ...doc.data(),
     }));
     
-    const temp = [];
+    const listDriver = [];
     if (todoData && todoData.length > 0) {
       for (let i = 0; i < todoData.length; ++i) {
         let data = todoData[i];
         if (data.status === 'Ready') {
-          temp.push(data);
+          listDriver.push(data);
         }
       }
     }
-    temp.sort((a, b) => {
+    listDriver.sort((a, b) => {
       if (a.licenseType < b.licenseType) return -1; // 'A' trước 'B' và 'C'
       if (a.licenseType > b.licenseType) return 1; // 'B' và 'C' sau 'A'
       return 0;
     });
-
-    setListDriver(temp);
     
     let flag = false, index = 0;
     if ((tripData.vehicle === 'Motorcycle' ||
@@ -445,7 +442,6 @@ function Actions({ Vehicleid, Planid, setPlaneId, setFetchVehicles, setFetchDriv
     }
 
     setTrip({});
-    setListDriver([]);
   }
   
 
