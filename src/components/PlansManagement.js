@@ -3,6 +3,7 @@ import Button from '@mui/material/Button';
 import { collection, getDocs } from "firebase/firestore"; 
 import { firebase } from '../firebase'
 import { PieChart } from "react-minimal-pie-chart";
+import { CSSTransition } from 'react-transition-group';
 
 function PlansManagement({ PlanIdPass, setTripLength, fetchPlans, setFetchPlans }) {
   const [selectedTrip, setSelectedTrip] = useState(null);
@@ -146,15 +147,46 @@ function PlansManagement({ PlanIdPass, setTripLength, fetchPlans, setFetchPlans 
         </tbody>
         <div className="divider"></div>
       </table>
+
+      
+
+
       {!showAllTrips && visibleTrips < trips.length && (
-        <Button variant="contained" style={{ backgroundColor: '#54A329', color: 'white' }} onClick={handleShowMore}>Show More</Button>
-      )}
-      {!showAllTrips && (
-        <Button variant="contained" style={{ backgroundColor: '#225E8F', color: 'white' }} onClick={handleShowAll}>Show All</Button>
-      )}
-      {showAllTrips && (
-        <Button variant="contained" style={{ backgroundColor: '#BE0E34', color: 'white' }} onClick={handleCollapse}>Collapse</Button>
-      )}
+  <Button
+    className="animated-button fade-in-button"
+    variant="contained"
+    style={{ background: 'linear-gradient(45deg, #3C7322, #1D3A4E)', color: 'white' }}
+    onClick={handleShowMore}
+  >
+    Show More
+  </Button>
+)}
+
+{!showAllTrips && (
+  <Button
+    className="animated-button fade-in-button"
+    variant="contained"
+    style={{ background: 'linear-gradient(45deg, #0F3A57, #1D3A4E)', color: 'white' }}
+    onClick={handleShowAll}
+  >
+    Show All
+  </Button>
+)}
+
+{showAllTrips && (
+  <Button
+    className="animated-button fade-in-button"
+    variant="contained"
+    style={{ background: 'linear-gradient(45deg, #51111D, #1D3A4E)', color: 'white' }}
+    onClick={handleCollapse}
+  >
+    Collapse
+  </Button>
+)}
+
+
+
+
 
 <div className="graph">
   <div style={{ marginBottom: '2rem' }}>

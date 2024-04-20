@@ -615,3 +615,100 @@ body {
 .graph .pie-chart:hover .label {
   color: #ff0000; /* Hiệu ứng thay đổi màu chữ khi hover */
 }
+
+
+/*css cho button*/
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.fade-in-button {
+  animation: fade-in 0.5s ease;
+}
+
+
+.animated-button {
+  background-color: #54A329;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), background-color 0.3s, color 0.3s;
+}
+
+.animated-button:hover {
+  background-color: #225E8F;
+  color: white;
+  transform: scale(1.05);
+}
+
+.animated-button:active {
+  background-color: #BE0E34;
+}
+.buttons button {
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.buttons button:hover {
+  background-color: #E0E0E0;
+  color: #333333;
+  transform: translateY(-2px);
+}
+
+.buttons button:active {
+  background-color: #BDBDBD;
+  color: #000000;
+  transform: translateY(2px);
+}
+
+.buttons button:first-child {
+  background: linear-gradient(to right, #01834D, #04B96F);
+}
+
+.buttons button:nth-child(2) {
+  background: linear-gradient(to right, #0C4183, #2D6EE2);
+}
+
+.buttons button:nth-child(3) {
+  background: linear-gradient(to right, #721E1D, #F44336);
+}
+
+.buttons button:nth-child(4) {
+  background: linear-gradient(to right, #6D3E18, #FF9800);
+}
+
+.buttons button:nth-child(5) {
+  background: linear-gradient(to right, #1E7381, #00BCD4);
+}
+
+.buttons button:nth-child(6) {
+  background: linear-gradient(to right, #533C3C, #9C7171);
+}
+
+.buttons button:nth-child(7) {
+  background: linear-gradient(to right, #505F73, #8DA9C4);
+}
+.animated-button {
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.animated-button:hover {
+  background-color: #E0E0E0;
+  color: #333333;
+  transform: translateY(-2px);
+}
+
+.animated-button:active {
+  background-color: #BDBDBD;
+  color: #000000;
+  transform: translateY(2px);
+}
