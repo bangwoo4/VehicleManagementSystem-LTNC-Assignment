@@ -134,6 +134,9 @@
   border-radius: 5px;
   padding: 10px;
 }
+.VehicleUnit:hover {
+  transform: scale(1.05);
+}
 
 .VehicleName{
   font-size: 15px;
@@ -160,6 +163,12 @@
   border-radius: 5px;
   padding: 10px;
 }
+.DriverUnit:hover {
+  transform: scale(1.05);
+}
+
+
+
 .DriverName{
   font-size: 15px;
   font-weight: bold;
@@ -196,11 +205,13 @@
   padding: 10px;
 }
 
+
 .TripTable{
   border-radius: 2px;
   border: #000;
   border-radius: 2px solid;
 }
+
 
 .TripValueName{
   background-color: #342B52;
@@ -390,10 +401,20 @@ body {
 .wrapper{
   max-width: 99%;
 }
+
 .tripTripUnit{
   color: black;
   max-width: 100%;
+  border-radius: 20px;
 }
+.tripTripUnit {
+  transition: transform 0.3s ease;
+  }
+  
+  .tripTripUnit:hover {
+  transform: scale(1.02);
+  }
+
 .piechart{
   max-width: 100%;
   background-color: #d9d9d9;
@@ -401,24 +422,41 @@ body {
 }
 
 .highlight {
-  background-color: #ffd700; 
+  background-color: #ff6600;
+  color: #ffffff;
+  font-weight: bold;
   font-style: italic;
-  color: #ffffff; 
-  font-weight: bold; 
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); 
-  transition: background-color 0.3s ease; 
-  }
-
-
-.empty-input-field {
-  border: 1px solid red;
-  background-color: #ffeeee; /* Light red background color */
-  color: red; /* Red text color */
-  margin-bottom: 5px;
-  padding: 5px;
-  border: 1px solid #ccc;
-  border-radius: 3px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  transition: background-color 0.3s ease;
+  animation: highlight-animation 2s ease-in-out infinite;
 }
+
+@keyframes highlight-animation {
+  0% {
+  background-color: #272838;
+  }
+  20% {
+  background-color: #FF6B6B;
+  }
+  40% {
+  background-color: #FF4646;
+  }
+  60% {
+  background-color: #FF1A1A;
+  }
+  80% {
+  background-color: #FF4646;
+  }
+  100% {
+  background-color: #272838;
+  }
+}
+  
+  
+
+
+
+
 
 .divider {
   border-bottom: 5px solid #ffffff; /* Đường gạch */
@@ -553,7 +591,7 @@ body {
 }
 
 .graph > div:hover {
-  transform: scale(1.02); /* Hiệu ứng phóng to khi hover */
+  transform: scale(1.01); /* Hiệu ứng phóng to khi hover */
   background-color: #181750;
   
 }
