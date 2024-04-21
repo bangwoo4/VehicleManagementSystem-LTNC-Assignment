@@ -34,15 +34,20 @@ function VehiclesManagement({ VehicleIdPass, fetchVehicles, setFetchVehicles }) 
   };
 
   const showAllBtnStyle = {
-    backgroundColor: showAllVehicles ? '#BE966F': '#8ED7B2',
-    color: showAllVehicles ? 'black' : 'black',
-    border: '1px solid #ccc',
-    borderRadius: '4px',
-    maxWidth: '90%',
-    fontSize: '1px',
+    background: showAllVehicles 
+      ? 'linear-gradient(to left, #FFFF00, #FFFFFF)' 
+      : 'linear-gradient(to left, #FFFFFF, #FFFF00)',
+    color: 'black',
+    fontWeight: 'bold',
+    border: 'none',
+    borderRadius: '20px',
+    maxWidth: '97%',
+    fontSize: '12px',
     cursor: 'pointer',
-    transition: 'background-color 0.3s ease',
-    padding: '5px',
+    transition: 'all 0.3s ease',
+    padding: '5px 10px',
+    boxShadow: '0px 8px 15px rgba(0, 0, 0, 0.1)',
+    whiteSpace: 'nowrap',
   };
 
   const toggleShowInfo = (vehicleId) => {
@@ -65,15 +70,17 @@ function VehiclesManagement({ VehicleIdPass, fetchVehicles, setFetchVehicles }) 
           <button
             className={`VehicleUnit ${selectedVehicle === vehicle.id || showAllVehicles ? 'expanded' : ''}`}
             key={vehicle.id}
+
             style={
               vehicle.status === 'Working'
-                ? { backgroundColor: 'lightcoral' }
+                ? { background: 'linear-gradient(to right, #70E2FF, #0072FF)' }
                 : vehicle.status === 'Maintenance'
-                ? { backgroundColor: '#B8B8B8' }
+                ? { background: 'linear-gradient(to right, grey, darkgrey)' }
                 : vehicle.status === 'Inactive'
-                ? { backgroundColor: '#70E2FF' }
+                ? { background: 'linear-gradient(to right, lightcoral, red)' }
                 : {}
             }
+
             onClick={() => toggleShowInfo(vehicle.id)}
           >
             <strong className="VehicleName">{vehicle.name}</strong>

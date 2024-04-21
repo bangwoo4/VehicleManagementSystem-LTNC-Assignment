@@ -712,3 +712,63 @@ body {
   color: #000000;
   transform: translateY(2px);
 }
+
+
+
+
+/* css thêm cho AddBlock*/
+.AddTripBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #f2f2f2da;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.AddTripBlock:hover {
+  background-color: #b1b1b1;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+}
+
+.AddTripText {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.input-field {
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.empty-input-field {
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #f00;
+}
+
+.add-trip-button {
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: none;
+  background-color: #007bff;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.add-trip-button:hover {
+  background-color: #0056b3;
+}

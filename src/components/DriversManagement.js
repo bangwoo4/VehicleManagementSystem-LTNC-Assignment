@@ -38,15 +38,20 @@ function DriversManagement({ fetchDrivers, setFetchDrivers }) {
 
 
   const showAllBtnStyle = {
-    backgroundColor: showAllDrivers ? '#BE966F': '#8ED7B2',
-    color: showAllDrivers ? 'black' : 'black',
-    border: '1px solid #ccc',
-    borderRadius: '4px',
-    maxWidth: '90%',
-    fontSize: '1px',
+    background: showAllDrivers 
+      ? 'linear-gradient(to left, #FFFF00, #FFFFFF)' 
+      : 'linear-gradient(to left, #FFFFFF, #FFFF00)',
+    color: 'black',
+    fontWeight: 'bold',
+    border: 'none',
+    borderRadius: '20px',
+    maxWidth: '97%',
+    fontSize: '12px',
     cursor: 'pointer',
-    transition: 'background-color 0.3s ease',
-    padding: '5px',
+    transition: 'all 0.3s ease',
+    padding: '5px 10px',
+    boxShadow: '0px 8px 15px rgba(0, 0, 0, 0.1)',
+    whiteSpace: 'nowrap',
   };
         
   return (
@@ -62,18 +67,21 @@ function DriversManagement({ fetchDrivers, setFetchDrivers }) {
           {showAllDrivers ? "Hide all driver's information" : "Show all driver's information"}
         </Button>
         {drivers.map((driver) => (
-          <button
-            className={`DriverUnit ${selectedDriverId === driver.id || showAllDrivers ? 'expanded' : ''}`}
-            key={driver.id}
-            style={
-              driver.status === 'Ready'
-                ? { backgroundColor: '#70E2FF' }
-                : driver.status === 'Not ready'
-                ? { backgroundColor: 'lightcoral' }
-                : {}
-            }
-            onClick={() => toggleShowInfo(driver.id)}
-          >
+          
+          /*Màu cho DriverUnit //status */
+          <button 
+          className={`DriverUnit ${selectedDriverId === driver.id || showAllDrivers ? 'expanded' : ''}`} 
+          key={driver.id} 
+          style={ 
+            driver.status === 'Ready' 
+              ? { background: 'linear-gradient(to right, #70E2FF, #0072FF)' } 
+              : driver.status === 'Not ready' 
+                ? { background: 'linear-gradient(to right, lightcoral, red)' } 
+                : {} 
+          } 
+          onClick={() => toggleShowInfo(driver.id)}
+        >
+
             <strong className="DriverName">{driver.name}</strong>
             <ul className="DriverDetails">
               <li>Age: {driver.age ? driver.age : 'unknown'}</li>
