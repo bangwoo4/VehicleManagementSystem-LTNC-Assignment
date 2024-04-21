@@ -5,7 +5,7 @@ import { firebase } from '../firebase'
 import { PieChart } from "react-minimal-pie-chart";
 import { CSSTransition } from 'react-transition-group';
 
-function PlansManagement({ PlanIdPass, setTripLength, fetchPlans, setFetchPlans }) {
+function PlansManagement({ setPlaneId, setTripLength, fetchPlans, setFetchPlans }) {
   const [selectedTrip, setSelectedTrip] = useState(null);
   const [visibleTrips, setVisibleTrips] = useState(5);
   const [showAllTrips, setShowAllTrips] = useState(false);
@@ -24,7 +24,6 @@ function PlansManagement({ PlanIdPass, setTripLength, fetchPlans, setFetchPlans 
           }));
           todoData.sort((a, b) => a.STT - b.STT);
           setData(todoData);
-          console.log(todoData);
           setTripLength(todoData.length === 0 ? 0 : todoData[todoData.length - 1].STT);
         } catch (error) {
           console.error('Error fetching data:', error);
@@ -58,7 +57,7 @@ function PlansManagement({ PlanIdPass, setTripLength, fetchPlans, setFetchPlans 
   const focusOn = (tripid) => {
     setIsFocus(!isFocus);
     setSelectedTrip(tripid === selectedTrip ? null : tripid);
-    PlanIdPass(selectedTrip !== tripid ? tripid : null)
+    setPlaneId(selectedTrip !== tripid ? tripid : null)
   }
 
   //count the status of the trips

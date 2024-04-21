@@ -14,7 +14,7 @@ const Login = () => {
     setPasswordError('');
 
     if (user === '') {
-      setUserError('Please enter your User');
+      setUserError('Please enter your user');
       return;
     }
 
@@ -40,7 +40,7 @@ const Login = () => {
         <div className="inputContainer">
           <input
             value={user}
-            placeholder="Enter your User here"
+            placeholder="Enter your user here"
             onChange={(ev) => setUser(ev.target.value)}
             className="inputBox"
           />

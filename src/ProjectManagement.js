@@ -11,28 +11,19 @@ function Project() {
   const [fetchDrivers, setFetchDrivers] = useState(true)
   const [fetchVehicles, setFetchVehicles] = useState(true)
   const [fetchPlans, setFetchPlans] = useState(true)
-
-  const IdPassVehicle = (Vehicleid) => {
-    setVehicleId(Vehicleid);
-  }
-
-  const IdPassPlan = (Planid) => {
-    setPlaneId(Planid);
-  }
   
   return (
     <div className="App">
       <h1 className='Pm'>Project management</h1>
-
       <div className="container">
         <div className="left-panel">
-          <VehiclesManagement VehicleIdPass={IdPassVehicle} fetchVehicles={fetchVehicles} setFetchVehicles={setFetchVehicles} />
+          <VehiclesManagement setVehicleId={setVehicleId} fetchVehicles={fetchVehicles} setFetchVehicles={setFetchVehicles} />
         </div>
         <div className="middle-panel">
           <DriversManagement fetchDrivers={fetchDrivers} setFetchDrivers={setFetchDrivers}/>
         </div>
         <div className="right-panel">
-          <PlansManagement PlanIdPass={IdPassPlan} setTripLength={setTripLength} fetchPlans={fetchPlans} setFetchPlans={setFetchPlans} />
+          <PlansManagement setPlaneId={setPlaneId} setTripLength={setTripLength} fetchPlans={fetchPlans} setFetchPlans={setFetchPlans} />
         </div>
         <div className="most-right-panel">
           <Actions Vehicleid={Vehicleid} Planid={Planid} tripLength={tripLength} setPlaneId={setPlaneId} setFetchVehicles={setFetchVehicles} setFetchDrivers={setFetchDrivers} setFetchPlans={setFetchPlans}/>

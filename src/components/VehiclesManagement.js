@@ -3,7 +3,7 @@ import Button from '@mui/material/Button';
 import { collection, getDocs } from "firebase/firestore";
 import { firebase } from '../firebase';
 
-function VehiclesManagement({ VehicleIdPass, fetchVehicles, setFetchVehicles }) {
+function VehiclesManagement({ setVehicleId, fetchVehicles, setFetchVehicles }) {
   const [vehicles, setData] = useState([]);
   const [selectedVehicle, setSelectedVehicle] = useState(null);
   const [showAllVehicles, setShowAllVehicles] = useState(false);
@@ -52,7 +52,7 @@ function VehiclesManagement({ VehicleIdPass, fetchVehicles, setFetchVehicles }) 
 
   const toggleShowInfo = (vehicleId) => {
     setSelectedVehicle(vehicleId === selectedVehicle ? null : vehicleId);
-    VehicleIdPass(selectedVehicle !== vehicleId ? vehicleId : null);
+    setVehicleId(selectedVehicle !== vehicleId ? vehicleId : null);
   };
 
   return (
@@ -73,11 +73,11 @@ function VehiclesManagement({ VehicleIdPass, fetchVehicles, setFetchVehicles }) 
 
             style={
               vehicle.status === 'Working'
-                ? { background: 'linear-gradient(to right, #70E2FF, #0072FF)' }
+                ? { background: 'linear-gradient(to right, lightcoral, red)' }
                 : vehicle.status === 'Maintenance'
                 ? { background: 'linear-gradient(to right, grey, darkgrey)' }
                 : vehicle.status === 'Inactive'
-                ? { background: 'linear-gradient(to right, lightcoral, red)' }
+                ? { background: 'linear-gradient(to right, #70E2FF, #0072FF)' }
                 : {}
             }
 

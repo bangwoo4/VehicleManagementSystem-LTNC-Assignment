@@ -104,20 +104,6 @@ function Actions({ Vehicleid, Planid, setPlaneId, tripLength, setFetchVehicles, 
     return hours;
   };
 
-  useEffect(() => {
-    if (Vehicleid === null || vehicle === null || !showAddTrip) return;
-    const ReturnVehicleValue = () => {
-      getDoc(doc(firebase, "vehicles", Vehicleid))
-        .then((snapshot) => {
-          setVehicle(snapshot.data());
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    };
-    ReturnVehicleValue();
-  }, [Vehicleid, showAddTrip, showEditTrip]);
-  
   //EDIT PLAN BUTTON
   const toggleEditTrip = () => {
     setConfirmClicked(false);
@@ -126,14 +112,23 @@ function Actions({ Vehicleid, Planid, setPlaneId, tripLength, setFetchVehicles, 
       return;
     }
     setshowEditTrip(!showEditTrip);
-    if (showEditTrip) return;
-    getDoc(doc(firebase, "plans", Planid))
-      .then((snapshot) => {
-        setTrip(snapshot.data());
-    }).catch((error) => {
-      console.error(error);
-    });
   };
+
+  useEffect(() => {
+    if (Planid === null || !showEditTrip) {
+      setshowEditTrip(false);
+      return;
+    }
+    const getTrip = () => {
+      getDoc(doc(firebase, "plans", Planid))
+        .then((snapshot) => {
+          setTrip(snapshot.data());
+      }).catch((error) => {
+        console.error(error);
+      });
+    };
+    getTrip();
+  }, [Planid, showEditTrip]);
 
   const handleUpdateInfo = (event) => {
     const { name, value } = event.target;
@@ -145,9 +140,18 @@ function Actions({ Vehicleid, Planid, setPlaneId, tripLength, setFetchVehicles, 
   
   const UpdateInformation = async () => {
     if (Planid === null) return;
+
+    if (trip.status === 'In progress') {
+      showPopup("Trip is in progress, can't edit!");
+      return;
+    }else if (trip.status === 'Completed') {
+      showPopup("Trip have completed, can't edit!");
+      return;
+    }  
+
     setConfirmClicked(true);
     for (const key in trip) {
-      if (key === 'driver' || key === 'driverId') continue;
+      if (key === 'driver' || key === 'driverId' || key === 'STT') continue;
       if (trip.hasOwnProperty(key) && (trip[key] === null || trip[key].trim() === '')) {
         showPopup('Please fill in all required information');
         return;
@@ -239,15 +243,6 @@ function Actions({ Vehicleid, Planid, setPlaneId, tripLength, setFetchVehicles, 
   };
 
   //START -- END TRIP BUTTON
-  const hasNullValue = (trip) => {
-    for (let key in trip) {
-      if (trip.hasOwnProperty(key) && trip[key] === "") {
-        return true; // Found a null value
-      }
-    }
-    return false; // No null values found
-  };
-
   const startTrip = async () => {
     if (Planid === null) return;
     
@@ -255,10 +250,17 @@ function Actions({ Vehicleid, Planid, setPlaneId, tripLength, setFetchVehicles, 
     const tripData = tripSnapshot.data();
     
     if (!tripData) return;
-    if (hasNullValue(tripData)) {
-      showPopup("Don't have enough information!");
+    if (tripData.status === 'Pending') {
+      showPopup("Please choose driver to start!");
+      return;
+    }else if (tripData.status === 'Completed') {
+      showPopup("Trip have completed, can't start!");
+      return;
+    }else if (tripData.status === 'In progress') {
+      showPopup("Trip is in progess, can't start!");
       return;
     }
+
     const vehicleSnapshot = await getDoc(doc(firebase, "vehicles", tripData.vehicleId));
     const vehicleData = vehicleSnapshot.data();
     
@@ -291,9 +293,6 @@ function Actions({ Vehicleid, Planid, setPlaneId, tripLength, setFetchVehicles, 
     setFetchDrivers(true);
     setFetchVehicles(true);
     setFetchPlans(true);
-
-    setTrip({});
-    setVehicle({});
   };
 
   const endTrip = async () => {
@@ -303,19 +302,21 @@ function Actions({ Vehicleid, Planid, setPlaneId, tripLength, setFetchVehicles, 
     const tripData = tripSnapshot.data();
 
     if (!tripData) return;
+    if (tripData.status === 'In progress') {
+      tripData.status = 'Completed';
+    }else if (tripData.status === 'Completed') {
+      showPopup("Trip have completed!");
+      return;
+    }else {
+      showPopup("Trip haven't started yet!");
+      return;
+    }
 
     const vehicleSnapshot = await getDoc(doc(firebase, "vehicles", tripData.vehicleId));
     const vehicleData = vehicleSnapshot.data();
 
     const driverSnapshot = await getDoc(doc(firebase, "drivers", tripData.driverId));
     const driverData = driverSnapshot.data();
-
-    if (tripData.status === 'In progress') {
-      tripData.status = 'Completed';
-    } else {
-      setTrip({});
-      return;
-    }
     
     vehicleData.status = "Inactive";
     driverData.status = "Ready";
@@ -327,9 +328,6 @@ function Actions({ Vehicleid, Planid, setPlaneId, tripLength, setFetchVehicles, 
     setFetchDrivers(true);
     setFetchVehicles(true);
     setFetchPlans(true);
-
-    setTrip({});
-    setVehicle({});
   };
 
   //CHOOSE DRIVER BUTTON
@@ -363,10 +361,11 @@ function Actions({ Vehicleid, Planid, setPlaneId, tripLength, setFetchVehicles, 
     });
     
     let flag = false, index = 0;
-    if ((tripData.vehicle === 'Motorcycle' ||
-        tripData.vehicle === 'Sports Car' ||
-        tripData.vehicle === 'Car' ||
-        tripData.vehicle === 'Electric Car') && listDriver && listDriver.length > 0 ) {
+    const classA = ['Motorcycle', 'Sports Car', 'Car', 'Electric Car'];
+    const classB = ['Minivan', 'SUV', 'Van', 'Compact Car'];
+    const classC = ['Truck', 'Bus', 'Tractor', 'Pickup Truck'];
+    
+    if (classA.includes(tripData.vehicle) && listDriver && listDriver.length > 0 ) {
           for (index; index < listDriver.length; ++index) {
             if (listDriver[index].licenseType === 'A' && listDriver[index].drivingHistory === 'Clean') {
               flag = true;
@@ -388,11 +387,7 @@ function Actions({ Vehicleid, Planid, setPlaneId, tripLength, setFetchVehicles, 
               break;
             }
           }
-    }else 
-    if ((tripData.vehicle === 'Minivan' ||
-        tripData.vehicle === 'SUV' ||
-        tripData.vehicle === 'Van' ||
-        tripData.vehicle === 'Compact Car') && listDriver && listDriver.length > 0 ) {
+    }else if (classB.includes(tripData.vehicle) && listDriver && listDriver.length > 0 ) {
           for (index; index < listDriver.length; ++index) {
             if (listDriver[index].licenseType === 'B' && listDriver[index].drivingHistory === 'Clean') {
               flag = true;
@@ -408,11 +403,7 @@ function Actions({ Vehicleid, Planid, setPlaneId, tripLength, setFetchVehicles, 
               break;
             }
           }
-    }else 
-    if ((tripData.vehicle === 'Truck' ||
-        tripData.vehicle === 'Bus' ||
-        tripData.vehicle === 'Tractor' ||
-        tripData.vehicle === 'Pickup Truck') && listDriver && listDriver.length > 0 ) {
+    }else if (classC.includes(tripData.vehicle) && listDriver && listDriver.length > 0 ) {
           for (index; index < listDriver.length; ++index) {
             if (listDriver[index].licenseType === 'C' && listDriver[index].drivingHistory === 'Clean') {
               flag = true;
@@ -440,9 +431,7 @@ function Actions({ Vehicleid, Planid, setPlaneId, tripLength, setFetchVehicles, 
     } catch (error) {
       console.error('Error updating trip data:', error);
     }
-
-    setTrip({});
-  }
+  };
   
 
   
