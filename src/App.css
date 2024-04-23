@@ -40,6 +40,28 @@
   }
 }
 
+.cti4 {
+  color: white;
+  border: 2px solid white; 
+  border-radius: 10px; 
+  padding: 10px; 
+  margin: 10px;
+  background-color: rgba(55, 53, 53, 0.5);
+  transition: transform 0.3s ease-in-out; 
+  display: inline-block;
+}
+
+.cti4:hover {
+  transform: scale(1.05); 
+}
+
+.CopyRight{
+  color: white;
+  font-size: 15px;
+  text-align: center;
+  font-style: italic;
+}
+
 .container {
   display: flex;
   width: 100%;
@@ -772,3 +794,75 @@ body {
 .add-trip-button:hover {
   background-color: #0056b3;
 }
+
+
+/*search*/
+.searchInput {
+  color: black;
+  display: flex;
+  padding: 8px;
+  border: none;
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+  outline: none;
+  font-size: 12px;
+  width: 95%;
+  margin: auto;
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), background-color 0.3s, color 0.3s;
+}
+
+.searchInput:focus {
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.searchInput::placeholder {
+  font-style: italic;
+  color: #999999;
+  transition: color 0.3s ease;
+}
+
+.searchInput:hover,
+.searchInput:focus {
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  transform: scale(1.05);
+}
+
+.searchInput:focus::placeholder {
+  color: transparent;
+}
+
+.searchInput:hover::placeholder {
+  color: #cccccc;
+}
+.searchInput {
+  transition: all 0.3s ease;
+  /* other styles */
+}
+
+.searchInput.focused {
+  transform: scale(1.05);
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+}
+.ageInput {
+  margin: 0 10px;
+}
+.ageInput, .licenseTypeInput, .statusInput {
+  color: black;
+  display: flex;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+  outline: none;
+  font-size: 12px;
+  width: 95%;
+  margin: auto;
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), background-color 0.3s, color 0.3s;
+}
+
+
+

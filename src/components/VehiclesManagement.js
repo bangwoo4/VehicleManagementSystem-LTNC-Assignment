@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import Button from '@mui/material/Button';
 import { collection, getDocs } from "firebase/firestore";
@@ -7,6 +8,17 @@ function VehiclesManagement({ setVehicleId, fetchVehicles, setFetchVehicles }) {
   const [vehicles, setData] = useState([]);
   const [selectedVehicle, setSelectedVehicle] = useState(null);
   const [showAllVehicles, setShowAllVehicles] = useState(false);
+  const [showSreach, setShowSreach] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  //filter
+  const [sizeFilter, setSizeFilter] = useState('');
+  const [payloadFilter, setPayloadFilter] = useState('');
+  const [fuelFilter, setFuelFilter] = useState('');
+  const [statusFilter, setStatusFilter] = useState('');
+  const [licensePlateFilter, setLicensePlateFilter] = useState('');
+  //filter payload
+  const [minPayloadFilter, setMinPayloadFilter] = useState('')
+  const [maxPayloadFilter, setMaxPayloadFilter] = useState('')
 
   //GET DATA
   useEffect(() => {
@@ -27,22 +39,44 @@ function VehiclesManagement({ setVehicleId, fetchVehicles, setFetchVehicles }) {
       setFetchVehicles(false);
     }
   }, [fetchVehicles, setFetchVehicles]);
-
+  
   //FUNCTION    
-  const handleShowAllVehicles = () => {
-    setShowAllVehicles(!showAllVehicles);
+  const handleSearch = (event) => {
+    setSearchTerm(event.target.value);
   };
+  const handleSizeFilterChange = (event) => {
+    setSizeFilter(event.target.value);
+  };
+  const handlePayloadFilterChange = (event) => {
+    setPayloadFilter(event.target.value);
+  };
+  const handleFuelFilterChange = (event) => {
+    setFuelFilter(event.target.value);
+  };
+  const handleStatusFilterChange = (event) => {
+    setStatusFilter(event.target.value);
+  };
+  const handleLicensePlateFilterChange = (event) => {
+    setLicensePlateFilter(event.target.value);
+  };
+  const handleMinPayloadFilterChange = (event) => {
+    setMinPayloadFilter(event.target.value);
+  };
+  const handleMaxPayloadFilterChange = (event) => {
+    setMaxPayloadFilter(event.target.value);
+  };
+  
 
   const showAllBtnStyle = {
     background: showAllVehicles 
-      ? 'linear-gradient(to left, #FFFF00, #FFFFFF)' 
-      : 'linear-gradient(to left, #FFFFFF, #FFFF00)',
+      ? 'linear-gradient(to right, #9890e3 0%, #b1f4cf 100%)'
+      : 'linear-gradient(to left, #9890e3 0%, #b1f4cf 100%)',
     color: 'black',
     fontWeight: 'bold',
     border: 'none',
-    borderRadius: '20px',
-    maxWidth: '97%',
-    fontSize: '12px',
+    borderRadius: '10px',
+    maxWidth: '98%',
+    fontSize: '1px',
     cursor: 'pointer',
     transition: 'all 0.3s ease',
     padding: '5px 10px',
@@ -55,32 +89,100 @@ function VehiclesManagement({ setVehicleId, fetchVehicles, setFetchVehicles }) {
     setVehicleId(selectedVehicle !== vehicleId ? vehicleId : null);
   };
 
+
   return (
     <div>
       <h2 className='VehicleManagement'>Vehicle Management</h2>
       <div>
-        <h3 className="vl">Vehicles List</h3>
+        <h3 className="vl">
+          Vehicles List <button onClick={() => setShowSreach(!showSreach)}>🔎</button>
+          {showSreach && <div>
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={handleSearch}
+              placeholder="🔎 Search for vehicle..."
+              className="searchInput"
+            />
+            <select 
+              value={sizeFilter}
+              onChange={handleSizeFilterChange}
+              className="searchInput">
+              <option value="">Size: All</option>
+              <option value="Normal">Size: Normal</option>
+              <option value="Large">Size: Large</option>
+            </select>
+            <div className='payloadFilter' style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '95%', margin: '0 auto' }}>
+            <input
+              type='number'
+              value={minPayloadFilter}
+              onChange={handleMinPayloadFilterChange}
+              placeholder="Min Payload"
+              className="searchInput"
+            />
+            <input
+              type='number'
+              value={maxPayloadFilter}
+              onChange={handleMaxPayloadFilterChange}
+              placeholder="Max Payload"
+              className="searchInput"
+            />
+            </div>
+            <select 
+              value={fuelFilter}
+              onChange={handleFuelFilterChange}
+              className="searchInput">
+              <option value="">Fuel Type: All</option>
+              <option value="Gasoline">Fuel Type: Gasoline</option>
+              <option value="Diesel">Fuel Type: Diesel</option>
+              <option value="Electric">Fuel Type: Electric</option>
+            </select>
+            <select
+              value={statusFilter}
+              onChange={handleStatusFilterChange}
+              className="searchInput"
+            >
+            <option value="">Status: All</option>
+            <option value="Working">Status: Working</option>
+            <option value="Inactive">Status: Inactive</option>
+            <option value="Maintenance">Status: Maintenance</option>
+            </select>
+            <input
+              type="text"
+              value={licensePlateFilter}
+              onChange={handleLicensePlateFilterChange}
+              placeholder="License Plate"
+              className="searchInput"
+            />
+          </div>}
+          </h3>
         <Button
-          onClick={handleShowAllVehicles}
+          onClick={() => setShowAllVehicles(!showAllVehicles)}
           style={showAllBtnStyle}
         >
           {showAllVehicles ? "Hide all vehicle's information" : "Show all vehicle's information"}
         </Button>
-        {vehicles.map((vehicle) => (
+        {vehicles.filter((vehicle) =>
+          vehicle.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
+          (!minPayloadFilter || (minPayloadFilter && parseInt(vehicle.payload) >= parseInt(minPayloadFilter))) &&
+          (!maxPayloadFilter || (maxPayloadFilter && parseInt(vehicle.payload) <= parseInt(maxPayloadFilter))) &&
+          (!sizeFilter || vehicle.size === sizeFilter) &&
+          (!fuelFilter || vehicle.fuel === fuelFilter) &&
+          (!statusFilter || vehicle.status === statusFilter) &&
+          (!licensePlateFilter || vehicle.licensePlate.toLowerCase().includes(licensePlateFilter.toLowerCase()))
+        ).map((vehicle) => (
           <button
             className={`VehicleUnit ${selectedVehicle === vehicle.id || showAllVehicles ? 'expanded' : ''}`}
             key={vehicle.id}
-
             style={
               vehicle.status === 'Working'
-                ? { background: 'linear-gradient(to right, lightcoral, red)' }
+                ? { background: 'linear-gradient(to top, #c1dfc4 0%, #deecdd 100%)' }
                 : vehicle.status === 'Maintenance'
-                ? { background: 'linear-gradient(to right, grey, darkgrey)' }
+                ? { background: 'linear-gradient(to right, #868f96 0%, #596164 100%)' }
                 : vehicle.status === 'Inactive'
-                ? { background: 'linear-gradient(to right, #70E2FF, #0072FF)' }
+                ? { background: 'linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%)' }
                 : {}
             }
-
             onClick={() => toggleShowInfo(vehicle.id)}
           >
             <strong className="VehicleName">{vehicle.name}</strong>
@@ -127,5 +229,4 @@ function VehiclesManagement({ setVehicleId, fetchVehicles, setFetchVehicles }) {
     </div>
   );
 }
-
 export default VehiclesManagement;

@@ -440,13 +440,15 @@ function Actions({ Vehicleid, Planid, setPlaneId, tripLength, setFetchVehicles, 
       <h2 className='Actions'>Actions</h2>
 
       <div className='buttons' style={{ display: 'flex', flexWrap: 'wrap' }}>
-        <Button variant="contained" style={{ flex: '0 0 100%', marginBottom: '10px', backgroundColor: '#01834D', color: 'white' }} onClick={toggleAddTrip}>Create new plan</Button>
+        <Button variant="contained" style={{ flex: '0 0 100%', marginBottom: '10px', backgroundColor: '#1E7381', color: 'white' }} onClick={toggleAddTrip}>Create new plan</Button>
         <Button variant="contained" style={{ flex: '0 0 100%', marginBottom: '10px', backgroundColor: '#0C4183', color: 'white' }} onClick={toggleEditTrip}>Edit plan</Button>
-        <Button variant="contained" style={{ flex: '0 0 100%', marginBottom: '10px', backgroundColor: '#721E1D', color: 'white' }} onClick={() => deletePlan()}>Delete plan</Button>
-        <Button variant="contained" style={{ flex: '0 0 100%', marginBottom: '10px', backgroundColor: '#6D3E18', color: 'white' }} onClick={() => chooseDirver()}>Choose driver</Button>
-        <Button variant="contained" style={{ flex: '0 0 100%', marginBottom: '10px', backgroundColor: '#1E7381', color: 'white' }} onClick={() => startTrip()}>Start trip</Button>
-        <Button variant="contained" style={{ flex: '0 0 100%', marginBottom: '10px', backgroundColor: '#533C3C', color: 'white' }} onClick={() => endTrip()}>End trip</Button>
-        <Button variant="contained" style={{ flex: '0 0 100%', marginBottom: '10px', backgroundColor: '#505F73', color: 'white' }} onClick={() => configVehicleStatus()}>{text}</Button>
+        <Button variant="contained" style={{ flex: '0 0 100%', marginBottom: '10px', backgroundColor: '#01834D', color: 'white' }} onClick={() => deletePlan()}>Delete plan</Button>
+        <Button variant="contained" style={{ flex: '0 0 100%', marginBottom: '10px', backgroundColor: '#1E7381', color: 'white' }} onClick={toggleEditTrip/*sửa lại*/}>Add Driver</Button>
+        <Button variant="contained" style={{ flex: '0 0 100%', marginBottom: '10px', backgroundColor: '#0C4183', color: 'white' }} onClick={() => chooseDirver()}>Choose driver</Button>
+        <Button variant="contained" style={{ flex: '0 0 100%', marginBottom: '10px', backgroundColor: '#01834D', color: 'white' }} onClick={() => startTrip()}>Start trip</Button>
+        <Button variant="contained" style={{ flex: '0 0 100%', marginBottom: '10px', backgroundColor: '#1E7381', color: 'white' }} onClick={() => endTrip()}>End trip</Button>
+        <Button variant='contained' style={{ flex: '0 0 100%', marginBottom: '10px', backgroundColor: '#0C4183', color: 'white' }} onClick={toggleAddTrip/*sửa lại*/ }>Add Vehicle</Button>
+        <Button variant="contained" style={{ flex: '0 0 100%', marginBottom: '10px', backgroundColor: '#01834D', color: 'white' }} onClick={() => configVehicleStatus()}>{text}</Button>
       </div>
 
       
