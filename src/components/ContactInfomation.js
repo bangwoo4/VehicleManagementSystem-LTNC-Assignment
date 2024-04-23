@@ -1,8 +1,8 @@
-import React from 'react';
+import React from "react";
 
 const ContactInfo = () => {
   return (
-    <div className='cti4'>
+    <div className="cti4">
       <h4>Contact Information</h4>
       <p>Address: 23 Cornelia St, New York, NY</p>
       <p>Email: TSwift@gmail.com</p>

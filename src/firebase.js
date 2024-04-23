@@ -13,7 +13,7 @@ const firebaseConfig = {
   storageBucket: "baitaplon-ltnc.appspot.com",
   messagingSenderId: "604616970132",
   appId: "1:604616970132:web:c627e20c58a671ff30c981",
-  measurementId: "G-CBNQNBH8TT"
+  measurementId: "G-CBNQNBH8TT",
 };
 
 // Initialize Firebase

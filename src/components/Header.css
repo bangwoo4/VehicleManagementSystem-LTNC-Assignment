@@ -1,30 +1,30 @@
 .header {
-    background-color: #282c34;
-    padding: 5px;
-    color: white;
-    text-align: center;
-    transition: background-color 0.5s ease; /* Add transition for smooth color change */
-  }
-  
-  .header h1 {
-    margin: 0;
-    padding: 0;
-    font-size: 2em;
-    text-transform: uppercase;
-    animation: slideInLeft 2s; 
-  }
-  
-  @keyframes slideInLeft {
-    0% {
-      transform: translateX(-100%);
-      opacity: 0;
-    }
-    100% {
-      transform: translateX(0);
-      opacity: 1;
-    }
-  }
+  background-color: #282c34;
+  padding: 5px;
+  color: white;
+  text-align: center;
+  transition: background-color 0.5s ease; /* Add transition for smooth color change */
+}
 
-  .header:hover {
-    background-color: #1d2027;
+.header h1 {
+  margin: 0;
+  padding: 0;
+  font-size: 2em;
+  text-transform: uppercase;
+  animation: slideInLeft 2s;
+}
+
+@keyframes slideInLeft {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
   }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.header:hover {
+  background-color: #1d2027;
+}
