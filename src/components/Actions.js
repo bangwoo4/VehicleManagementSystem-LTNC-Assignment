@@ -5,6 +5,8 @@ import { firebase } from '../firebase'
 
 function Actions({ Vehicleid, Planid, setPlaneId, tripLength, setFetchVehicles, setFetchDrivers, setFetchPlans }) {
   const [showAddTrip, setShowAddTrip] = useState(false);
+  const [showAddVehicle, setShowAddVehicle] = useState(false);
+  const [showAddDriver, setShowAddDriver] = useState(false);
   const [showEditTrip, setshowEditTrip] = useState(false);
   const [confirmClicked, setConfirmClicked] = useState(false);
   const [showNotification, setShowNotification] = useState(false);
@@ -23,6 +25,25 @@ function Actions({ Vehicleid, Planid, setPlaneId, tripLength, setFetchVehicles, 
     vehicle: '',
     vehicleId: '',
   });
+  const [newVehicle, setNewVehicle] = useState({
+    name: '',
+    size: '',
+    payload: '',
+    fuel: '',
+    status: 'Inactive',
+    licensePlate: '',
+    image: '',
+  });
+  const [newDriver, setNewDriver] = useState({
+    name: '',
+    age: '',
+    licenseType: '',
+    address: '',
+    phone: '',
+    drivingHistory: '',
+    status: 'Ready',
+    image: '',
+  });
 
   const showPopup = (notify) => {
     setMessage(notify);
@@ -36,10 +57,6 @@ function Actions({ Vehicleid, Planid, setPlaneId, tripLength, setFetchVehicles, 
   };
 
   //CREATE NEW PLAN BUTTON
-  const toggleAddTrip = () => {
-    setShowAddTrip(!showAddTrip);
-  };
-
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     if (name === 'estimatedCost' && value && !value.startsWith('$')) {
@@ -433,27 +450,106 @@ function Actions({ Vehicleid, Planid, setPlaneId, tripLength, setFetchVehicles, 
     }
   };
   
+  //ADD VEHICLE BUTTON
+  const handleInputVehicle = (event) => {
+    const { name, value } = event.target;
+    setNewVehicle((prevVehicle) => ({
+      ...prevVehicle,
+      [name]: value,
+    }));
+  };
+  
+  const handleAddVehicle = async () => {
+    setConfirmClicked(true);
+    for (const key in newVehicle) {
+      if (key === 'image' || key === 'size') continue;
+      if (newVehicle.hasOwnProperty(key) && (newVehicle[key] === null || newVehicle[key].trim() === '')) {
+        showPopup('Please fill in all required information');
+        return;
+      }
+    }
 
+    if (parseInt(newVehicle.payload) < 100) return;
+    newVehicle.size = parseInt(newVehicle.payload) < 500 ? "Normal" : "Large";
+    newVehicle.payload += 'kg';
+    //ADD TO DATA BASE
+    try {
+      await addDoc(collection(firebase, 'vehicles'), newVehicle );
+      showPopup('Vehicle added successfully!');
+      setNewVehicle({
+        name: '',
+        size: '',
+        payload: '',
+        fuel: '',
+        status: 'Inactive',
+        licensePlate: '',
+        image: '',
+      });
+      setFetchVehicles(true)
+      setConfirmClicked(false);
+    } catch (error) {
+      console.error('Error adding trip:', error);
+      setConfirmClicked(false);
+    }
+  };
+
+  //ADD DRIVER BUTTON
+  const handleInputDriver = (event) => {
+    const { name, value } = event.target;
+    setNewDriver((prevVehicle) => ({
+      ...prevVehicle,
+      [name]: value,
+    }));
+  }
+
+  const handleAddDriver = async () => {
+    setConfirmClicked(true);
+    for (const key in newDriver) {
+      if (key === 'image') continue;
+      if (newDriver.hasOwnProperty(key) && (newDriver[key] === null || newDriver[key].trim() === '')) {
+        showPopup('Please fill in all required information');
+        return;
+      }
+    }
+    if (newDriver.age <= 18 || newDriver.age >= 75) return;
+    //ADD TO DATA BASE
+    try {
+      await addDoc(collection(firebase, 'drivers'), newDriver );
+      showPopup('Driver added successfully!');
+      setNewDriver({
+        name: '',
+        age: '',
+        licenseType: '',
+        address: '',
+        phone: '',
+        drivingHistory: '',
+        status: 'Ready',
+        image: '',
+      });
+      setFetchDrivers(true)
+      setConfirmClicked(false);
+    } catch (error) {
+      console.error('Error adding trip:', error);
+      setConfirmClicked(false);
+    }
+  }
   
   return (
     <div className='actionContainer'>
       <h2 className='Actions'>Actions</h2>
-
       <div className='buttons' style={{ display: 'flex', flexWrap: 'wrap' }}>
-        <Button variant="contained" style={{ flex: '0 0 100%', marginBottom: '10px', backgroundColor: '#1E7381', color: 'white' }} onClick={toggleAddTrip}>Create new plan</Button>
+        <Button variant="contained" style={{ flex: '0 0 100%', marginBottom: '10px', backgroundColor: '#1E7381', color: 'white' }} onClick={() => setShowAddTrip(!showAddTrip)}>Create new plan</Button>
         <Button variant="contained" style={{ flex: '0 0 100%', marginBottom: '10px', backgroundColor: '#0C4183', color: 'white' }} onClick={toggleEditTrip}>Edit plan</Button>
         <Button variant="contained" style={{ flex: '0 0 100%', marginBottom: '10px', backgroundColor: '#01834D', color: 'white' }} onClick={() => deletePlan()}>Delete plan</Button>
-        <Button variant="contained" style={{ flex: '0 0 100%', marginBottom: '10px', backgroundColor: '#1E7381', color: 'white' }} onClick={toggleEditTrip/*sửa lại*/}>Add Driver</Button>
+        <Button variant="contained" style={{ flex: '0 0 100%', marginBottom: '10px', backgroundColor: '#1E7381', color: 'white' }} onClick={() => setShowAddDriver(!showAddDriver)}>Add Driver</Button>
         <Button variant="contained" style={{ flex: '0 0 100%', marginBottom: '10px', backgroundColor: '#0C4183', color: 'white' }} onClick={() => chooseDirver()}>Choose driver</Button>
         <Button variant="contained" style={{ flex: '0 0 100%', marginBottom: '10px', backgroundColor: '#01834D', color: 'white' }} onClick={() => startTrip()}>Start trip</Button>
         <Button variant="contained" style={{ flex: '0 0 100%', marginBottom: '10px', backgroundColor: '#1E7381', color: 'white' }} onClick={() => endTrip()}>End trip</Button>
-        <Button variant='contained' style={{ flex: '0 0 100%', marginBottom: '10px', backgroundColor: '#0C4183', color: 'white' }} onClick={toggleAddTrip/*sửa lại*/ }>Add Vehicle</Button>
+        <Button variant='contained' style={{ flex: '0 0 100%', marginBottom: '10px', backgroundColor: '#0C4183', color: 'white' }} onClick={() => setShowAddVehicle(!showAddVehicle)}>Add Vehicle</Button>
         <Button variant="contained" style={{ flex: '0 0 100%', marginBottom: '10px', backgroundColor: '#01834D', color: 'white' }} onClick={() => configVehicleStatus()}>{text}</Button>
       </div>
-
       
-      {showAddTrip && 
-      (<div className="AddTripBlock">
+      {showAddTrip && <div className="AddTripBlock">
         <h2 className="AddTripText">Add Trip</h2>
         <div className="input-group">
           <input
@@ -499,10 +595,9 @@ function Actions({ Vehicleid, Planid, setPlaneId, tripLength, setFetchVehicles, 
         </div>
         <button 
           className="add-trip-button" onClick={handleAddTrip}>Add Trip</button>
-      </div>)}
+      </div>}
 
-      {showEditTrip && 
-      (<div className="AddTripBlock">
+      {showEditTrip && <div className="AddTripBlock">
         <h2 className="AddTripText">Edit Plan</h2>
         <div className="input-group">
           <input
@@ -548,7 +643,124 @@ function Actions({ Vehicleid, Planid, setPlaneId, tripLength, setFetchVehicles, 
         </div>
         <button 
           className="add-trip-button" onClick={() => UpdateInformation()}>Update Information</button>
-      </div>)}
+      </div>}
+
+      {showAddVehicle && <div>
+        <h2 className="AddTripText">Add Vehicle</h2>
+        <div className="input-group">
+          <input
+            type="text"
+            name="name"
+            value={newVehicle.name}
+            placeholder="Vehicle's name"
+            onChange={handleInputVehicle}
+            className={confirmClicked  && newVehicle.name.trim() === '' ? 'empty-input-field' : 'input-field'}
+          />
+          <select
+            name="fuel"
+            value={newVehicle.fuel}
+            onChange={handleInputVehicle}
+            className={confirmClicked  && newVehicle.fuel.trim() === '' ? 'empty-input-field' : 'input-field'}
+          >
+            <option value="">Fuel Type</option>
+            <option value="Gasoline">Fuel Type: Gasoline</option>
+            <option value="Diesel">Fuel Type: Diesel</option>
+            <option value="Electric">Fuel Type: Electric</option>
+          </select>
+          <input
+            type="number"
+            name="payload"
+            value={newVehicle.payload}
+            placeholder="Pay Load (kg)"
+            onChange={handleInputVehicle}
+            className={confirmClicked  && newVehicle.payload.trim() === '' ? 'empty-input-field' : 'input-field'}
+          />
+          {parseInt(newVehicle.payload) < 100 && newVehicle.payload !== '' ? (
+            <small className="error-message">Minimum is 100kg</small>
+          ) : null}
+          <input
+            type="text"
+            name="licensePlate"
+            value={newVehicle.licensePlate}
+            placeholder="License Plate"
+            onChange={handleInputVehicle}
+            className={confirmClicked  && newVehicle.licensePlate.trim() === '' ? 'empty-input-field' : 'input-field'}
+          />
+          <input
+            type="text"
+            name="size"
+            value={newVehicle.payload === '' || parseInt(newVehicle.payload) < 100 ? '' : parseInt(newVehicle.payload) < 500 ? "Normal" : "Large"}
+            placeholder="Size"
+            className={confirmClicked  && (newVehicle.payload.trim() === '' || parseInt(newVehicle.payload) < 100) ? 'empty-input-field' : 'input-field'}
+          />
+        </div>
+        <button 
+          className="add-trip-button" onClick={handleAddVehicle}>Add Vehicle</button>
+      </div>}
+
+      {showAddDriver && <div>
+        <h2 className="AddTripText">Add Driver</h2>
+        <div className="input-group">
+          <input
+            type="text"
+            name="name"
+            value={newDriver.name}
+            placeholder="Driver's name"
+            onChange={handleInputDriver}
+            className={confirmClicked  && newDriver.name.trim() === '' ? 'empty-input-field' : 'input-field'}
+          />
+          <select
+            name="licenseType"
+            value={newDriver.licenseType}
+            onChange={handleInputDriver}
+            className={confirmClicked  && newDriver.licenseType.trim() === '' ? 'empty-input-field' : 'input-field'}
+          >
+            <option value="">License Type</option>
+            <option value="A">License Type: A</option>
+            <option value="B">License Type: B</option>
+            <option value="C">License Type: C</option>
+          </select>
+          <input
+            type="number"
+            name="age"
+            value={newDriver.age}
+            placeholder="Age"
+            onChange={handleInputDriver}
+            className={confirmClicked  && newDriver.age.trim() === '' ? 'empty-input-field' : 'input-field'}
+          />
+          {(newDriver.age <= 18 || newDriver.age >= 75) && newDriver.age !== '' ? (
+            <small className="error-message">Age must be between 18 and 75</small>
+          ) : null}
+          <input
+            type="text"
+            name="address"
+            value={newDriver.address}
+            placeholder="Address"
+            onChange={handleInputDriver}
+            className={confirmClicked  && newDriver.address.trim() === '' ? 'empty-input-field' : 'input-field'}
+          />
+          <input
+            type="text"
+            name="phone"
+            value={newDriver.phone}
+            placeholder="Phone number"
+            onChange={handleInputDriver}
+            className={confirmClicked  && newDriver.phone.trim() === '' ? 'empty-input-field' : 'input-field'}
+          />
+          <select
+            name="drivingHistory"
+            value={newDriver.drivingHistory}
+            onChange={handleInputDriver}
+            className={confirmClicked  && newDriver.drivingHistory.trim() === '' ? 'empty-input-field' : 'input-field'}
+          >
+            <option value="">Has caused an accident?</option>
+            <option value="Clean">No</option>
+            <option value="Minor violations">Yes</option>
+          </select>
+        </div>
+        <button className="add-trip-button" onClick={handleAddDriver}>Add Driver</button>
+      </div>}
+
       <div className="notification-container">        
         {showNotification && (
           <div className="notification">
