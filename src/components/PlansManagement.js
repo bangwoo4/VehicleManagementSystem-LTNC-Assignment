@@ -3,7 +3,6 @@ import Button from '@mui/material/Button';
 import { collection, getDocs } from "firebase/firestore"; 
 import { firebase } from '../firebase'
 import { PieChart } from "react-minimal-pie-chart";
-import { CSSTransition } from 'react-transition-group';
 
 function PlansManagement({ setPlaneId, setTripLength, fetchPlans, setFetchPlans }) {
   const [selectedTrip, setSelectedTrip] = useState(null);
