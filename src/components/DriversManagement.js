@@ -19,6 +19,10 @@ function DriversManagement({ fetchDrivers, setFetchDrivers }) {
   const [maxAgeFilter, setMaxAgeFilter] = useState("");
   //filter license
   const [selectedLicenseType, setSelectedLicenseType] = useState("");
+  //notification
+  const [notification, setNotification] = useState("");
+  const [showNotification, setShowNotification] = useState(false);
+  const [message, setMessage] = useState("");
 
   // GET DATA
   useEffect(() => {
@@ -68,6 +72,16 @@ function DriversManagement({ fetchDrivers, setFetchDrivers }) {
   };
   const handleLicenseTypeChange = (event) => {
     setSelectedLicenseType(event.target.value);
+  };
+
+  const showPopup = (notify) => {
+    setMessage(notify);
+    setShowNotification(true);
+
+    setTimeout(() => {
+      setShowNotification(false);
+      setMessage("");
+    }, 200000);
   };
 
   /*background-image: linear-gradient(to top, #9890e3 0%, #b1f4cf 100%);*/
@@ -255,7 +269,13 @@ function DriversManagement({ fetchDrivers, setFetchDrivers }) {
                 <li>
                   Driving History:{" "}
                   {driver.drivingHistory ? driver.drivingHistory : "unknown"}
-                  <button className="HistoryButton">
+                  <button
+                    className="HistoryButton"
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      showPopup("Showing all driver's driving history");
+                    }}
+                  >
                     Show all driver's driving history
                   </button>
                 </li>
@@ -263,6 +283,13 @@ function DriversManagement({ fetchDrivers, setFetchDrivers }) {
               </ul>
             </button>
           ))}
+      </div>
+      <div className="notification-container">
+        {showNotification && (
+          <div className="notification">
+            <p>{"🔔 " + message}</p>
+          </div>
+        )}
       </div>
     </div>
   );

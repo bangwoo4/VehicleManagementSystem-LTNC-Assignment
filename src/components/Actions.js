@@ -1049,7 +1049,6 @@ function Actions({
           </button>
         </div>
       )}
-
       <div className="notification-container">
         {showNotification && (
           <div className="notification">
