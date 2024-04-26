@@ -74,7 +74,7 @@ function VehiclesManagement({ setVehicleId, fetchVehicles, setFetchVehicles }) {
     border: "none",
     borderRadius: "10px",
     maxWidth: "98%",
-    fontSize: "1px",
+    fontSize: "12px",
     cursor: "pointer",
     transition: "all 0.3s ease",
     padding: "5px 10px",

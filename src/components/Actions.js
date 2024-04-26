@@ -8,6 +8,8 @@ import {
   updateDoc,
   deleteDoc,
   getDocs,
+  where,
+  query
 } from "firebase/firestore";
 import { firebase } from "../firebase";
 
@@ -56,7 +58,6 @@ function Actions({
     licenseType: "",
     address: "",
     phone: "",
-    drivingHistory: "",
     status: "Ready",
     image: "",
   });
@@ -402,120 +403,34 @@ function Actions({
 
     if (!tripData) return;
 
-    const querySnapshot = await getDocs(collection(firebase, "drivers"));
-    const todoData = querySnapshot.docs.map((doc) => ({
+    const vehicelSnapshot = await getDoc(doc(firebase, "vehicles", tripData.vehicleId));
+    const vehicleData = vehicelSnapshot.data();
+
+    const snapshot = await getDocs(
+      query(collection(firebase, "drivers"), where("licenseType", "==", vehicleData.payload < 500 ? "A" : vehicleData.payload < 1000 ? "B" : "C"))
+    );
+    const temp = snapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
     }));
-
+    
     const listDriver = [];
-    if (todoData && todoData.length > 0) {
-      for (let i = 0; i < todoData.length; ++i) {
-        let data = todoData[i];
+    if (temp && temp.length > 0) {
+      for (let i = 0; i < temp.length; ++i) {
+        let data = temp[i];
         if (data.status === "Ready") {
           listDriver.push(data);
         }
       }
     }
-    listDriver.sort((a, b) => {
-      if (a.licenseType < b.licenseType) return -1; // 'A' trước 'B' và 'C'
-      if (a.licenseType > b.licenseType) return 1; // 'B' và 'C' sau 'A'
-      return 0;
-    });
 
-    let flag = false,
-      index = 0;
-    const classA = ["Motorcycle", "Sports Car", "Car", "Electric Car"];
-    const classB = ["Minivan", "SUV", "Van", "Compact Car"];
-    const classC = ["Truck", "Bus", "Tractor", "Pickup Truck"];
-
-    if (
-      classA.includes(tripData.vehicle) &&
-      listDriver &&
-      listDriver.length > 0
-    ) {
-      for (index; index < listDriver.length; ++index) {
-        if (
-          listDriver[index].licenseType === "A" &&
-          listDriver[index].drivingHistory === "Clean"
-        ) {
-          flag = true;
-          break;
-        } else if (listDriver[index].licenseType === "A") {
-          flag = true;
-          break;
-        } else if (
-          listDriver[index].licenseType === "B" &&
-          listDriver[index].drivingHistory === "Clean"
-        ) {
-          flag = true;
-          break;
-        } else if (listDriver[index].licenseType === "B") {
-          flag = true;
-          break;
-        } else if (
-          listDriver[index].licenseType === "C" &&
-          listDriver[index].drivingHistory === "Clean"
-        ) {
-          flag = true;
-          break;
-        } else if (listDriver[index].licenseType === "C") {
-          flag = true;
-          break;
-        }
-      }
-    } else if (
-      classB.includes(tripData.vehicle) &&
-      listDriver &&
-      listDriver.length > 0
-    ) {
-      for (index; index < listDriver.length; ++index) {
-        if (
-          listDriver[index].licenseType === "B" &&
-          listDriver[index].drivingHistory === "Clean"
-        ) {
-          flag = true;
-          break;
-        } else if (listDriver[index].licenseType === "B") {
-          flag = true;
-          break;
-        } else if (
-          listDriver[index].licenseType === "C" &&
-          listDriver[index].drivingHistory === "Clean"
-        ) {
-          flag = true;
-          break;
-        } else if (listDriver[index].licenseType === "C") {
-          flag = true;
-          break;
-        }
-      }
-    } else if (
-      classC.includes(tripData.vehicle) &&
-      listDriver &&
-      listDriver.length > 0
-    ) {
-      for (index; index < listDriver.length; ++index) {
-        if (
-          listDriver[index].licenseType === "C" &&
-          listDriver[index].drivingHistory === "Clean"
-        ) {
-          flag = true;
-          break;
-        } else if (listDriver[index].licenseType === "C") {
-          flag = true;
-          break;
-        }
-      }
-    }
-
-    if (!flag) {
+    if (listDriver.length === 0) {
       showPopup("There are no suitable drivers!");
       return;
     }
 
-    tripData.driver = listDriver[index].name;
-    tripData.driverId = listDriver[index].id;
+    tripData.driver = listDriver[0].name;
+    tripData.driverId = listDriver[0].id;
     tripData.status = "Scheduled";
 
     try {
@@ -594,7 +509,9 @@ function Actions({
         return;
       }
     }
-    if (newDriver.age <= 18 || newDriver.age >= 75) return;
+    
+    if (newDriver.age <= 18 || newDriver.age >= 75 || newDriver.phone.length !== 10) return;
+    newDriver.phone = newDriver.phone.slice(0, 3) + '-' + newDriver.phone.slice(3, 6) + '-' + newDriver.phone.slice(6)
     //ADD TO DATA BASE
     try {
       await addDoc(collection(firebase, "drivers"), newDriver);
@@ -605,7 +522,6 @@ function Actions({
         licenseType: "",
         address: "",
         phone: "",
-        drivingHistory: "",
         status: "Ready",
         image: "",
       });
@@ -916,7 +832,7 @@ function Actions({
               }
             />
             {parseInt(newVehicle.payload) < 100 && newVehicle.payload !== "" ? (
-              <small className="error-message">Minimum is 100kg</small>
+              <small className="error-message">*Minimum is 100kg*</small>
             ) : null}
             <input
               type="text"
@@ -1002,7 +918,7 @@ function Actions({
             {(newDriver.age <= 18 || newDriver.age >= 75) &&
             newDriver.age !== "" ? (
               <small className="error-message">
-                Age must be between 18 and 75
+                *Age must be between 18 and 75*
               </small>
             ) : null}
             <input
@@ -1029,26 +945,19 @@ function Actions({
                   : "input-field"
               }
             />
-            <select
-              name="drivingHistory"
-              value={newDriver.drivingHistory}
-              onChange={handleInputDriver}
-              className={
-                confirmClicked && newDriver.drivingHistory.trim() === ""
-                  ? "empty-input-field"
-                  : "input-field"
-              }
-            >
-              <option value="">Has caused an accident?</option>
-              <option value="Clean">No</option>
-              <option value="Minor violations">Yes</option>
-            </select>
+            {newDriver.phone.length !== 10 &&
+            newDriver.phone !== "" ? (
+              <small className="error-message">
+                *Phone number must be 10 num*
+              </small>
+            ) : null}
           </div>
           <button className="add-trip-button" onClick={handleAddDriver}>
             Add Driver
           </button>
         </div>
       )}
+
       <div className="notification-container">
         {showNotification && (
           <div className="notification">

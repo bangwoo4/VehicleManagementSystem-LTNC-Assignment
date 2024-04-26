@@ -74,16 +74,6 @@ function DriversManagement({ fetchDrivers, setFetchDrivers }) {
     setSelectedLicenseType(event.target.value);
   };
 
-  const showPopup = (notify) => {
-    setMessage(notify);
-    setShowNotification(true);
-
-    setTimeout(() => {
-      setShowNotification(false);
-      setMessage("");
-    }, 200000);
-  };
-
   /*background-image: linear-gradient(to top, #9890e3 0%, #b1f4cf 100%);*/
   const showAllBtnStyle = {
     background: showAllDrivers
@@ -171,7 +161,6 @@ function DriversManagement({ fetchDrivers, setFetchDrivers }) {
           )}
         </h3>
         <Button
-          className="showAllBtn"
           onClick={() => setShowAllDrivers(!showAllDrivers)}
           style={showAllBtnStyle}
         >
@@ -266,31 +255,32 @@ function DriversManagement({ fetchDrivers, setFetchDrivers }) {
                 </li>
                 <li>Phone: {driver.phone ? driver.phone : "unknown"}</li>
                 <li>Address: {driver.address ? driver.address : "unknown"}</li>
-                <li>
-                  Driving History:{" "}
-                  {driver.drivingHistory ? driver.drivingHistory : "unknown"}
-                  <button
+                <li>Status: {driver.status}</li>
+                <button
                     className="HistoryButton"
                     onClick={(event) => {
                       event.stopPropagation();
-                      showPopup("Showing all driver's driving history");
+                      setShowNotification(true);
+                      setMessage("Showing all driver's driving history");
                     }}
                   >
-                    Show all driver's driving history
+                    Show driver's driving history
                   </button>
-                </li>
-                <li>Status: {driver.status}</li>
               </ul>
             </button>
           ))}
       </div>
-      <div className="notification-container">
         {showNotification && (
-          <div className="notification">
-            <p>{"🔔 " + message}</p>
-          </div>
+          <div className="DrivingHistoryPopup">
+            <div className="HistoryNotification">
+              <a href="#" class="x" onClick={() => {
+                setShowNotification(false);
+                setMessage("");
+              }}></a>
+              <span>{"🔔 " + message}</span>
+            </div>
+           </div>
         )}
-      </div>
     </div>
   );
 }

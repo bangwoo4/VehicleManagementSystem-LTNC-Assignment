@@ -1,17 +1,8 @@
-License Type A:
-Motorcycle
-Sport car
-Car
-Electric car
+License Type A: [100,500)kg
 
-License Type B:
-Minivan
-SUV
-Van
-Compact car
+License Type B: [500,1000)kg
 
-License Type C:
-Truck
-Bus
-Tractor
-Pickup truck
+License Type C: >= 1000kg
+
+[100,500) Normal
+>= 500 Large
