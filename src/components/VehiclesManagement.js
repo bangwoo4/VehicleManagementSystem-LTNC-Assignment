@@ -65,6 +65,7 @@ function VehiclesManagement({ setVehicleId, fetchVehicles, setFetchVehicles }) {
     setSelectedVehicle(vehicleId === selectedVehicle ? null : vehicleId);
     setVehicleId(selectedVehicle !== vehicleId ? vehicleId : null);
   };
+  
   const clearFilters = () => {
     setSearchTerm("");
     setSizeFilter("");

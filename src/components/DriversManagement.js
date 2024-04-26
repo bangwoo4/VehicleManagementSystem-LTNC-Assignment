@@ -67,6 +67,7 @@ function DriversManagement({ fetchDrivers, setFetchDrivers }) {
     boxShadow: "0px 8px 15px rgba(0, 0, 0, 0.1)",
     whiteSpace: "nowrap",
   };
+  
   const clearFilters = () => {
     setSearchTerm("");
     setAgeFilter("");

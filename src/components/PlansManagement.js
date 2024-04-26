@@ -55,8 +55,8 @@ function PlansManagement({
 
   //FUNCTION
   const handleShowMore = () => {
-    if (visibleTrips + 5 >= trips.length) {
-      setVisibleTrips(trips.length);
+    if (visibleTrips + 5 >= tripsshow.length) {
+      setVisibleTrips(tripsshow.length);
       setShowAllTrips(true);
       return;
     }
@@ -64,7 +64,7 @@ function PlansManagement({
   };
 
   const handleShowAll = () => {
-    setVisibleTrips(trips.length);
+    setVisibleTrips(tripsshow.length);
     setShowAllTrips(true);
   };
 
@@ -154,6 +154,61 @@ function PlansManagement({
     }
   });
 
+  const tripsshow = trips
+    //route filter
+    .filter((trip) =>
+      typeof RouteFilter === "string"
+        ? trip.route.toLowerCase().includes(RouteFilter.toLowerCase())
+        : true
+    )
+    //estimated time filter
+    .filter((trip) =>
+        typeof EstimatedTimeFilter === "string" && EstimatedTimeFilter !== ""
+        ? trip.estimatedTime
+            .toString()
+            .toLowerCase() === EstimatedTimeFilter + ' hours'
+        : true
+    )
+    //estimated cost filter
+    .filter((trip) => {
+      const cost = parseFloat(trip.estimatedCost.replace("$", ""));
+      return (
+        (EstimatedCostFilterMin
+          ? cost >= EstimatedCostFilterMin
+          : true) &&
+        (EstimatedCostFilterMax ? cost <= EstimatedCostFilterMax : true)
+      );
+    })
+    //departure time filter
+    .filter((trip) =>
+        (DepartureTimeFilterMin
+          ? trip.departureTime >= DepartureTimeFilterMin
+          : true) &&
+        (DepartureTimeFilterMax
+          ? trip.departureTime <= DepartureTimeFilterMax
+          : true)
+    )
+    //driver filter
+    .filter((trip) =>
+      typeof DriverFilter === "string"
+        ? trip.driver.toLowerCase().includes(DriverFilter.toLowerCase())
+        : true
+    )
+    //vehicle filter
+    .filter((trip) =>
+      typeof VehicleFilter === "string"
+        ? trip.vehicle
+            .toLowerCase()
+            .includes(VehicleFilter.toLowerCase())
+        : true
+    )
+    //status filter
+    .filter((trip) =>
+      typeof StatusFilter === "string"
+        ? trip.status.toLowerCase().includes(StatusFilter.toLowerCase())
+        : true
+    )
+
   return (
     <div className="TripTable">
       <table>
@@ -169,61 +224,7 @@ function PlansManagement({
           </tr>
         </thead>
         <tbody className="tbd">
-          {trips
-            //route filter
-            .filter((trip) =>
-              typeof RouteFilter === "string"
-                ? trip.route.toLowerCase().includes(RouteFilter.toLowerCase())
-                : true
-            )
-            //estimated time filter
-            .filter((trip) =>
-              typeof EstimatedTimeFilter === "string" &&
-              EstimatedTimeFilter !== ""
-                ? trip.estimatedTime.toString().toLowerCase() ===
-                  EstimatedTimeFilter + " hours"
-                : true
-            )
-            //estimated cost filter
-            .filter((trip) => {
-              const cost = parseFloat(trip.estimatedCost.replace("$", ""));
-              return (
-                (EstimatedCostFilterMin
-                  ? cost >= EstimatedCostFilterMin
-                  : true) &&
-                (EstimatedCostFilterMax ? cost <= EstimatedCostFilterMax : true)
-              );
-            })
-            //departure time filter
-            .filter(
-              (trip) =>
-                (DepartureTimeFilterMin
-                  ? trip.departureTime >= DepartureTimeFilterMin
-                  : true) &&
-                (DepartureTimeFilterMax
-                  ? trip.departureTime <= DepartureTimeFilterMax
-                  : true)
-            )
-            //driver filter
-            .filter((trip) =>
-              typeof DriverFilter === "string"
-                ? trip.driver.toLowerCase().includes(DriverFilter.toLowerCase())
-                : true
-            )
-            //vehicle filter
-            .filter((trip) =>
-              typeof VehicleFilter === "string"
-                ? trip.vehicle
-                    .toLowerCase()
-                    .includes(VehicleFilter.toLowerCase())
-                : true
-            )
-            //status filter
-            .filter((trip) =>
-              typeof StatusFilter === "string"
-                ? trip.status.toLowerCase().includes(StatusFilter.toLowerCase())
-                : true
-            )
+          {tripsshow
             .slice(0, visibleTrips)
             .map((trip) => (
               <tr
