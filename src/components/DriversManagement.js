@@ -257,30 +257,34 @@ function DriversManagement({ fetchDrivers, setFetchDrivers }) {
                 <li>Address: {driver.address ? driver.address : "unknown"}</li>
                 <li>Status: {driver.status}</li>
                 <button
-                    className="HistoryButton"
-                    onClick={(event) => {
-                      event.stopPropagation();
-                      setShowNotification(true);
-                      setMessage("Showing all driver's driving history");
-                    }}
-                  >
-                    Show driver's driving history
-                  </button>
+                  className="HistoryButton"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    setShowNotification(true);
+                    setMessage("Showing all driver's driving history");
+                  }}
+                >
+                  Show driver's driving history
+                </button>
               </ul>
             </button>
           ))}
       </div>
-        {showNotification && (
-          <div className="DrivingHistoryPopup">
-            <div className="HistoryNotification">
-              <a href="#" class="x" onClick={() => {
+      {showNotification && (
+        <div className="DrivingHistoryPopup">
+          <div className="HistoryNotification">
+            <a
+              href="#"
+              class="x"
+              onClick={() => {
                 setShowNotification(false);
                 setMessage("");
-              }}></a>
-              <span>{"🔔 " + message}</span>
-            </div>
-           </div>
-        )}
+              }}
+            ></a>
+            <span>{"🔔 " + message}</span>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

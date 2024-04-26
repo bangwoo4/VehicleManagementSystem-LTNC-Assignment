@@ -977,7 +977,7 @@ body {
   justify-content: center;
   align-items: center;
   background: rgba(0, 0, 0, 0.5);
-  visibility: visible; 
+  visibility: visible;
   opacity: 1;
   transition: visibility 0s linear 0.25s, opacity 0.25s 0s;
 }
@@ -1013,4 +1013,71 @@ body {
   -webkit-transform: rotate(45deg);
   -ms-transform: rotate(45deg);
   transform: rotate(45deg);
+}
+
+/*Filter Trip css*/
+.dt {
+  color: white;
+  font-size: 15px;
+  font-style: italic;
+  text-align: left;
+}
+.filter {
+  border-radius: 5px;
+  background-color: transparent;
+  padding: 5px;
+  margin: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.filter:hover {
+  background-color: #273442;
+}
+
+.filter button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  margin-bottom: 20px;
+  transition: transform 0.3s ease;
+}
+.filterDepartureTime {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.filter button:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}
+
+.filter div,
+.filter select {
+  margin-bottom: 10px;
+}
+
+.filter label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.filter input[type="text"],
+.filter input[type="number"],
+.filter input[type="time"],
+.filter select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ced4da;
+  border-radius: 5px;
+  transition: box-shadow 0.3s ease;
+}
+
+.filter input[type="text"]:focus,
+.filter input[type="number"]:focus,
+.filter input[type="time"]:focus,
+.filter select:focus {
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }

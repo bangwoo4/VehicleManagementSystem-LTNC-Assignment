@@ -15,6 +15,19 @@ function PlansManagement({
   const [showAllTrips, setShowAllTrips] = useState(false);
   const [isFocus, setIsFocus] = useState(false);
   const [trips, setData] = useState([]);
+  //filter cho trip
+  const [RouteFilter, setRouteFilter] = useState([]);
+  const [EstimatedTimeFilter, setEstimatedTimeFilter] = useState([]);
+  const [EstimatedCostFilter, setEstimatedCostFilter] = useState([]);
+  const [DepartureTimeFilter, setDepartureTimeFilter] = useState([]);
+  const [DriverFilter, setDriverFilter] = useState([]);
+  const [VehicleFilter, setVehicleFilter] = useState([]);
+  const [StatusFilter, setStatusFilter] = useState([]);
+  const [EstimatedCostFilterMin, setEstimatedCostFilterMin] = useState("");
+  const [EstimatedCostFilterMax, setEstimatedCostFilterMax] = useState("");
+  const [DepartureTimeFilterMin, setDepartureTimeFilterMin] = useState("");
+  const [DepartureTimeFilterMax, setDepartureTimeFilterMax] = useState("");
+  const [showFields, setShowFields] = useState(false);
 
   //GET DATA
   useEffect(() => {
@@ -65,8 +78,44 @@ function PlansManagement({
     setSelectedTrip(tripid === selectedTrip ? null : tripid);
     setPlaneId(selectedTrip !== tripid ? tripid : null);
   };
+  const handleRouteFilterChange = (e) => {
+    setRouteFilter(e.target.value);
+  };
+  const handleEstimatedTimeFilterChange = (e) => {
+    setEstimatedTimeFilter(e.target.value);
+  };
+  const handleEstimatedCostFilterChange = (e) => {
+    setEstimatedCostFilter(e.target.value);
+  };
+  const handleDepartureTimeFilterChange = (e) => {
+    setDepartureTimeFilter(e.target.value);
+  };
+  const handleDriverFilterChange = (e) => {
+    setDriverFilter(e.target.value);
+  };
+  const handleVehicleFilterChange = (e) => {
+    setVehicleFilter(e.target.value);
+  };
+  const handleStatusFilterChange = (e) => {
+    setStatusFilter(e.target.value);
+  };
+  const handleEstimatedCostFilterMinChange = (e) => {
+    setEstimatedCostFilterMin(e.target.value);
+  };
+  const handleEstimatedCostFilterMaxChange = (e) => {
+    setEstimatedCostFilterMax(e.target.value);
+  };
+  const handleDepartureTimeFilterMinChange = (e) => {
+    setDepartureTimeFilterMin(e.target.value);
+  };
+  const handleDepartureTimeFilterMaxChange = (e) => {
+    setDepartureTimeFilterMax(e.target.value);
+  };
+  const handleShowFields = () => {
+    setShowFields(!showFields);
+  };
 
-  //count the status of the trips
+  //đếm status các trips
   let completed = 0;
   let scheduled = 0;
   let pending = 0;
@@ -102,6 +151,24 @@ function PlansManagement({
     }
   });
 
+  let EsTimeUnder2hour = 0;
+  let EsTimeUnder5hour = 0;
+  let EsTimeUnder8hour = 0;
+  let EsTimeUnder12hour = 0;
+
+  trips.forEach((trip) => {
+    let num = trip.estimatedTime.replace("hours", "");
+    if (Number(num) <= 2) {
+      EsTimeUnder2hour++;
+    } else if (Number(num) <= 5) {
+      EsTimeUnder5hour++;
+    } else if (Number(num) <= 8) {
+      EsTimeUnder8hour++;
+    } else {
+      EsTimeUnder12hour++;
+    }
+  });
+
   return (
     <div className="TripTable">
       <table>
@@ -117,34 +184,94 @@ function PlansManagement({
           </tr>
         </thead>
         <tbody className="tbd">
-          {trips.slice(0, visibleTrips).map((trip) => (
-            <tr
-              className={`tripTripUnit ${
-                selectedTrip === trip.id ? "highlight" : ""
-              }`}
-              style={
-                trip.status === "Completed"
-                  ? { backgroundColor: "#42D691" }
-                  : trip.status === "Scheduled"
-                  ? { backgroundColor: "#42AFD6" }
-                  : trip.status === "Pending"
-                  ? { backgroundColor: "grey" }
-                  : trip.status === "In progress"
-                  ? { backgroundColor: "#D6C742" }
-                  : { backgroundColor: "white" }
-              }
-              key={trip.id}
-              onClick={() => focusOn(trip.id)}
-            >
-              <td className="tripRoute">{trip.route}</td>
-              <td className="tripEstimatedTime">{trip.estimatedTime}</td>
-              <td className="tripEstimatedCost">{trip.estimatedCost}</td>
-              <td className="tripDepartureTime">{trip.departureTime}</td>
-              <td className="tripDriver">{trip.driver}</td>
-              <td className="tripVehicle">{trip.vehicle}</td>
-              <td className="tripStatus">{trip.status}</td>
-            </tr>
-          ))}
+          {trips
+            //route filter
+            .filter((trip) =>
+              typeof RouteFilter === "string"
+                ? trip.route.toLowerCase().includes(RouteFilter.toLowerCase())
+                : true
+            )
+            //estimated time filter
+            //bug
+            .filter((trip) =>
+              EstimatedTimeFilter === 1
+                ? trip.estimatedTime === 1
+                : typeof EstimatedTimeFilter === "string"
+                ? trip.estimatedTime
+                    .toString()
+                    .toLowerCase()
+                    .includes(EstimatedTimeFilter.toLowerCase())
+                : true
+            )
+            //estimated cost filter
+            .filter((trip) => {
+              const cost = parseFloat(trip.estimatedCost.replace("$", ""));
+              return (
+                (EstimatedCostFilterMin
+                  ? cost >= EstimatedCostFilterMin
+                  : true) &&
+                (EstimatedCostFilterMax ? cost <= EstimatedCostFilterMax : true)
+              );
+            })
+            //departure time filter
+            .filter(
+              (trip) =>
+                (DepartureTimeFilterMin
+                  ? trip.departureTime >= DepartureTimeFilterMin
+                  : true) &&
+                (DepartureTimeFilterMax
+                  ? trip.departureTime <= DepartureTimeFilterMax
+                  : true)
+            )
+            //driver filter
+            .filter((trip) =>
+              typeof DriverFilter === "string"
+                ? trip.driver.toLowerCase().includes(DriverFilter.toLowerCase())
+                : true
+            )
+            //vehicle filter
+            .filter((trip) =>
+              typeof VehicleFilter === "string"
+                ? trip.vehicle
+                    .toLowerCase()
+                    .includes(VehicleFilter.toLowerCase())
+                : true
+            )
+            //status filter
+            .filter((trip) =>
+              typeof StatusFilter === "string"
+                ? trip.status.toLowerCase().includes(StatusFilter.toLowerCase())
+                : true
+            )
+            .slice(0, visibleTrips)
+            .map((trip) => (
+              <tr
+                className={`tripTripUnit ${
+                  selectedTrip === trip.id ? "highlight" : ""
+                }`}
+                style={
+                  trip.status === "Completed"
+                    ? { backgroundColor: "#42D691" }
+                    : trip.status === "Scheduled"
+                    ? { backgroundColor: "#42AFD6" }
+                    : trip.status === "Pending"
+                    ? { backgroundColor: "grey" }
+                    : trip.status === "In progress"
+                    ? { backgroundColor: "#D6C742" }
+                    : { backgroundColor: "white" }
+                }
+                key={trip.id}
+                onClick={() => focusOn(trip.id)}
+              >
+                <td className="tripRoute">{trip.route}</td>
+                <td className="tripEstimatedTime">{trip.estimatedTime}</td>
+                <td className="tripEstimatedCost">{trip.estimatedCost}</td>
+                <td className="tripDepartureTime">{trip.departureTime}</td>
+                <td className="tripDriver">{trip.driver}</td>
+                <td className="tripVehicle">{trip.vehicle}</td>
+                <td className="tripStatus">{trip.status}</td>
+              </tr>
+            ))}
         </tbody>
         <div className="divider"></div>
       </table>
@@ -190,18 +317,124 @@ function PlansManagement({
           Collapse
         </Button>
       )}
+      <div className="filter">
+        <Button
+          className="animated-button fade-in-button"
+          variant="contained"
+          style={{
+            background: "linear-gradient(45deg, #3A3A3A, #1D3A4E)",
+            color: "white",
+          }}
+          onClick={handleShowFields}
+        >
+          {showFields ? "Hide trip filter" : "Trip filter 🔍"}
+        </Button>
+        {showFields && (
+          <>
+            <div className="filterRoute">
+              <input
+                placeholder="Route"
+                type="text"
+                value={RouteFilter}
+                onChange={handleRouteFilterChange}
+              />
+            </div>
+            <select
+              value={EstimatedTimeFilter}
+              onChange={(e) => setEstimatedTimeFilter(e.target.value)}
+            >
+              <option value="">Estimated Time: All </option>
+              {[...Array(12)].map((_, i) => (
+                <option key={i} value={i + 1}>
+                  Estimated Time: {i + 1} hour(s)
+                </option>
+              ))}
+            </select>
 
+            <div className="filterEstimatedCost">
+              <input
+                type="number"
+                placeholder="Min Estimated Cost"
+                value={EstimatedCostFilterMin}
+                onChange={handleEstimatedCostFilterMinChange}
+              />
+              <input
+                type="number"
+                placeholder="Max Estimated Cost"
+                value={EstimatedCostFilterMax}
+                onChange={handleEstimatedCostFilterMaxChange}
+              />
+            </div>
+            <div className="filterDepartureTime">
+              <label className="dt">Departure Time: </label>
+              <input
+                type="time"
+                placeholder="Min Time"
+                value={DepartureTimeFilterMin}
+                onChange={handleDepartureTimeFilterMinChange}
+              />
+              <label className="dt"> to </label>
+              <input
+                type="time"
+                placeholder="Max Time"
+                value={DepartureTimeFilterMax}
+                onChange={handleDepartureTimeFilterMaxChange}
+              />
+            </div>
+            <div className="filterDriver">
+              <input
+                placeholder="Driver"
+                type="text"
+                value={DriverFilter}
+                onChange={handleDriverFilterChange}
+              />
+            </div>
+            <div className="filterVehicle">
+              <input
+                placeholder="Vehicle"
+                type="text"
+                value={VehicleFilter}
+                onChange={handleVehicleFilterChange}
+              />
+            </div>
+            <select value={StatusFilter} onChange={handleStatusFilterChange}>
+              <option value="">Status: All</option>
+              <option value="Completed">Status: Completed</option>
+              <option value="Scheduled">Status: Scheduled</option>
+              <option value="Pending">Status: Pending</option>
+              <option value="In progress">Status: In progress</option>
+            </select>
+          </>
+        )}
+      </div>
+      <div className="divider"></div>
       <div className="graph">
-        <div style={{ marginBottom: "2rem" }}>
+        <div className="TimeGraph">
           <h2 style={{ fontSize: "1.5rem", marginBottom: "1rem" }}>
-            Trip Status
+            Estimated Time
           </h2>
           <PieChart
             data={[
-              { title: "Completed", value: completed, color: "#42D691" },
-              { title: "Scheduled", value: scheduled, color: "#42AFD6" },
-              { title: "Pending", value: pending, color: "grey" },
-              { title: "In progress", value: inprogress, color: "#D6C742" },
+              {
+                title: "1 - 2 hours",
+                value: EsTimeUnder2hour,
+                color: "#AB2B3A",
+              },
+              {
+                title: "3 - 5 hours",
+                value: EsTimeUnder5hour,
+                color: "#D5FF9E",
+              },
+              {
+                title: "6 - 8 hours",
+                value: EsTimeUnder8hour,
+                color: "#D4FFDB",
+              },
+              {
+                title: "9 - 12 hours",
+                value: EsTimeUnder12hour,
+                color: "#85FF91",
+              },
             ]}
             radius={40}
             lineWidth={20}
@@ -222,16 +455,25 @@ function PlansManagement({
                 fontStyle: "italic",
                 fontSize: "small",
               }}
+            ></div>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                color: "white",
+                fontStyle: "italic",
+                fontSize: "small",
+              }}
             >
               <div
                 style={{
                   width: "10px",
                   height: "10px",
-                  backgroundColor: "#42D691",
+                  backgroundColor: "#AB2B3A",
                   marginRight: "5px",
                 }}
               ></div>
-              <span>Completed</span>
+              <span>1 - 2 hours</span>
             </div>
             <div
               style={{
@@ -246,11 +488,11 @@ function PlansManagement({
                 style={{
                   width: "10px",
                   height: "10px",
-                  backgroundColor: "#42AFD6",
+                  backgroundColor: "#D5FF9E",
                   marginRight: "5px",
                 }}
               ></div>
-              <span>Scheduled</span>
+              <span>2 - 5 hours</span>
             </div>
             <div
               style={{
@@ -265,11 +507,11 @@ function PlansManagement({
                 style={{
                   width: "10px",
                   height: "10px",
-                  backgroundColor: "grey",
+                  backgroundColor: "#D4FFDB",
                   marginRight: "5px",
                 }}
               ></div>
-              <span>Pending</span>
+              <span>5 - 8 hours</span>
             </div>
             <div
               style={{
@@ -284,15 +526,16 @@ function PlansManagement({
                 style={{
                   width: "10px",
                   height: "10px",
-                  backgroundColor: "#D6C742",
+                  backgroundColor: "#85FF91",
                   marginRight: "5px",
                 }}
               ></div>
-              <span>In progress</span>
+              <span>8 - 12 hours</span>
             </div>
           </div>
         </div>
-        <div>
+
+        <div className="CostGraph">
           <h2 style={{ fontSize: "1.5rem", marginBottom: "1rem" }}>
             Trip Cost
           </h2>
@@ -389,6 +632,107 @@ function PlansManagement({
                 }}
               ></div>
               <span>&gt; $1000</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="StatusGraph" style={{ marginBottom: "2rem" }}>
+          <h2 style={{ fontSize: "1.5rem", marginBottom: "1rem" }}>
+            Trip Status
+          </h2>
+          <PieChart
+            data={[
+              { title: "Completed", value: completed, color: "#42D691" },
+              { title: "Scheduled", value: scheduled, color: "#42AFD6" },
+              { title: "Pending", value: pending, color: "grey" },
+              { title: "In progress", value: inprogress, color: "#D6C742" },
+            ]}
+            radius={40}
+            lineWidth={20}
+            paddingAngle={8}
+            label={({ dataEntry }) => `${Math.round(dataEntry.percentage)}%`}
+            labelStyle={{
+              fontSize: "5px",
+              fontFamily: "Arial",
+              fill: "white",
+            }}
+          />
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                color: "white",
+                fontStyle: "italic",
+                fontSize: "small",
+              }}
+            >
+              <div
+                style={{
+                  width: "10px",
+                  height: "10px",
+                  backgroundColor: "#42D691",
+                  marginRight: "5px",
+                }}
+              ></div>
+              <span>Completed</span>
+            </div>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                color: "white",
+                fontStyle: "italic",
+                fontSize: "small",
+              }}
+            >
+              <div
+                style={{
+                  width: "10px",
+                  height: "10px",
+                  backgroundColor: "#42AFD6",
+                  marginRight: "5px",
+                }}
+              ></div>
+              <span>Scheduled</span>
+            </div>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                color: "white",
+                fontStyle: "italic",
+                fontSize: "small",
+              }}
+            >
+              <div
+                style={{
+                  width: "10px",
+                  height: "10px",
+                  backgroundColor: "grey",
+                  marginRight: "5px",
+                }}
+              ></div>
+              <span>Pending</span>
+            </div>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                color: "white",
+                fontStyle: "italic",
+                fontSize: "small",
+              }}
+            >
+              <div
+                style={{
+                  width: "10px",
+                  height: "10px",
+                  backgroundColor: "#D6C742",
+                  marginRight: "5px",
+                }}
+              ></div>
+              <span>In progress</span>
             </div>
           </div>
         </div>
