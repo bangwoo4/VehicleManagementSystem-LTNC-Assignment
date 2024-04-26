@@ -78,43 +78,28 @@ function PlansManagement({
     setSelectedTrip(tripid === selectedTrip ? null : tripid);
     setPlaneId(selectedTrip !== tripid ? tripid : null);
   };
-  const handleRouteFilterChange = (e) => {
-    setRouteFilter(e.target.value);
-  };
-  const handleEstimatedTimeFilterChange = (e) => {
-    setEstimatedTimeFilter(e.target.value);
-  };
+
   const handleEstimatedCostFilterChange = (e) => {
     setEstimatedCostFilter(e.target.value);
   };
   const handleDepartureTimeFilterChange = (e) => {
     setDepartureTimeFilter(e.target.value);
   };
-  const handleDriverFilterChange = (e) => {
-    setDriverFilter(e.target.value);
-  };
-  const handleVehicleFilterChange = (e) => {
-    setVehicleFilter(e.target.value);
-  };
-  const handleStatusFilterChange = (e) => {
-    setStatusFilter(e.target.value);
-  };
-  const handleEstimatedCostFilterMinChange = (e) => {
-    setEstimatedCostFilterMin(e.target.value);
-  };
-  const handleEstimatedCostFilterMaxChange = (e) => {
-    setEstimatedCostFilterMax(e.target.value);
-  };
-  const handleDepartureTimeFilterMinChange = (e) => {
-    setDepartureTimeFilterMin(e.target.value);
-  };
-  const handleDepartureTimeFilterMaxChange = (e) => {
-    setDepartureTimeFilterMax(e.target.value);
-  };
-  const handleShowFields = () => {
-    setShowFields(!showFields);
-  };
 
+  const clearFilter = () => {
+    setRouteFilter([]);
+    setEstimatedTimeFilter([]);
+    setEstimatedCostFilter([]);
+    setDepartureTimeFilter([]);
+    setDriverFilter([]);
+    setVehicleFilter([]);
+    setStatusFilter([]);  
+    setEstimatedCostFilterMin("");
+    setEstimatedCostFilterMax("");
+    setDepartureTimeFilterMin("");
+    setDepartureTimeFilterMax("");
+  }
+  
   //đếm status các trips
   let completed = 0;
   let scheduled = 0;
@@ -169,6 +154,8 @@ function PlansManagement({
     }
   });
 
+
+
   return (
     <div className="TripTable">
       <table>
@@ -192,15 +179,11 @@ function PlansManagement({
                 : true
             )
             //estimated time filter
-            //bug
             .filter((trip) =>
-              EstimatedTimeFilter === 1
-                ? trip.estimatedTime === 1
-                : typeof EstimatedTimeFilter === "string"
+                typeof EstimatedTimeFilter === "string" && EstimatedTimeFilter !== ""
                 ? trip.estimatedTime
                     .toString()
-                    .toLowerCase()
-                    .includes(EstimatedTimeFilter.toLowerCase())
+                    .toLowerCase() === EstimatedTimeFilter + ' hours'
                 : true
             )
             //estimated cost filter
@@ -214,8 +197,7 @@ function PlansManagement({
               );
             })
             //departure time filter
-            .filter(
-              (trip) =>
+            .filter((trip) =>
                 (DepartureTimeFilterMin
                   ? trip.departureTime >= DepartureTimeFilterMin
                   : true) &&
@@ -317,6 +299,7 @@ function PlansManagement({
           Collapse
         </Button>
       )}
+      
       <div className="filter">
         <Button
           className="animated-button fade-in-button"
@@ -325,18 +308,19 @@ function PlansManagement({
             background: "linear-gradient(45deg, #3A3A3A, #1D3A4E)",
             color: "white",
           }}
-          onClick={handleShowFields}
+          onClick={() =>setShowFields(!showFields)}
         >
           {showFields ? "Hide trip filter" : "Trip filter 🔍"}
         </Button>
         {showFields && (
-          <>
+          <div>
+            <button className="clear-filter" onClick={() => clearFilter()}>Clear filter</button>
             <div className="filterRoute">
               <input
                 placeholder="Route"
                 type="text"
                 value={RouteFilter}
-                onChange={handleRouteFilterChange}
+                onChange={(e) => setRouteFilter(e.target.value)}
               />
             </div>
             <select
@@ -350,19 +334,18 @@ function PlansManagement({
                 </option>
               ))}
             </select>
-
             <div className="filterEstimatedCost">
               <input
                 type="number"
                 placeholder="Min Estimated Cost"
                 value={EstimatedCostFilterMin}
-                onChange={handleEstimatedCostFilterMinChange}
+                onChange={(e) => setEstimatedCostFilterMin(e.target.value)}
               />
               <input
                 type="number"
                 placeholder="Max Estimated Cost"
                 value={EstimatedCostFilterMax}
-                onChange={handleEstimatedCostFilterMaxChange}
+                onChange={(e) => setEstimatedCostFilterMax(e.target.value)}
               />
             </div>
             <div className="filterDepartureTime">
@@ -371,14 +354,14 @@ function PlansManagement({
                 type="time"
                 placeholder="Min Time"
                 value={DepartureTimeFilterMin}
-                onChange={handleDepartureTimeFilterMinChange}
+                onChange={(e) => setDepartureTimeFilterMin(e.target.value)}
               />
               <label className="dt"> to </label>
               <input
                 type="time"
                 placeholder="Max Time"
                 value={DepartureTimeFilterMax}
-                onChange={handleDepartureTimeFilterMaxChange}
+                onChange={(e) => setDepartureTimeFilterMax(e.target.value)}
               />
             </div>
             <div className="filterDriver">
@@ -386,7 +369,7 @@ function PlansManagement({
                 placeholder="Driver"
                 type="text"
                 value={DriverFilter}
-                onChange={handleDriverFilterChange}
+                onChange={(e) => setDriverFilter(e.target.value)}
               />
             </div>
             <div className="filterVehicle">
@@ -394,17 +377,17 @@ function PlansManagement({
                 placeholder="Vehicle"
                 type="text"
                 value={VehicleFilter}
-                onChange={handleVehicleFilterChange}
+                onChange={(e) => setVehicleFilter(e.target.value)}
               />
             </div>
-            <select value={StatusFilter} onChange={handleStatusFilterChange}>
+            <select value={StatusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
               <option value="">Status: All</option>
               <option value="Completed">Status: Completed</option>
               <option value="Scheduled">Status: Scheduled</option>
               <option value="Pending">Status: Pending</option>
               <option value="In progress">Status: In progress</option>
             </select>
-          </>
+          </div>
         )}
       </div>
       <div className="divider"></div>

@@ -12,7 +12,6 @@ function DriversManagement({ fetchDrivers, setFetchDrivers }) {
   const [searchTerm, setSearchTerm] = useState("");
   //filter
   const [ageFilter, setAgeFilter] = useState("");
-  const [licenseFilter, setLicenseFilter] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
   //filter age
   const [minAgeFilter, setMinAgeFilter] = useState("");
@@ -20,7 +19,6 @@ function DriversManagement({ fetchDrivers, setFetchDrivers }) {
   //filter license
   const [selectedLicenseType, setSelectedLicenseType] = useState("");
   //notification
-  const [notification, setNotification] = useState("");
   const [showNotification, setShowNotification] = useState(false);
   const [message, setMessage] = useState("");
 
@@ -48,30 +46,8 @@ function DriversManagement({ fetchDrivers, setFetchDrivers }) {
     setSelectedDriverId((prevId) => (prevId === driverId ? null : driverId));
   };
 
-  const handleSearch = (event) => {
-    setSearchTerm(event.target.value);
-  };
-
-  const handleAgeFilterChange = (event) => {
-    setAgeFilter(event.target.value);
-  };
-
-  const handleLicenseFilterChange = (event) => {
-    setLicenseFilter(event.target.value);
-  };
-
-  const handleStatusFilterChange = (event) => {
-    setStatusFilter(event.target.value);
-  };
-
-  const handleMinAgeFilterChange = (event) => {
-    setMinAgeFilter(event.target.value);
-  };
-  const handleMaxAgeFilterChange = (event) => {
-    setMaxAgeFilter(event.target.value);
-  };
-  const handleLicenseTypeChange = (event) => {
-    setSelectedLicenseType(event.target.value);
+  const handleAgeFilterChange = (e) => {
+    setAgeFilter(e.target.value);
   };
 
   /*background-image: linear-gradient(to top, #9890e3 0%, #b1f4cf 100%);*/
@@ -92,6 +68,8 @@ function DriversManagement({ fetchDrivers, setFetchDrivers }) {
     whiteSpace: "nowrap",
   };
 
+
+
   return (
     <div>
       <h2 className="DriverManagement">Driver Management</h2>
@@ -109,7 +87,7 @@ function DriversManagement({ fetchDrivers, setFetchDrivers }) {
               <input
                 type="text"
                 value={searchTerm}
-                onChange={handleSearch}
+                onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder="🔎 Search for driver..."
                 className="searchInput"
               />
@@ -126,21 +104,21 @@ function DriversManagement({ fetchDrivers, setFetchDrivers }) {
                 <input
                   type="number"
                   value={minAgeFilter}
-                  onChange={handleMinAgeFilterChange}
+                  onChange={(e) => setMinAgeFilter(e.target.value)}
                   placeholder="Min Age"
                   className="searchInput"
                 />
                 <input
                   type="number"
                   value={maxAgeFilter}
-                  onChange={handleMaxAgeFilterChange}
+                  onChange={(e) => setMaxAgeFilter(e.target.value)}
                   placeholder="Max Age"
                   className="searchInput"
                 />
               </div>
               <select
                 value={selectedLicenseType}
-                onChange={handleLicenseTypeChange}
+                onChange={(e) => setSelectedLicenseType(e.target.value)}
                 className="searchInput"
               >
                 <option value="">License Type: All</option>
@@ -150,7 +128,7 @@ function DriversManagement({ fetchDrivers, setFetchDrivers }) {
               </select>
               <select
                 value={statusFilter}
-                onChange={handleStatusFilterChange}
+                onChange={(e) => setStatusFilter(e.target.value)}
                 className="searchInput"
               >
                 <option value="">Status: All</option>
@@ -174,7 +152,6 @@ function DriversManagement({ fetchDrivers, setFetchDrivers }) {
               driver.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
               (!minAgeFilter || driver.age >= parseInt(minAgeFilter)) && // Filter by minimum age
               (!maxAgeFilter || driver.age <= parseInt(maxAgeFilter)) && // Filter by maximum age
-              (!licenseFilter || driver.licenseType === licenseFilter) &&
               (!statusFilter || driver.status === statusFilter) && // Filter by status
               (!selectedLicenseType ||
                 driver.licenseType === selectedLicenseType) // Filter by license type
@@ -258,8 +235,8 @@ function DriversManagement({ fetchDrivers, setFetchDrivers }) {
                 <li>Status: {driver.status}</li>
                 <button
                   className="HistoryButton"
-                  onClick={(event) => {
-                    event.stopPropagation();
+                  onClick={(e) => {
+                    e.stopPropagation();
                     setShowNotification(true);
                     setMessage("Showing all driver's driving history");
                   }}

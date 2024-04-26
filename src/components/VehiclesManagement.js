@@ -40,29 +40,8 @@ function VehiclesManagement({ setVehicleId, fetchVehicles, setFetchVehicles }) {
   }, [fetchVehicles, setFetchVehicles]);
 
   //FUNCTION
-  const handleSearch = (event) => {
-    setSearchTerm(event.target.value);
-  };
-  const handleSizeFilterChange = (event) => {
-    setSizeFilter(event.target.value);
-  };
-  const handlePayloadFilterChange = (event) => {
-    setPayloadFilter(event.target.value);
-  };
-  const handleFuelFilterChange = (event) => {
-    setFuelFilter(event.target.value);
-  };
-  const handleStatusFilterChange = (event) => {
-    setStatusFilter(event.target.value);
-  };
-  const handleLicensePlateFilterChange = (event) => {
-    setLicensePlateFilter(event.target.value);
-  };
-  const handleMinPayloadFilterChange = (event) => {
-    setMinPayloadFilter(event.target.value);
-  };
-  const handleMaxPayloadFilterChange = (event) => {
-    setMaxPayloadFilter(event.target.value);
+  const handlePayloadFilterChange = (e) => {
+    setPayloadFilter(e.target.value);
   };
 
   const showAllBtnStyle = {
@@ -104,13 +83,13 @@ function VehiclesManagement({ setVehicleId, fetchVehicles, setFetchVehicles }) {
               <input
                 type="text"
                 value={searchTerm}
-                onChange={handleSearch}
+                onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder="🔎 Search for vehicle..."
                 className="searchInput"
               />
               <select
                 value={sizeFilter}
-                onChange={handleSizeFilterChange}
+                onChange={(e) => setSizeFilter(e.target.value)}
                 className="searchInput"
               >
                 <option value="">Size: All</option>
@@ -130,31 +109,31 @@ function VehiclesManagement({ setVehicleId, fetchVehicles, setFetchVehicles }) {
                 <input
                   type="number"
                   value={minPayloadFilter}
-                  onChange={handleMinPayloadFilterChange}
+                  onChange={(e) => setMinPayloadFilter(e.target.value)}
                   placeholder="Min Payload"
                   className="searchInput"
                 />
                 <input
                   type="number"
                   value={maxPayloadFilter}
-                  onChange={handleMaxPayloadFilterChange}
+                  onChange={(e) => setMaxPayloadFilter(e.target.value)}
                   placeholder="Max Payload"
                   className="searchInput"
                 />
               </div>
               <select
                 value={fuelFilter}
-                onChange={handleFuelFilterChange}
+                onChange={(e) => setFuelFilter(e.target.value)}
                 className="searchInput"
               >
                 <option value="">Fuel Type: All</option>
                 <option value="Gasoline">Fuel Type: Gasoline</option>
                 <option value="Diesel">Fuel Type: Diesel</option>
-                <option value="Electric">Fuel Type: Electric</option>
+                <option value="Electricity">Fuel Type: Electricity</option>
               </select>
               <select
                 value={statusFilter}
-                onChange={handleStatusFilterChange}
+                onChange={(e) => setStatusFilter(e.target.value)}
                 className="searchInput"
               >
                 <option value="">Status: All</option>
@@ -165,7 +144,7 @@ function VehiclesManagement({ setVehicleId, fetchVehicles, setFetchVehicles }) {
               <input
                 type="text"
                 value={licensePlateFilter}
-                onChange={handleLicensePlateFilterChange}
+                onChange={(e) => setLicensePlateFilter(e.target.value)}
                 placeholder="License Plate"
                 className="searchInput"
               />
