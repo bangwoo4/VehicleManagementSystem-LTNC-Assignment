@@ -9,7 +9,7 @@ import {
   deleteDoc,
   getDocs,
   where,
-  query
+  query,
 } from "firebase/firestore";
 import { firebase } from "../firebase";
 
@@ -403,17 +403,30 @@ function Actions({
 
     if (!tripData) return;
 
-    const vehicelSnapshot = await getDoc(doc(firebase, "vehicles", tripData.vehicleId));
+    const vehicelSnapshot = await getDoc(
+      doc(firebase, "vehicles", tripData.vehicleId)
+    );
     const vehicleData = vehicelSnapshot.data();
 
     const snapshot = await getDocs(
-      query(collection(firebase, "drivers"), where("licenseType", "==", vehicleData.payload < 500 ? "A" : vehicleData.payload < 1000 ? "B" : "C"))
+      query(
+        collection(firebase, "drivers"),
+        where(
+          "licenseType",
+          "==",
+          vehicleData.payload < 500
+            ? "A"
+            : vehicleData.payload < 1000
+            ? "B"
+            : "C"
+        )
+      )
     );
     const temp = snapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
     }));
-    
+
     const listDriver = [];
     if (temp && temp.length > 0) {
       for (let i = 0; i < temp.length; ++i) {
@@ -509,9 +522,19 @@ function Actions({
         return;
       }
     }
-    
-    if (newDriver.age <= 18 || newDriver.age >= 75 || newDriver.phone.length !== 10) return;
-    newDriver.phone = newDriver.phone.slice(0, 3) + '-' + newDriver.phone.slice(3, 6) + '-' + newDriver.phone.slice(6)
+
+    if (
+      newDriver.age <= 18 ||
+      newDriver.age >= 75 ||
+      newDriver.phone.length !== 10
+    )
+      return;
+    newDriver.phone =
+      newDriver.phone.slice(0, 3) +
+      "-" +
+      newDriver.phone.slice(3, 6) +
+      "-" +
+      newDriver.phone.slice(6);
     //ADD TO DATA BASE
     try {
       await addDoc(collection(firebase, "drivers"), newDriver);
@@ -573,6 +596,8 @@ function Actions({
         >
           Delete plan
         </Button>
+        <hr></hr>
+
         <Button
           variant="contained"
           style={{
@@ -597,6 +622,7 @@ function Actions({
         >
           Choose driver
         </Button>
+        <hr></hr>
         <Button
           variant="contained"
           style={{
@@ -621,6 +647,7 @@ function Actions({
         >
           End trip
         </Button>
+        <hr></hr>
         <Button
           variant="contained"
           style={{
@@ -945,8 +972,7 @@ function Actions({
                   : "input-field"
               }
             />
-            {newDriver.phone.length !== 10 &&
-            newDriver.phone !== "" ? (
+            {newDriver.phone.length !== 10 && newDriver.phone !== "" ? (
               <small className="error-message">
                 *Phone number must be 10 num*
               </small>

@@ -93,13 +93,13 @@ function PlansManagement({
     setDepartureTimeFilter([]);
     setDriverFilter([]);
     setVehicleFilter([]);
-    setStatusFilter([]);  
+    setStatusFilter([]);
     setEstimatedCostFilterMin("");
     setEstimatedCostFilterMax("");
     setDepartureTimeFilterMin("");
     setDepartureTimeFilterMax("");
-  }
-  
+  };
+
   //đếm status các trips
   let completed = 0;
   let scheduled = 0;
@@ -154,8 +154,6 @@ function PlansManagement({
     }
   });
 
-
-
   return (
     <div className="TripTable">
       <table>
@@ -180,10 +178,10 @@ function PlansManagement({
             )
             //estimated time filter
             .filter((trip) =>
-                typeof EstimatedTimeFilter === "string" && EstimatedTimeFilter !== ""
-                ? trip.estimatedTime
-                    .toString()
-                    .toLowerCase() === EstimatedTimeFilter + ' hours'
+              typeof EstimatedTimeFilter === "string" &&
+              EstimatedTimeFilter !== ""
+                ? trip.estimatedTime.toString().toLowerCase() ===
+                  EstimatedTimeFilter + " hours"
                 : true
             )
             //estimated cost filter
@@ -197,7 +195,8 @@ function PlansManagement({
               );
             })
             //departure time filter
-            .filter((trip) =>
+            .filter(
+              (trip) =>
                 (DepartureTimeFilterMin
                   ? trip.departureTime >= DepartureTimeFilterMin
                   : true) &&
@@ -299,7 +298,7 @@ function PlansManagement({
           Collapse
         </Button>
       )}
-      
+
       <div className="filter">
         <Button
           className="animated-button fade-in-button"
@@ -307,14 +306,15 @@ function PlansManagement({
           style={{
             background: "linear-gradient(45deg, #3A3A3A, #1D3A4E)",
             color: "white",
+            marginBottom: "0.5rem",
           }}
-          onClick={() =>setShowFields(!showFields)}
+          onClick={() => setShowFields(!showFields)}
         >
           {showFields ? "Hide trip filter" : "Trip filter 🔍"}
         </Button>
+
         {showFields && (
           <div>
-            <button className="clear-filter" onClick={() => clearFilter()}>Clear filter</button>
             <div className="filterRoute">
               <input
                 placeholder="Route"
@@ -341,6 +341,7 @@ function PlansManagement({
                 value={EstimatedCostFilterMin}
                 onChange={(e) => setEstimatedCostFilterMin(e.target.value)}
               />
+
               <input
                 type="number"
                 placeholder="Max Estimated Cost"
@@ -348,6 +349,7 @@ function PlansManagement({
                 onChange={(e) => setEstimatedCostFilterMax(e.target.value)}
               />
             </div>
+
             <div className="filterDepartureTime">
               <label className="dt">Departure Time: </label>
               <input
@@ -380,13 +382,19 @@ function PlansManagement({
                 onChange={(e) => setVehicleFilter(e.target.value)}
               />
             </div>
-            <select value={StatusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
+            <select
+              value={StatusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+            >
               <option value="">Status: All</option>
               <option value="Completed">Status: Completed</option>
               <option value="Scheduled">Status: Scheduled</option>
               <option value="Pending">Status: Pending</option>
               <option value="In progress">Status: In progress</option>
             </select>
+            <button className="clear-filter" onClick={() => clearFilter()}>
+              Clear filter
+            </button>
           </div>
         )}
       </div>

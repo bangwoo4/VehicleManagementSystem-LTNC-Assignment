@@ -67,13 +67,19 @@ function DriversManagement({ fetchDrivers, setFetchDrivers }) {
     boxShadow: "0px 8px 15px rgba(0, 0, 0, 0.1)",
     whiteSpace: "nowrap",
   };
-
-
+  const clearFilters = () => {
+    setSearchTerm("");
+    setAgeFilter("");
+    setStatusFilter("");
+    setMinAgeFilter("");
+    setMaxAgeFilter("");
+    setSelectedLicenseType("");
+  };
 
   return (
     <div>
       <h2 className="DriverManagement">Driver Management</h2>
-      <div>
+      <div className="Block">
         <h3 className="dl">
           {" "}
           <button
@@ -135,6 +141,9 @@ function DriversManagement({ fetchDrivers, setFetchDrivers }) {
                 <option value="Ready">Status: Ready</option>
                 <option value="Not ready">Status: Not ready</option>
               </select>
+              <button className="clear-filter2" onClick={() => clearFilters()}>
+                Clear filter
+              </button>
             </div>
           )}
         </h3>

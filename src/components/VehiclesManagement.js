@@ -65,11 +65,21 @@ function VehiclesManagement({ setVehicleId, fetchVehicles, setFetchVehicles }) {
     setSelectedVehicle(vehicleId === selectedVehicle ? null : vehicleId);
     setVehicleId(selectedVehicle !== vehicleId ? vehicleId : null);
   };
+  const clearFilters = () => {
+    setSearchTerm("");
+    setSizeFilter("");
+    setPayloadFilter("");
+    setFuelFilter("");
+    setStatusFilter("");
+    setLicensePlateFilter("");
+    setMinPayloadFilter("");
+    setMaxPayloadFilter("");
+  };
 
   return (
     <div>
       <h2 className="VehicleManagement">Vehicle Management</h2>
-      <div>
+      <div className="Block">
         <h3 className="vl">
           {" "}
           <button
@@ -148,6 +158,9 @@ function VehiclesManagement({ setVehicleId, fetchVehicles, setFetchVehicles }) {
                 placeholder="License Plate"
                 className="searchInput"
               />
+              <button className="clear-filter2" onClick={() => clearFilters()}>
+                Clear filter
+              </button>
             </div>
           )}
         </h3>
