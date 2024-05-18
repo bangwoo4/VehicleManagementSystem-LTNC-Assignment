@@ -1122,3 +1122,14 @@ hr {
   /*khoảng cách các nút bên tab Actions*/
   margin-bottom: 5px;
 }
+
+
+.scrollable-div {
+  width: 100%;
+  height: 100%; /* Chiều cao của div */
+  overflow-y: auto; /* Cuộn theo chiều dọc */
+  overflow-x: hidden; /* Cuộn theo chiều ngang nếu cần */
+  border: solid #ccc; /* Viền để dễ quan sát */
+  margin-top: 8px; /* Padding bên trong div */
+  box-sizing: border-box; /* Đảm bảo padding không làm thay đổi kích thước tổng của div */
+}

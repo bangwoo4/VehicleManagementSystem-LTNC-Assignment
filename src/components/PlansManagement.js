@@ -209,6 +209,7 @@ function PlansManagement({
         : true
     )
 
+    
   return (
     <div className="TripTable">
       <table>

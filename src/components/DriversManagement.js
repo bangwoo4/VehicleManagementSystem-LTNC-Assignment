@@ -67,7 +67,7 @@ function DriversManagement({ fetchDrivers, setFetchDrivers }) {
     boxShadow: "0px 8px 15px rgba(0, 0, 0, 0.1)",
     whiteSpace: "nowrap",
   };
-  
+
   const clearFilters = () => {
     setSearchTerm("");
     setAgeFilter("");
@@ -76,6 +76,154 @@ function DriversManagement({ fetchDrivers, setFetchDrivers }) {
     setMaxAgeFilter("");
     setSelectedLicenseType("");
   };
+
+  let driverHistory = [
+    {STT: 1,
+      departureTime: "08:45",
+      driver: "John Doe",
+      driverId: "0crghHNSW7DwaUGrQKWj",
+      estimatedCost: "$90",
+      estimatedTime: "12 hours",
+      id: "1i6RM79jYQ5UaKokIivo",
+      route: "LT-PH",
+      status: "Completed",
+      vehicle: "Car",
+      vehicleId: "0oIrPgti3MDFMH86Sgz3",
+    },
+    {STT: 1,
+      departureTime: "08:45",
+      driver: "John Doe",
+      driverId: "0crghHNSW7DwaUGrQKWj",
+      estimatedCost: "$90",
+      estimatedTime: "12 hours",
+      id: "1i6RM79jYQ5UaKokIivo",
+      route: "LT-PH",
+      status: "Completed",
+      vehicle: "Car",
+      vehicleId: "0oIrPgti3MDFMH86Sgz3",
+    },
+    {STT: 1,
+      departureTime: "08:45",
+      driver: "John Doe",
+      driverId: "0crghHNSW7DwaUGrQKWj",
+      estimatedCost: "$90",
+      estimatedTime: "12 hours",
+      id: "1i6RM79jYQ5UaKokIivo",
+      route: "LT-PH",
+      status: "Completed",
+      vehicle: "Car",
+      vehicleId: "0oIrPgti3MDFMH86Sgz3",
+    },
+    {STT: 1,
+      departureTime: "08:45",
+      driver: "John Doe",
+      driverId: "0crghHNSW7DwaUGrQKWj",
+      estimatedCost: "$90",
+      estimatedTime: "12 hours",
+      id: "1i6RM79jYQ5UaKokIivo",
+      route: "LT-PH",
+      status: "Completed",
+      vehicle: "Car",
+      vehicleId: "0oIrPgti3MDFMH86Sgz3",
+    },
+    {STT: 1,
+      departureTime: "08:45",
+      driver: "John Doe",
+      driverId: "0crghHNSW7DwaUGrQKWj",
+      estimatedCost: "$90",
+      estimatedTime: "12 hours",
+      id: "1i6RM79jYQ5UaKokIivo",
+      route: "LT-PH",
+      status: "Completed",
+      vehicle: "Car",
+      vehicleId: "0oIrPgti3MDFMH86Sgz3",
+    },
+    {STT: 1,
+      departureTime: "08:45",
+      driver: "John Doe",
+      driverId: "0crghHNSW7DwaUGrQKWj",
+      estimatedCost: "$90",
+      estimatedTime: "12 hours",
+      id: "1i6RM79jYQ5UaKokIivo",
+      route: "LT-PH",
+      status: "Completed",
+      vehicle: "Car",
+      vehicleId: "0oIrPgti3MDFMH86Sgz3",
+    },
+    {STT: 1,
+      departureTime: "08:45",
+      driver: "John Doe",
+      driverId: "0crghHNSW7DwaUGrQKWj",
+      estimatedCost: "$90",
+      estimatedTime: "12 hours",
+      id: "1i6RM79jYQ5UaKokIivo",
+      route: "LT-PH",
+      status: "Completed",
+      vehicle: "Car",
+      vehicleId: "0oIrPgti3MDFMH86Sgz3",
+    },
+    {STT: 1,
+      departureTime: "08:45",
+      driver: "John Doe",
+      driverId: "0crghHNSW7DwaUGrQKWj",
+      estimatedCost: "$90",
+      estimatedTime: "12 hours",
+      id: "1i6RM79jYQ5UaKokIivo",
+      route: "LT-PH",
+      status: "Completed",
+      vehicle: "Car",
+      vehicleId: "0oIrPgti3MDFMH86Sgz3",
+    },
+    {STT: 1,
+      departureTime: "08:45",
+      driver: "John Doe",
+      driverId: "0crghHNSW7DwaUGrQKWj",
+      estimatedCost: "$90",
+      estimatedTime: "12 hours",
+      id: "1i6RM79jYQ5UaKokIivo",
+      route: "LT-PH",
+      status: "Completed",
+      vehicle: "Car",
+      vehicleId: "0oIrPgti3MDFMH86Sgz3",
+    },
+    {STT: 1,
+      departureTime: "08:45",
+      driver: "John Doe",
+      driverId: "0crghHNSW7DwaUGrQKWj",
+      estimatedCost: "$90",
+      estimatedTime: "12 hours",
+      id: "1i6RM79jYQ5UaKokIivo",
+      route: "LT-PH",
+      status: "Completed",
+      vehicle: "Car",
+      vehicleId: "0oIrPgti3MDFMH86Sgz3",
+    },
+    {STT: 1,
+      departureTime: "08:45",
+      driver: "John Doe",
+      driverId: "0crghHNSW7DwaUGrQKWj",
+      estimatedCost: "$90",
+      estimatedTime: "12 hours",
+      id: "1i6RM79jYQ5UaKokIivo",
+      route: "LT-PH",
+      status: "Completed",
+      vehicle: "Car",
+      vehicleId: "0oIrPgti3MDFMH86Sgz3",
+    },
+    {STT: 1,
+      departureTime: "08:45",
+      driver: "John Doe",
+      driverId: "0crghHNSW7DwaUGrQKWj",
+      estimatedCost: "$90",
+      estimatedTime: "12 hours",
+      id: "1i6RM79jYQ5UaKokIivo",
+      route: "LT-PH",
+      status: "Completed",
+      vehicle: "Car",
+      vehicleId: "0oIrPgti3MDFMH86Sgz3",
+    }
+  ];
+
 
   return (
     <div>
@@ -244,11 +392,13 @@ function DriversManagement({ fetchDrivers, setFetchDrivers }) {
                 <li>Address: {driver.address ? driver.address : "unknown"}</li>
                 <li>Status: {driver.status}</li>
                 <button
+                  id="HistoryButton"
                   className="HistoryButton"
                   onClick={(e) => {
                     e.stopPropagation();
                     setShowNotification(true);
-                    setMessage("Showing all driver's driving history");
+                    setMessage("Driver's driving history is not available");
+                    //hàm này để in ra cái bảng showDrivingHistoryTable();
                   }}
                 >
                   Show driver's driving history
@@ -265,10 +415,41 @@ function DriversManagement({ fetchDrivers, setFetchDrivers }) {
               class="x"
               onClick={() => {
                 setShowNotification(false);
-                setMessage("");
               }}
             ></a>
-            <span>{"🔔 " + message}</span>
+            <div className="scrollable-div">
+              <table border="1">
+                <thead>
+                  <tr className="TripValueName">
+                    <th width="18%">Route</th>
+                    <th width="12%">Estimated Time</th>
+                    <th width="10%">Estimated Cost</th>
+                    <th width="10%">Departure Time</th>
+                    <th width="19%">Driver</th>
+                    <th width="19%">Vehicle</th>
+                    <th width="12%">Status</th>
+                  </tr>
+                </thead>
+                <tbody className="tbd">
+                  {driverHistory
+                    .map((trip) => (
+                      <tr
+                        className={"tripTripUnit"}
+                        style={{ backgroundColor: "#42D691" }}
+                        key={trip.id}
+                      >
+                        <td className="tripRoute">{trip.route}</td>
+                        <td className="tripEstimatedTime">{trip.estimatedTime}</td>
+                        <td className="tripEstimatedCost">{trip.estimatedCost}</td>
+                        <td className="tripDepartureTime">{trip.departureTime}</td>
+                        <td className="tripDriver">{trip.driver}</td>
+                        <td className="tripVehicle">{trip.vehicle}</td>
+                        <td className="tripStatus">{trip.status}</td>
+                      </tr>
+                    ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       )}
