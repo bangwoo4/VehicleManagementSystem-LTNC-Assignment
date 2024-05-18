@@ -1123,13 +1123,46 @@ hr {
   margin-bottom: 5px;
 }
 
-
+/*css cho bảng driving history*/
 .scrollable-div {
   width: 100%;
-  height: 100%; /* Chiều cao của div */
-  overflow-y: auto; /* Cuộn theo chiều dọc */
-  overflow-x: hidden; /* Cuộn theo chiều ngang nếu cần */
-  border: solid #ccc; /* Viền để dễ quan sát */
-  margin-top: 8px; /* Padding bên trong div */
-  box-sizing: border-box; /* Đảm bảo padding không làm thay đổi kích thước tổng của div */
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  border: solid 5px #ccc;
+  box-sizing: border-box;
+  border-radius: 10px; /* Bo tròn viền */
+  transition: all 0.3s ease; /* Thêm hoạt ảnh */
+  margin-top: 8px;
+}
+
+.scrollable-div:hover {
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* Thêm bóng khi di chuột qua */
+}
+
+.scrollable-div table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.scrollable-div table th,
+.scrollable-div table td {
+  padding: 6px;
+  border: solid 1px #ddd;
+  text-align: left;
+}
+
+.scrollable-div table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+/*test*/
+.scrollable-div table td:first-child {
+  display: flex;
+  align-items: center;
+}
+
+.scrollable-div table td:first-child:before {
+  content: "🛣️";
+  margin-right: 10px;
 }

@@ -279,12 +279,35 @@ function Actions({
       showPopup("Can't delete because plan is in progress");
       return;
     }
-    const docRef = doc(firebase, "plans", Planid);
-    deleteDoc(docRef)
+    const planRef = doc(firebase, "plans", Planid);
+    deleteDoc(planRef)
       .then(() => {
         showPopup("Deleted plan successfully!");
         setFetchPlans(true);
         setPlaneId(null);
+      })
+      .catch((error) => {
+        console.error("Error deleting data:", error);
+      });
+    if (tripData.status !== "Completed") return;
+    const historySnapshot = await getDocs(
+      query(
+        collection(firebase, "drivers", tripData.driverId, "history"),
+        where(
+          "STT",
+          "==",
+          tripData.STT
+        )
+      )
+    );
+    const historyData = historySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    const historyRef = doc(firebase, "drivers", tripData.driverId, "history", historyData[0].id);
+    deleteDoc(historyRef)
+      .then(() => {
+        console.log("Success!");
       })
       .catch((error) => {
         console.error("Error deleting data:", error);
@@ -384,9 +407,11 @@ function Actions({
 
     vehicleData.status = "Inactive";
     driverData.status = "Ready";
+    
 
     await updateDoc(doc(firebase, "vehicles", tripData.vehicleId), vehicleData);
     await updateDoc(doc(firebase, "drivers", tripData.driverId), driverData);
+    await addDoc(collection(firebase, "drivers", tripData.driverId, "history"), tripData);
     await updateDoc(doc(firebase, "plans", Planid), tripData);
     showPopup("Trip end!");
     setFetchDrivers(true);

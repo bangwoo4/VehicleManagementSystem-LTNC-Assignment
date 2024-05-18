@@ -2,12 +2,14 @@ import React, { useState, useEffect } from "react";
 import Button from "@mui/material/Button";
 import { collection, getDocs } from "firebase/firestore";
 import { firebase } from "../firebase";
+import { async } from "@firebase/util";
 
 function DriversManagement({ fetchDrivers, setFetchDrivers }) {
   const [drivers, setData] = useState([]);
   const [selectedDriverId, setSelectedDriverId] = useState(null);
   const [showAllDrivers, setShowAllDrivers] = useState(false);
   const [showSreach, setShowSreach] = useState(false);
+  const [history, setHistory] = useState([]);
   //search
   const [searchTerm, setSearchTerm] = useState("");
   //filter
@@ -19,8 +21,7 @@ function DriversManagement({ fetchDrivers, setFetchDrivers }) {
   //filter license
   const [selectedLicenseType, setSelectedLicenseType] = useState("");
   //notification
-  const [showNotification, setShowNotification] = useState(false);
-  const [message, setMessage] = useState("");
+  const [showTable, setShowTable] = useState(false);
 
   // GET DATA
   useEffect(() => {
@@ -41,6 +42,15 @@ function DriversManagement({ fetchDrivers, setFetchDrivers }) {
       setFetchDrivers(false);
     }
   }, [fetchDrivers, setFetchDrivers]);
+
+  const fetchHistory = async (id) => {
+    const querySnapshot = await getDocs(collection(firebase, "drivers", id, "history"));
+    const todoData = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    setHistory(todoData);
+  };
 
   const toggleShowInfo = (driverId) => {
     setSelectedDriverId((prevId) => (prevId === driverId ? null : driverId));
@@ -77,154 +87,8 @@ function DriversManagement({ fetchDrivers, setFetchDrivers }) {
     setSelectedLicenseType("");
   };
 
-  let driverHistory = [
-    {STT: 1,
-      departureTime: "08:45",
-      driver: "John Doe",
-      driverId: "0crghHNSW7DwaUGrQKWj",
-      estimatedCost: "$90",
-      estimatedTime: "12 hours",
-      id: "1i6RM79jYQ5UaKokIivo",
-      route: "LT-PH",
-      status: "Completed",
-      vehicle: "Car",
-      vehicleId: "0oIrPgti3MDFMH86Sgz3",
-    },
-    {STT: 1,
-      departureTime: "08:45",
-      driver: "John Doe",
-      driverId: "0crghHNSW7DwaUGrQKWj",
-      estimatedCost: "$90",
-      estimatedTime: "12 hours",
-      id: "1i6RM79jYQ5UaKokIivo",
-      route: "LT-PH",
-      status: "Completed",
-      vehicle: "Car",
-      vehicleId: "0oIrPgti3MDFMH86Sgz3",
-    },
-    {STT: 1,
-      departureTime: "08:45",
-      driver: "John Doe",
-      driverId: "0crghHNSW7DwaUGrQKWj",
-      estimatedCost: "$90",
-      estimatedTime: "12 hours",
-      id: "1i6RM79jYQ5UaKokIivo",
-      route: "LT-PH",
-      status: "Completed",
-      vehicle: "Car",
-      vehicleId: "0oIrPgti3MDFMH86Sgz3",
-    },
-    {STT: 1,
-      departureTime: "08:45",
-      driver: "John Doe",
-      driverId: "0crghHNSW7DwaUGrQKWj",
-      estimatedCost: "$90",
-      estimatedTime: "12 hours",
-      id: "1i6RM79jYQ5UaKokIivo",
-      route: "LT-PH",
-      status: "Completed",
-      vehicle: "Car",
-      vehicleId: "0oIrPgti3MDFMH86Sgz3",
-    },
-    {STT: 1,
-      departureTime: "08:45",
-      driver: "John Doe",
-      driverId: "0crghHNSW7DwaUGrQKWj",
-      estimatedCost: "$90",
-      estimatedTime: "12 hours",
-      id: "1i6RM79jYQ5UaKokIivo",
-      route: "LT-PH",
-      status: "Completed",
-      vehicle: "Car",
-      vehicleId: "0oIrPgti3MDFMH86Sgz3",
-    },
-    {STT: 1,
-      departureTime: "08:45",
-      driver: "John Doe",
-      driverId: "0crghHNSW7DwaUGrQKWj",
-      estimatedCost: "$90",
-      estimatedTime: "12 hours",
-      id: "1i6RM79jYQ5UaKokIivo",
-      route: "LT-PH",
-      status: "Completed",
-      vehicle: "Car",
-      vehicleId: "0oIrPgti3MDFMH86Sgz3",
-    },
-    {STT: 1,
-      departureTime: "08:45",
-      driver: "John Doe",
-      driverId: "0crghHNSW7DwaUGrQKWj",
-      estimatedCost: "$90",
-      estimatedTime: "12 hours",
-      id: "1i6RM79jYQ5UaKokIivo",
-      route: "LT-PH",
-      status: "Completed",
-      vehicle: "Car",
-      vehicleId: "0oIrPgti3MDFMH86Sgz3",
-    },
-    {STT: 1,
-      departureTime: "08:45",
-      driver: "John Doe",
-      driverId: "0crghHNSW7DwaUGrQKWj",
-      estimatedCost: "$90",
-      estimatedTime: "12 hours",
-      id: "1i6RM79jYQ5UaKokIivo",
-      route: "LT-PH",
-      status: "Completed",
-      vehicle: "Car",
-      vehicleId: "0oIrPgti3MDFMH86Sgz3",
-    },
-    {STT: 1,
-      departureTime: "08:45",
-      driver: "John Doe",
-      driverId: "0crghHNSW7DwaUGrQKWj",
-      estimatedCost: "$90",
-      estimatedTime: "12 hours",
-      id: "1i6RM79jYQ5UaKokIivo",
-      route: "LT-PH",
-      status: "Completed",
-      vehicle: "Car",
-      vehicleId: "0oIrPgti3MDFMH86Sgz3",
-    },
-    {STT: 1,
-      departureTime: "08:45",
-      driver: "John Doe",
-      driverId: "0crghHNSW7DwaUGrQKWj",
-      estimatedCost: "$90",
-      estimatedTime: "12 hours",
-      id: "1i6RM79jYQ5UaKokIivo",
-      route: "LT-PH",
-      status: "Completed",
-      vehicle: "Car",
-      vehicleId: "0oIrPgti3MDFMH86Sgz3",
-    },
-    {STT: 1,
-      departureTime: "08:45",
-      driver: "John Doe",
-      driverId: "0crghHNSW7DwaUGrQKWj",
-      estimatedCost: "$90",
-      estimatedTime: "12 hours",
-      id: "1i6RM79jYQ5UaKokIivo",
-      route: "LT-PH",
-      status: "Completed",
-      vehicle: "Car",
-      vehicleId: "0oIrPgti3MDFMH86Sgz3",
-    },
-    {STT: 1,
-      departureTime: "08:45",
-      driver: "John Doe",
-      driverId: "0crghHNSW7DwaUGrQKWj",
-      estimatedCost: "$90",
-      estimatedTime: "12 hours",
-      id: "1i6RM79jYQ5UaKokIivo",
-      route: "LT-PH",
-      status: "Completed",
-      vehicle: "Car",
-      vehicleId: "0oIrPgti3MDFMH86Sgz3",
-    }
-  ];
 
-
+  
   return (
     <div>
       <h2 className="DriverManagement">Driver Management</h2>
@@ -396,9 +260,8 @@ function DriversManagement({ fetchDrivers, setFetchDrivers }) {
                   className="HistoryButton"
                   onClick={(e) => {
                     e.stopPropagation();
-                    setShowNotification(true);
-                    setMessage("Driver's driving history is not available");
-                    //hàm này để in ra cái bảng showDrivingHistoryTable();
+                    fetchHistory(driver.id);
+                    setShowTable(true);
                   }}
                 >
                   Show driver's driving history
@@ -407,14 +270,15 @@ function DriversManagement({ fetchDrivers, setFetchDrivers }) {
             </button>
           ))}
       </div>
-      {showNotification && (
+      {showTable && (
         <div className="DrivingHistoryPopup">
           <div className="HistoryNotification">
             <a
               href="#"
               class="x"
               onClick={() => {
-                setShowNotification(false);
+                setShowTable(false);
+                setHistory([]);
               }}
             ></a>
             <div className="scrollable-div">
@@ -431,7 +295,7 @@ function DriversManagement({ fetchDrivers, setFetchDrivers }) {
                   </tr>
                 </thead>
                 <tbody className="tbd">
-                  {driverHistory
+                  {history
                     .map((trip) => (
                       <tr
                         className={"tripTripUnit"}
