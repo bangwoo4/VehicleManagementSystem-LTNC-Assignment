@@ -1,0 +1,1124 @@
+.App {
+  text-align: center;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.cti4 {
+  color: white;
+  border: 2px solid white;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 10px;
+  background-color: rgba(55, 53, 53, 0.5);
+  transition: transform 0.3s ease-in-out;
+  display: inline-block;
+}
+
+.cti4:hover {
+  transform: scale(1.05);
+}
+
+.CopyRight {
+  color: white;
+  font-size: 15px;
+  text-align: center;
+  font-style: italic;
+}
+
+.container {
+  display: flex;
+  width: 100%;
+}
+
+.App {
+  background: #0f2027;
+  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #2c5364, #203a43, #0f2027);
+  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #2c5364, #203a43, #0f2027);
+  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background: #78718e;
+}
+
+.left-panel,
+.middle-panel {
+  border: 3px solid lightgrey;
+  border-radius: 3px;
+  margin: 2px;
+  width: 16%;
+}
+
+.right-panel {
+  border: 3px solid lightgrey;
+  border-radius: 3px;
+  margin: 2px;
+  width: 48%;
+  background-image: linear-gradient(to right, #2c3e50, #4ca1af);
+  background: #4b4269;
+}
+
+.most-right-panel {
+  border: 3px solid lightgrey;
+  border-radius: 6px;
+  margin: 2px;
+  width: 20%;
+  background-image: linear-gradient(to right, #5a3f37, #2c7744);
+  background: #392f5a;
+}
+
+.left-panel {
+  background-image: linear-gradient(to right, #5a3f37, #2c7744);
+  background: #534b70;
+}
+
+.middle-panel {
+  background-image: linear-gradient(to right, #141e30, #243b55);
+  background: #534b70;
+}
+
+.VehicleManagement {
+  font-size: large;
+  padding: 0px;
+  margin: 0px;
+  background-color: #d4ca9f;
+}
+
+.DriverManagement {
+  font-size: large;
+  background-color: #d4ca9f;
+  padding: 0px;
+  margin: 0px;
+}
+
+.PlanManagement {
+  background-color: #d6dae4;
+  padding: 0px;
+  margin: 0px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+
+.input-field {
+  margin-bottom: 5px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+.add-trip-button {
+  background-color: #4caf50;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.VehicleUnit {
+  width: 98%;
+  text-align: left;
+  background-color: #d9d9d9;
+  border: 1px solid #000;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.VehicleUnit:hover {
+  transform: scale(1.05);
+}
+
+.VehicleName {
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.VehicleDetails {
+  font-size: 15px;
+  font-style: italic;
+}
+
+.vl {
+  color: white;
+  font-size: 15px;
+  font-style: italic;
+  text-align: left;
+}
+
+.DriverUnit {
+  width: 98%;
+  text-align: left;
+  background-color: #d9d9d9;
+  border: 1px solid #000;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.DriverUnit:hover {
+  transform: scale(1.05);
+}
+
+.DriverName {
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.DriverDetails {
+  font-size: 15px;
+  font-style: italic;
+}
+
+.dl {
+  color: white;
+  font-size: 15px;
+  font-style: italic;
+  text-align: left;
+}
+
+.TripManagement {
+  background-color: #c9c0c0;
+  padding: 0px;
+  margin: 0px;
+}
+
+.Pm {
+  padding: 0px;
+  margin: 0px;
+  color: white;
+}
+
+.TripUnit {
+  text-align: center;
+  font-size: large;
+  background-color: #d9d9d9;
+  border: 1px solid #000;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.TripTable {
+  border-radius: 2px;
+  border: #000;
+  border-radius: 2px solid;
+}
+
+.TripValueName {
+  background-color: #342b52;
+  color: white;
+  font-weight: bold;
+}
+
+.Actions {
+  background-color: #d4ca9f;
+  padding: 0px;
+  margin: 0px;
+}
+
+.buttons {
+  background-color: #d9d9d9;
+  border: 5px solid #000;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 5px;
+}
+
+.AddTripBlock {
+  background-color: #d9d9d9;
+  border: 5px solid #000;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 5px;
+}
+
+.AddTripText {
+  margin: 2px;
+  font-size: 20px;
+  font-weight: bold;
+  color: rgb(9, 3, 3);
+}
+
+body {
+  background-color: #333;
+}
+
+.wrapper {
+  width: 300px;
+  height: 200px;
+  margin: 0px auto;
+  background-color: #fff;
+  padding-top: 80px;
+}
+
+.pillars {
+  width: 180px;
+  height: 118px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.pillar {
+  width: 20px;
+  height: 100%;
+  margin: 0px 8px;
+  background-color: #333;
+  float: left;
+  opacity: 0;
+}
+
+.mask {
+  width: 180px;
+  background-color: #fff;
+  height: 45px;
+  z-index: 999999;
+  clear: left;
+  position: absolute;
+  border-bottom-right-radius: 100%;
+  border-bottom-left-radius: 100%;
+}
+
+.pillar1 {
+  animation: anim 5s ease-out 0s infinite;
+}
+
+.pillar2 {
+  animation: anim2 5s ease-out 0s infinite;
+}
+
+.pillar3 {
+  animation: anim3 5s ease-out 0s infinite;
+}
+
+.pillar4 {
+  animation: anim4 5s ease-out 0s infinite;
+}
+
+.pillar5 {
+  animation: anim5 5s ease-out 0s infinite;
+}
+
+@keyframes anim {
+  0% {
+    opacity: 0;
+  }
+
+  20% {
+    opacity: 1;
+  }
+
+  40% {
+    opacity: 1;
+  }
+
+  60% {
+    opacity: 1;
+  }
+
+  80% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes anim2 {
+  0% {
+    opacity: 0;
+  }
+
+  20% {
+    opacity: 0;
+  }
+
+  40% {
+    opacity: 1;
+  }
+
+  60% {
+    opacity: 1;
+  }
+
+  80% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes anim3 {
+  0% {
+    opacity: 0;
+  }
+
+  20% {
+    opacity: 0;
+  }
+
+  40% {
+    opacity: 0;
+  }
+
+  60% {
+    opacity: 1;
+  }
+
+  80% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes anim4 {
+  0% {
+    opacity: 0;
+  }
+
+  20% {
+    opacity: 0;
+  }
+
+  40% {
+    opacity: 0;
+  }
+
+  60% {
+    opacity: 0;
+  }
+
+  80% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes anim5 {
+  0% {
+    opacity: 0;
+  }
+
+  20% {
+    opacity: 0;
+  }
+
+  40% {
+    opacity: 0;
+  }
+
+  60% {
+    opacity: 0;
+  }
+
+  80% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+.wrapper {
+  max-width: 99%;
+}
+
+.tripTripUnit {
+  color: black;
+  max-width: 100%;
+  border-radius: 20px;
+}
+
+.tripTripUnit {
+  transition: transform 0.3s ease;
+}
+
+.tripTripUnit:hover {
+  transform: scale(1.02);
+}
+
+.piechart {
+  max-width: 100%;
+  background-color: #d9d9d9;
+  border-radius: 5px;
+}
+
+.highlight {
+  background-color: #ff6600;
+  color: #ffffff;
+  font-weight: bold;
+  font-style: italic;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  transition: background-color 0.3s ease;
+  animation: highlight-animation 2s ease-in-out infinite;
+}
+
+@keyframes highlight-animation {
+  0% {
+    background-color: #272838;
+  }
+
+  20% {
+    background-color: #ff6b6b;
+  }
+
+  40% {
+    background-color: #ff4646;
+  }
+
+  60% {
+    background-color: #ff1a1a;
+  }
+
+  80% {
+    background-color: #ff4646;
+  }
+
+  100% {
+    background-color: #272838;
+  }
+}
+
+.divider {
+  border-bottom: 5px solid #ffffff;
+  /* Đường gạch */
+  max-width: 100%;
+  margin-top: 20px;
+  /* Khoảng cách giữa đường gạch và nội dung phía trên */
+}
+
+.graph {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.DriverUnit {
+  transition: all 0.3s ease;
+  overflow: hidden;
+  max-height: 90px;
+  /* Chiều cao ban đầu của khối chứa thông tin tài xế */
+}
+
+.DriverUnit.expanded {
+  max-height: 500px;
+  /* Chiều cao tối đa của khối chứa thông tin tài xế khi được mở rộng */
+}
+
+.DriverDetails {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  max-height: 0;
+  overflow: hidden;
+}
+
+.DriverUnit.expanded .DriverDetails {
+  opacity: 1;
+  max-height: 400px;
+  /* Điều chỉnh chiều cao tối đa cho phần thông tin tài xế */
+}
+
+.VehicleUnit {
+  transition: all 0.3s ease;
+  overflow: hidden;
+  max-height: 90px;
+  /* Chiều cao ban đầu của khối chứa thông tin phương tiện */
+}
+
+.VehicleUnit.expanded {
+  max-height: 500px;
+  /* Chiều cao tối đa của khối chứa thông tin phương tiện khi được mở rộng */
+}
+
+.VehicleDetails {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  max-height: 0;
+  overflow: hidden;
+}
+
+.VehicleUnit.expanded .VehicleDetails {
+  opacity: 1;
+  max-height: 400px;
+  /* Điều chỉnh chiều cao tối đa cho phần thông tin phương tiện */
+}
+
+/* css cho notification */
+.notification-container {
+  position: fixed;
+  top: 20px;
+  left: 50px;
+}
+
+.notification {
+  background-color: #fafffd;
+  /* Màu nền */
+  border: 2px solid #61776e;
+  /* Đường viền */
+  color: #000000;
+  /* Màu chữ */
+  padding: 15px 25px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  z-index: 9999;
+  animation: slideIn 0.5s ease forwards;
+  max-width: 600px;
+  border-radius: 25px;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+
+  @keyframes slideIn {
+    0% {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+.notification:hover {
+  transform: scale(1.05);
+  /* Phóng to nhẹ khi di chuột vào */
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+  /* Đổ bóng lớn hơn khi di chuột vào */
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/*graph*/
+.graph {
+  display: flex;
+  justify-content: space-between;
+  margin: 1rem 0;
+}
+
+.graph > div {
+  flex: 1;
+  transform: scale(0.9);
+  padding: 1rem;
+  background-color: #2d2950;
+  border-radius: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+  /* Thêm hiệu ứng transition */
+}
+
+.graph > div:hover {
+  transform: scale(1.01);
+  /* Hiệu ứng phóng to khi hover */
+  background-color: #181750;
+}
+
+.graph h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #ffffff;
+}
+
+.graph .pie-chart {
+  text-align: center;
+}
+
+.graph .pie-chart .label {
+  font-size: 0.8rem;
+  color: #666;
+  transition: color 0.3s ease;
+  /* Thêm hiệu ứng transition */
+}
+
+.graph .pie-chart:hover .label {
+  color: #ff0000;
+  /* Hiệu ứng thay đổi màu chữ khi hover */
+}
+
+/*css cho button*/
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+.fade-in-button {
+  animation: fade-in 0.5s ease;
+}
+
+.animated-button {
+  background-color: #54a329;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+    background-color 0.3s, color 0.3s;
+}
+
+.animated-button:hover {
+  background-color: #225e8f;
+  color: white;
+  transform: scale(1.05);
+}
+
+.animated-button:active {
+  background-color: #be0e34;
+}
+
+.buttons button {
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.buttons button:hover {
+  background-color: #e0e0e0;
+  color: #333333;
+  transform: translateY(-2px);
+}
+
+.buttons button:active {
+  background-color: #bdbdbd;
+  color: #000000;
+  transform: translateY(2px);
+}
+
+.buttons button:first-child {
+  background: linear-gradient(to right, #01834d, #04b96f);
+}
+
+.buttons button:nth-child(2) {
+  background: linear-gradient(to right, #0c4183, #2d6ee2);
+}
+
+.buttons button:nth-child(3) {
+  background: linear-gradient(to right, #721e1d, #f44336);
+}
+
+.buttons button:nth-child(4) {
+  background: linear-gradient(to right, #6d3e18, #ff9800);
+}
+
+.buttons button:nth-child(5) {
+  background: linear-gradient(to right, #1e7381, #00bcd4);
+}
+
+.buttons button:nth-child(6) {
+  background: linear-gradient(to right, #533c3c, #9c7171);
+}
+
+.buttons button:nth-child(7) {
+  background: linear-gradient(to right, #505f73, #8da9c4);
+}
+
+.animated-button {
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.animated-button:hover {
+  background-color: #e0e0e0;
+  color: #333333;
+  transform: translateY(-2px);
+}
+
+.animated-button:active {
+  background-color: #bdbdbd;
+  color: #000000;
+  transform: translateY(2px);
+}
+
+/* css thêm cho AddBlock*/
+.AddTripBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #f2f2f2da;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.AddTripBlock:hover {
+  background-color: #b1b1b1;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+}
+
+.AddTripText {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.input-field {
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.empty-input-field {
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #f00;
+}
+
+.add-trip-button {
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: none;
+  background-color: #007bff;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.add-trip-button:hover {
+  background-color: #0056b3;
+}
+
+/*search*/
+.searchInput {
+  color: black;
+  display: flex;
+  padding: 8px;
+  border: none;
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+  outline: none;
+  font-size: 12px;
+  width: 95%;
+  margin: auto;
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+    background-color 0.3s, color 0.3s;
+}
+
+.searchInput:focus {
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.searchInput::placeholder {
+  font-style: italic;
+  color: #999999;
+  transition: color 0.3s ease;
+}
+
+.searchInput:hover,
+.searchInput:focus {
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  transform: scale(1.05);
+}
+
+.searchInput:focus::placeholder {
+  color: transparent;
+}
+
+.searchInput:hover::placeholder {
+  color: #cccccc;
+}
+
+.searchInput {
+  transition: all 0.3s ease;
+  /* other styles */
+}
+
+.searchInput.focused {
+  transform: scale(1.05);
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.ageInput,
+.licenseTypeInput,
+.statusInput {
+  color: black;
+  display: flex;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+  outline: none;
+  font-size: 12px;
+  width: 95%;
+  margin: auto;
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+    background-color 0.3s, color 0.3s;
+}
+
+/*nút kính lúp*/
+.magnifier {
+  border: 3px solid white;
+  border-radius: 10px;
+  font-size: 1.5rem;
+  background-color: rgb(96, 74, 120);
+  cursor: pointer;
+  transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
+  margin-left: 15px;
+  padding: 2px;
+  color: white;
+}
+
+.magnifier:hover {
+  transform: scale(1.2);
+  background-color: white;
+  color: black;
+}
+.HistoryButton {
+  background: linear-gradient(to right, #5c3504 0%, #5672631a 100%);
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.HistoryButton:hover {
+  background: linear-gradient(to left, #f58700 0%, #b6cabf 100%);
+  color: black;
+}
+
+.error-message {
+  color: red;
+  position: relative;
+  top: -12px;
+}
+
+/*css cho Driving history notification*/
+.DrivingHistoryPopup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.5);
+  visibility: visible;
+  opacity: 1;
+  transition: visibility 0s linear 0.25s, opacity 0.25s 0s;
+}
+
+.DrivingHistoryPopup .HistoryNotification {
+  width: 50%;
+  height: 50%;
+  padding: 20px;
+  background: white;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+
+.x::before,
+.x::after {
+  position: relative;
+  top: -5px;
+  right: -99%;
+  content: "";
+  display: block;
+  margin-top: -3px;
+  width: 20px;
+  height: 3px;
+  background: #000;
+  border-radius: 1px;
+}
+
+.x::before {
+  -webkit-transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+}
+.x::after {
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+/*Filter Trip css*/
+.dt {
+  color: white;
+  font-size: 15px;
+  font-style: italic;
+  text-align: left;
+}
+.filter {
+  border-radius: 5px;
+  background-color: transparent;
+  padding: 2px;
+  margin: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.filter:hover {
+  background-color: #273442;
+}
+.filterEstimatedCost input {
+  padding: 10px;
+  margin-bottom: 5px;
+}
+.filterDepartureTime {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.filter div,
+.filter select {
+  margin-bottom: 10px;
+}
+
+.filter label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.filter input[type="text"],
+.filter input[type="number"],
+.filter input[type="time"],
+.filter select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ced4da;
+  border-radius: 5px;
+  transition: box-shadow 0.3s ease;
+}
+
+.filter input[type="text"]:focus,
+.filter input[type="number"]:focus,
+.filter input[type="time"]:focus,
+.filter select:focus {
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+.clear-filter {
+  background-color: #ff6347;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+.clear-filter:hover {
+  background-color: #c62c2c;
+  transform: scale(1.05);
+  box-shadow: 0px 15px 20px rgba(0, 0, 0, 0.2);
+}
+.clear-filter2 {
+  background-color: #ff6347;
+  color: white;
+  border: none;
+  padding: 5px 10px; /* giảm padding để thu nhỏ nút */
+  text-align: center;
+  text-decoration: none;
+  display: block; /* thay đổi từ inline-block thành block để căn giữa nút */
+  font-size: 16px;
+  margin: auto; /* căn giữa nút */
+  transition-duration: 0.4s;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.clear-filter2:hover {
+  background-color: #c62c2c;
+  color: white;
+}
+.dl {
+  padding: 2px;
+  margin: 2px;
+}
+.vl {
+  padding: 2px;
+  margin: 2px;
+}
+hr {
+  /*khoảng cách các nút bên tab Actions*/
+  margin-bottom: 5px;
+}
