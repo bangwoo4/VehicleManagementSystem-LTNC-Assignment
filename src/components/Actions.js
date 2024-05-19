@@ -251,6 +251,7 @@ function Actions({
     const docRef = doc(firebase, "vehicles", Vehicleid);
     if (vehicle.status === "Working") {
       showPopup("Vehicle still working!");
+      return;
     } else if (vehicle.status === "Maintenance") {
       vehicle.status = "Inactive";
     } else if (vehicle.status === "Inactive") {
@@ -359,9 +360,12 @@ function Actions({
       showPopup("Driver is in progress!");
       return;
     } else if (vehicleData.status === "Working") {
-      showPopup("vehicle is in progress!");
+      showPopup("Vehicle is in progress!");
       return;
-    } else {
+    } else if (vehicleData.status === "Maintenance") {
+      showPopup("Vehicle is maintaining!");
+      return;
+    }else {
       showPopup("Error!");
       return;
     }
