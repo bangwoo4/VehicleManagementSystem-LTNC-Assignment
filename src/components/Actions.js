@@ -436,16 +436,16 @@ function Actions({
       doc(firebase, "vehicles", tripData.vehicleId)
     );
     const vehicleData = vehicelSnapshot.data();
-
+    let load = parseInt(vehicleData.payload)
     const snapshot = await getDocs(
       query(
         collection(firebase, "drivers"),
         where(
           "licenseType",
           "==",
-          vehicleData.payload < 500
+          load < 500
             ? "A"
-            : vehicleData.payload < 1000
+            : load < 1000
             ? "B"
             : "C"
         )
@@ -455,7 +455,7 @@ function Actions({
       id: doc.id,
       ...doc.data(),
     }));
-
+    
     const listDriver = [];
     if (temp && temp.length > 0) {
       for (let i = 0; i < temp.length; ++i) {
@@ -465,7 +465,7 @@ function Actions({
         }
       }
     }
-
+    console.log(listDriver);
     if (listDriver.length === 0) {
       showPopup("There are no suitable drivers!");
       return;
